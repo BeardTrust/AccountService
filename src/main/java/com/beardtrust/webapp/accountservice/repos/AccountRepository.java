@@ -17,16 +17,16 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository extends JpaRepository<AccountEntity, String>{
     
     /*
-    *Find by the Account ID
+    *Find by the Account Id
     *
     */
-    AccountEntity findByAccountID(String s);
+    AccountEntity findByAccountId(String s);
     
     /*
-    *Find by the User ID    
+    *Find by the User Id    
     *
     */
-    AccountEntity findByUserID(String s);
+    AccountEntity findByUserId(String s);
     
     /*
     *Find by Nickname

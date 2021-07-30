@@ -16,8 +16,8 @@ import lombok.Data;
 @Data
 public class AccountDTO implements Serializable {
 
-    private String userID;
-    private String accountID;
+    private String userId;
+    private String accountId;
     private boolean active_status;
     private Integer balance;
     private Integer interest;

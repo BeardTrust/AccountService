@@ -17,9 +17,9 @@ import java.time.LocalDate;
  */
 @Data
 public class AccountCreation {
-    private String accountID;
+    private String accountId;
     @NotBlank(message = "How did no account ID get passed?")
-    private String userID;
+    private String userId;
     @NotBlank(message = "The user ID is extremely important")
     private String active_status;
     @NotBlank(message = "Default value upon creation should be true")

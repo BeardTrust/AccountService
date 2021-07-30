@@ -24,9 +24,8 @@ public class AccountEntity implements Serializable {
 
     @Id
     @Column(unique = true)
-    private String accountID;
-    @Column(unique = true)
-    private String userID;
+    private String accountId;
+    private String userId;
     private boolean active_status;
     private Integer balance;
     private LocalDate create_date;
@@ -34,22 +33,22 @@ public class AccountEntity implements Serializable {
     private String nickname;
 
     public AccountEntity() {
-        this.accountID = UUID.randomUUID().toString();
+        this.accountId = UUID.randomUUID().toString();
     }
     public String getAccountId() {
-        return accountID;
+        return accountId;
     }
 
     public void setAccountId(String accountId) {
-        this.accountID = accountId;
+        this.accountId = accountId;
     }
 
     public String getUserId() {
-        return userID;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        this.userID = userId;
+        this.userId = userId;
     }
 
     public boolean isActive_status() {
@@ -101,19 +100,19 @@ public class AccountEntity implements Serializable {
             return false;
         }
         AccountEntity that = (AccountEntity) o;
-        return Objects.equals(accountID, that.accountID) && Objects.equals(userID, that.userID) && Objects.equals(active_status, that.active_status) && Objects.equals(balance, that.balance) && Objects.equals(create_date, that.create_date) && Objects.equals(interest, that.interest) && Objects.equals(nickname, that.nickname);
+        return Objects.equals(accountId, that.accountId) && Objects.equals(userId, that.userId) && Objects.equals(active_status, that.active_status) && Objects.equals(balance, that.balance) && Objects.equals(create_date, that.create_date) && Objects.equals(interest, that.interest) && Objects.equals(nickname, that.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, accountID, active_status, balance, interest, create_date, nickname);
+        return Objects.hash(userId, accountId, active_status, balance, interest, create_date, nickname);
     }
 
     @Override
     public String toString() {
         return "AccountEntity{"
-                + "userId='" + userID + '\''
-                + ", accountId='" + accountID + '\''
+                + "userId='" + userId + '\''
+                + ", accountId='" + accountId + '\''
                 + ", active_status='" + active_status + '\''
                 + ", balance='" + balance + '\''
                 + ", interest='" + interest + '\''
