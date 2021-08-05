@@ -23,5 +23,6 @@ public class AccountDTO implements Serializable {
     private Integer interest;
     private String nickname;
     private LocalDate create_date;
+    private String type;
 
 }

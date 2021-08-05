@@ -7,9 +7,11 @@ management:
         include: '*'
   server:
     port: ${ACTPORT:0}
+gateway:
+  ip: ${GATEWAY:192.168.0.10}
 spring:
   application:
-    name: ${NAME:account-service}
+    name: ${NAME:accounts-service}
   h2:
     console:
       enabled: true
@@ -22,3 +24,11 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+authorization:
+  token:
+    header:
+      name: Authorization
+      prefix: Bearer
+token:
+  secret: aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj04WnEzS0NCZWQ1UQo=
+  expiration: 864000000

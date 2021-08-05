@@ -26,11 +26,21 @@ public class AccountEntity implements Serializable {
     @Column(unique = true)
     private String accountId;
     private String userId;
+    @Column(name = "ACTIVE_STATUS")
     private boolean active_status;
     private Integer balance;
     private LocalDate create_date;
     private Integer interest;
     private String nickname;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public AccountEntity() {
         this.accountId = UUID.randomUUID().toString();

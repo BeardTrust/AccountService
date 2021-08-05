@@ -17,15 +17,18 @@ import java.time.LocalDate;
  */
 @Data
 public class AccountCreation {
-    private String accountId;
+
     @NotBlank(message = "How did no account ID get passed?")
-    private String userId;
+    private String accountId;
     @NotBlank(message = "The user ID is extremely important")
-    private String active_status;
+    private String userId;
     @NotBlank(message = "Default value upon creation should be true")
+    private String active_status;
     private String balance;
-    private LocalDate create_date;
     @NotNull(message = "Check your calender and put in today.")
+    private LocalDate create_date;
     private Integer interest;
     private String nicknsme;
+    @NotNull(message = "Is this a checking or savings account?")
+    private String type;
 }

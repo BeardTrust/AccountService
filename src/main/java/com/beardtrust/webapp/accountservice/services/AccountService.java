@@ -7,6 +7,7 @@ package com.beardtrust.webapp.accountservice.services;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.dtos.AccountDTO;
+import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +41,28 @@ public class AccountService {
         }
     }
     
-    public List<AccountEntity> getAllService(String id) {
+    public List<AccountEntity> getAllService(String userId) {
         List<AccountEntity> preSort = repo.findAll();
         List<AccountEntity> Sort = new ArrayList();
         for (int i = 0; i < preSort.size(); i++) {
-            if (preSort.get(i).getUserId().equals(id) && preSort.get(i).isActive_status()) {
+            if (preSort.get(i).getUserId().equals(userId) && preSort.get(i).isActive_status()) {
                 Sort.add(preSort.get(i));
             }
         }
         return Sort;
+    }
+    
+    public AccountEntity changeMoneyService(TransferEntity amount, String id) {
+        System.out.println("String in service: " + id);
+        AccountEntity a = repo.findByAccountId(id);
+        System.out.println("A: " + a);
+        if (a.isActive_status()) {
+            a.setBalance(a.getBalance() + amount.getAmount());
+            repo.save(a);
+            return a;
+        } else {
+            return null;
+        }
     }
     
     public AccountEntity updateService(AccountEntity a) {
