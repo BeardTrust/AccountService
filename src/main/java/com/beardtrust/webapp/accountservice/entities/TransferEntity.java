@@ -6,6 +6,7 @@
 package com.beardtrust.webapp.accountservice.entities;
 
 
+
 /**
  *
  * @author Nathanael <Nathanael.Grier at your.org>

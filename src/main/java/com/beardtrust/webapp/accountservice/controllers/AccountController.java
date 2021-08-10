@@ -12,7 +12,9 @@ import com.beardtrust.webapp.accountservice.services.AccountService;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,41 +41,56 @@ public class AccountController {
     private AccountService as = new AccountService(repo);
 
     @PostMapping
-    public AccountEntity createAccount(@RequestBody AccountEntity a) {
-        return as.createService(a);
+    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity a) {
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
+         return response;
     }
 
     @GetMapping("/{id}")//<-- Account Id goes here
-    public AccountEntity getSpecificAccount(@PathVariable String id) {
-        return as.getSpecificService(id);
+    public ResponseEntity<AccountEntity> getSpecificAccount(@PathVariable String id) {
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getSpecificService(id), HttpStatus.OK);
+         return response;
     }
 
     //@PreAuthorize("hasAuthority('admin') or principal == #id")
     @PreAuthorize("permitAll()")
     @GetMapping
-    public List<AccountEntity> getListAccount(@RequestParam("id") String id) {//<-- The User's ID
-        return as.getAllService(id);
+    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {//<-- The User's ID
+        ResponseEntity<List<AccountEntity>> response = new ResponseEntity<>(as.getAllService(id), HttpStatus.OK);
+         return response;
     }
     
     //@PreAuthorize("hasAuthority('admin') or principal == #id")
     @PreAuthorize("permitAll()")
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public AccountEntity changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
-        System.out.println("Controller Has been reached");
-        return as.changeMoneyService(amount, id);
+    public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeMoneyService(amount, id), HttpStatus.NO_CONTENT);
+         return response;
+    }
+    
+    //@PreAuthorize("hasAuthority('admin') or principal == #id")
+    @PreAuthorize("permitAll()")
+    @PutMapping("/recovery/{id}")
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a) {//<-- The Account ID (amount should be set pos/neg by the front end)
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeRecoveryService(id), HttpStatus.NO_CONTENT);
+         return response;
     }
 
     @PreAuthorize("hasAuthority('admin')")
     @PutMapping
-    public AccountEntity updateAccount(@RequestBody AccountEntity a) {//<-- The entity with new/updated info
-        return as.updateService(a);
+    public ResponseEntity<AccountEntity> updateAccount(@RequestBody AccountEntity a) {//<-- The entity with new/updated info
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
+         return response;
     }
 
-    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin') or principal == #id")
+    @PreAuthorize("permitAll()")
     @DeleteMapping
-    public String deactivateAccount(@RequestBody AccountEntity a) {//<-- Send the Account that we want deactivated
-        return as.deactivateAccount(a);
+    public ResponseEntity<String> deactivateAccount(@RequestBody String a) {//<-- Send the Account Id that we want deactivated
+        ResponseEntity<String> response = new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
+        return response;
     }
 
 }

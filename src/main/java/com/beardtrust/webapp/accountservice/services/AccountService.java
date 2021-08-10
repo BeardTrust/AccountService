@@ -20,18 +20,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountService {
-    
+
     private AccountRepository repo;
-    
+
     public AccountService(AccountRepository repo) {
         this.repo = repo;
     }
-    
+
     public AccountEntity createService(AccountEntity a) {
         repo.save(a);
         return a;
     }
-    
+
     public AccountEntity getSpecificService(String id) {
         AccountEntity a = repo.findByAccountId(id);
         if (a.isActive_status()) {
@@ -40,7 +40,7 @@ public class AccountService {
             return null;
         }
     }
-    
+
     public List<AccountEntity> getAllService(String userId) {
         List<AccountEntity> preSort = repo.findAll();
         List<AccountEntity> Sort = new ArrayList();
@@ -51,9 +51,10 @@ public class AccountService {
         }
         return Sort;
     }
-    
+
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
         System.out.println("String in service: " + id);
+        System.out.println("Amount rcv'd: " + amount.getAmount());
         AccountEntity a = repo.findByAccountId(id);
         System.out.println("A: " + a);
         if (a.isActive_status()) {
@@ -65,6 +66,20 @@ public class AccountService {
         }
     }
     
+    public AccountEntity changeRecoveryService(String id) {
+        System.out.println("String in service: " + id);
+        AccountEntity a = repo.findByAccountId(id);
+        System.out.println("A: " + a);
+        if (a.isActive_status()) {
+            a.setType("Recovery");
+            a.setInterest(0);
+            repo.save(a);
+            return a;
+        } else {
+            return null;
+        }
+    }
+
     public AccountEntity updateService(AccountEntity a) {
         if (repo.existsById(a.getAccountId())) {
             System.out.println("Update Success. WARNING: Account ID has been changed.");
@@ -76,15 +91,20 @@ public class AccountService {
             return a;
         }
     }
-    
-    public String deactivateAccount(AccountEntity a){
-        try {
-        a.setActive_status(false);
-        repo.save(a);
-        return "Account " + a.getAccountId() + " active status: " + a.isActive_status();
-        } catch(Exception e) {
-            return "Account " + a.getAccountId() + " deactivation failed with error: " + e.getLocalizedMessage();
+
+    public String deactivateAccount(String a) {
+        AccountEntity a2 = repo.findByAccountId(a);
+        System.out.println("incoming A: " + a);
+        if (a2 != null) {
+            try {
+                a2.setActive_status(false);
+                repo.save(a2);
+                return "Account " + a2.getAccountId() + " active status: " + a2.isActive_status();
+            } catch (Exception e) {
+                return "Account " + a2.getAccountId() + " deactivation failed with error: " + e.getLocalizedMessage();
+            }
         }
+        return "Account does not exist";
     }
-    
+
 }
