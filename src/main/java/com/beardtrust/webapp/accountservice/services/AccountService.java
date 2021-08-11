@@ -6,12 +6,10 @@
 package com.beardtrust.webapp.accountservice.services;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
-import com.beardtrust.webapp.accountservice.dtos.AccountDTO;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,6 +57,9 @@ public class AccountService {
         System.out.println("A: " + a);
         if (a.isActive_status()) {
             a.setBalance(a.getBalance() + amount.getAmount());
+            if (a.getBalance() == 0 && a.getType() == "Recovery") {
+                deactivateAccount(a.getAccountId());
+            }
             repo.save(a);
             return a;
         } else {
