@@ -18,11 +18,11 @@ public class AccountDTO implements Serializable {
 
     private String userId;
     private String accountId;
-    private boolean active_status;
+    private boolean activeStatus;
     private Integer balance;
     private Integer interest;
     private String nickname;
-    private LocalDate create_date;
+    private LocalDate createDate;
     private String type;
 
 }

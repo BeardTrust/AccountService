@@ -6,6 +6,9 @@
 package com.beardtrust.webapp.accountservice.repos;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import java.time.LocalDate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,23 +17,27 @@ import org.springframework.stereotype.Repository;
  * @author Nathanael <Nathanael.Grier at your.org>
  */
 @Repository
-public interface AccountRepository extends JpaRepository<AccountEntity, String>{
+public interface AccountRepository extends JpaRepository<AccountEntity, String> {
+
+    Page<AccountEntity> findAllByUserIdOrAccountIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
+            String accountId, boolean activeStatus, String nickname, String type, Pageable page);
     
+    Page<AccountEntity> findAllByBalanceOrInterestIsLike(Integer balance, Integer interest, Pageable page);
+    
+    Page<AccountEntity> findByCreateDate(LocalDate createDate, Pageable page);
+
     /*
     *Find by the Account Id
     *
-    */
+     */
     AccountEntity findByAccountId(String s);
-    
-    /*
-    *Find by the User Id    
-    *
-    */
-    AccountEntity findByUserId(String s);
-    
+
+    @Override
+    Page<AccountEntity> findAll(Pageable page);
+
     /*
     *Find by Nickname
     *
-    */
+     */
     AccountEntity findByNickname(String s);
 }

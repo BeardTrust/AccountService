@@ -23,10 +23,10 @@ public class AccountCreation {
     @NotBlank(message = "The user ID is extremely important")
     private String userId;
     @NotBlank(message = "Default value upon creation should be true")
-    private String active_status;
+    private String activeStatus;
     private String balance;
     @NotNull(message = "Check your calender and put in today.")
-    private LocalDate create_date;
+    private LocalDate createDate;
     private Integer interest;
     private String nicknsme;
     @NotNull(message = "Is this a checking or savings account?")

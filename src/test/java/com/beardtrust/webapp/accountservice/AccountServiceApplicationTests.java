@@ -31,16 +31,16 @@ class AccountServiceApplicationTests {
 
     @Test
     public void testConstructor() {
-        assertTrue((new AccountService(mock(AccountRepository.class))).getAllService("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a").isEmpty());
+        assertTrue((new AccountService(mock(AccountRepository.class))).getListService("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a").isEmpty());
     }
 
     @Test
     public void createServicetTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");
@@ -52,9 +52,9 @@ class AccountServiceApplicationTests {
     public void getSpecificServiceTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");
@@ -71,7 +71,7 @@ class AccountServiceApplicationTests {
     public void getAllServiceTest() {
         ArrayList<AccountEntity> aList = new ArrayList<AccountEntity>();
 		when(this.repo.findAll()).thenReturn(aList);
-		List<AccountEntity> actualAllAccountInfos = this.serv.getAllService("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+		List<AccountEntity> actualAllAccountInfos = this.serv.getListService("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
 		assertSame(aList, actualAllAccountInfos);
 		assertTrue(actualAllAccountInfos.isEmpty());
 		verify(this.repo).findAll();
@@ -81,9 +81,9 @@ class AccountServiceApplicationTests {
     public void changeMoneyServiceTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");
@@ -95,9 +95,9 @@ class AccountServiceApplicationTests {
     public void changeRecoveryServiceTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");
@@ -109,9 +109,9 @@ class AccountServiceApplicationTests {
     public void updateServiceTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");
@@ -123,9 +123,9 @@ class AccountServiceApplicationTests {
     public void deactivateAccountTest() {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
-        accountEntity.setActive_status(true);
+        accountEntity.setActiveStatus(true);
         accountEntity.setBalance(1000);
-        accountEntity.setCreate_date(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType("Savings");

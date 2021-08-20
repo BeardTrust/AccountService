@@ -51,9 +51,9 @@ public class AccountControllerTest {
 		accountEntity.setNickname("Nickname");
 		accountEntity.setUserId("42");
 		accountEntity.setAccountId("42");
-		accountEntity.setCreate_date(null);
+		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
-		accountEntity.setActive_status(true);
+		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(1);
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")
@@ -104,9 +104,9 @@ public class AccountControllerTest {
 		accountEntity.setNickname("Nickname");
 		accountEntity.setUserId("42");
 		accountEntity.setAccountId("42");
-		accountEntity.setCreate_date(null);
+		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
-		accountEntity.setActive_status(true);
+		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(1);
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/recovery/{id}", "42")
@@ -125,9 +125,9 @@ public class AccountControllerTest {
 		accountEntity.setNickname("Nickname");
 		accountEntity.setUserId("42");
 		accountEntity.setAccountId("42");
-		accountEntity.setCreate_date(null);
+		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
-		accountEntity.setActive_status(true);
+		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(1);
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")

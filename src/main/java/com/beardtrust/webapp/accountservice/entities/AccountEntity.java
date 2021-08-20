@@ -26,10 +26,9 @@ public class AccountEntity implements Serializable {
     @Column(unique = true)
     private String accountId;
     private String userId;
-    @Column(name = "ACTIVE_STATUS")
-    private boolean active_status;
+    private boolean activeStatus;
     private Integer balance;
-    private LocalDate create_date;
+    private LocalDate createDate;
     private Integer interest;
     private String nickname;
     private String type;
@@ -61,12 +60,12 @@ public class AccountEntity implements Serializable {
         this.userId = userId;
     }
 
-    public boolean isActive_status() {
-        return active_status;
+    public boolean isActiveStatus() {
+        return activeStatus;
     }
 
-    public void setActive_status(boolean active_status) {
-        this.active_status = active_status;
+    public void setActiveStatus(boolean activeStatus) {
+        this.activeStatus = activeStatus;
     }
 
     public Integer getBalance() {
@@ -77,12 +76,12 @@ public class AccountEntity implements Serializable {
         this.balance = balance;
     }
 
-    public LocalDate getCreate_date() {
-        return create_date;
+    public LocalDate getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(LocalDate create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 
     public Integer getInterest() {
@@ -110,12 +109,12 @@ public class AccountEntity implements Serializable {
             return false;
         }
         AccountEntity that = (AccountEntity) o;
-        return Objects.equals(accountId, that.accountId) && Objects.equals(userId, that.userId) && Objects.equals(active_status, that.active_status) && Objects.equals(balance, that.balance) && Objects.equals(create_date, that.create_date) && Objects.equals(interest, that.interest) && Objects.equals(nickname, that.nickname);
+        return Objects.equals(accountId, that.accountId) && Objects.equals(userId, that.userId) && Objects.equals(activeStatus, that.activeStatus) && Objects.equals(balance, that.balance) && Objects.equals(createDate, that.createDate) && Objects.equals(interest, that.interest) && Objects.equals(nickname, that.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, accountId, active_status, balance, interest, create_date, nickname);
+        return Objects.hash(userId, accountId, activeStatus, balance, interest, createDate, nickname);
     }
 
     @Override
@@ -123,11 +122,11 @@ public class AccountEntity implements Serializable {
         return "AccountEntity{"
                 + "userId='" + userId + '\''
                 + ", accountId='" + accountId + '\''
-                + ", active_status='" + active_status + '\''
+                + ", activeStatus='" + activeStatus + '\''
                 + ", balance='" + balance + '\''
                 + ", interest='" + interest + '\''
                 + ", nickname='" + nickname + '\''
-                + ", create_date=" + create_date
+                + ", create_date=" + createDate
                 + '}';
     }
 }
