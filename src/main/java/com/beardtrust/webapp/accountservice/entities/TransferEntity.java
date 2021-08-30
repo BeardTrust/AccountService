@@ -13,13 +13,13 @@ package com.beardtrust.webapp.accountservice.entities;
  */
 public class TransferEntity {
     
-    private Integer amount;
+    private CurrencyValue amount;
 
-    public Integer getAmount() {
+    public CurrencyValue getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(CurrencyValue amount) {
         this.amount = amount;
     }
     

@@ -7,6 +7,8 @@ package com.beardtrust.webapp.accountservice.dtos;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import lombok.Data;
 
 /**
@@ -19,7 +21,7 @@ public class AccountDTO implements Serializable {
     private String userId;
     private String accountId;
     private boolean activeStatus;
-    private Integer balance;
+    private CurrencyValue balance;
     private Integer interest;
     private String nickname;
     private LocalDate createDate;

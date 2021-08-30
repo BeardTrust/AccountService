@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import org.junit.jupiter.api.Test;
 
 public class AccountDTOTest {
@@ -27,7 +28,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(0);
+		accountDTO1.setBalance(new CurrencyValue(0,0));
 		assertTrue(accountDTO.canEqual(accountDTO1));
 	}
 
@@ -36,7 +37,7 @@ public class AccountDTOTest {
 		AccountDTO actualAccountDTO = new AccountDTO();
 		actualAccountDTO.setAccountId("42");
 		actualAccountDTO.setActiveStatus(true);
-		actualAccountDTO.setBalance(1);
+		actualAccountDTO.setBalance(new CurrencyValue(1,0));
 		LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
 		actualAccountDTO.setCreateDate(ofEpochDayResult);
 		actualAccountDTO.setInterest(1);
@@ -44,7 +45,7 @@ public class AccountDTOTest {
 		actualAccountDTO.setType("Type");
 		actualAccountDTO.setUserId("42");
 		assertEquals("42", actualAccountDTO.getAccountId());
-		assertEquals(1, actualAccountDTO.getBalance().intValue());
+		assertEquals(1, actualAccountDTO.getBalance());
 		assertSame(ofEpochDayResult, actualAccountDTO.getCreateDate());
 		assertEquals(1, actualAccountDTO.getInterest().intValue());
 		assertEquals("Nickname", actualAccountDTO.getNickname());
@@ -65,7 +66,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(null));
 	}
 
@@ -79,7 +80,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -89,7 +90,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -103,7 +104,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -113,7 +114,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -127,7 +128,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -137,7 +138,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -151,7 +152,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(0L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -161,7 +162,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -175,7 +176,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(null);
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -185,7 +186,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -199,7 +200,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("42");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -209,7 +210,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -223,7 +224,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType(null);
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -233,7 +234,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -247,7 +248,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(false);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -257,7 +258,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -271,7 +272,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(0);
+		accountDTO.setBalance(new CurrencyValue(0,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -281,7 +282,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -305,7 +306,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -319,7 +320,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals("Different type to AccountDTO"));
 	}
 
@@ -333,7 +334,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(null);
@@ -343,7 +344,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO1));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
@@ -359,7 +360,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -369,7 +370,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO1));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
@@ -385,7 +386,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -395,7 +396,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO1));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
@@ -411,7 +412,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO.hashCode());
@@ -427,7 +428,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -437,7 +438,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO1));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
@@ -453,7 +454,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -463,7 +464,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -477,7 +478,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -487,7 +488,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -501,7 +502,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -511,7 +512,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -525,7 +526,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -535,7 +536,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 
@@ -549,7 +550,7 @@ public class AccountDTOTest {
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(1);
+		accountDTO.setBalance(new CurrencyValue(1,0));
 
 		AccountDTO accountDTO1 = new AccountDTO();
 		accountDTO1.setInterest(1);
@@ -559,7 +560,7 @@ public class AccountDTOTest {
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(1);
+		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(accountDTO1));
 	}
 }

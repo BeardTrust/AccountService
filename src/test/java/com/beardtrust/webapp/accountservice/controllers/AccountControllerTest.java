@@ -1,6 +1,7 @@
 package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
@@ -33,7 +34,7 @@ public class AccountControllerTest {
 	@Test
 	public void testChangeMoney() throws Exception {
 		TransferEntity transferEntity = new TransferEntity();
-		transferEntity.setAmount(10);
+		transferEntity.setAmount(new CurrencyValue(10,0));
 		String content = (new ObjectMapper()).writeValueAsString(transferEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/{id}", "42")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -54,7 +55,7 @@ public class AccountControllerTest {
 		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
 		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(1);
+		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +108,7 @@ public class AccountControllerTest {
 		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
 		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(1);
+		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/recovery/{id}", "42")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -128,7 +129,7 @@ public class AccountControllerTest {
 		accountEntity.setCreateDate(null);
 		accountEntity.setType("Type");
 		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(1);
+		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")
 				.contentType(MediaType.APPLICATION_JSON)

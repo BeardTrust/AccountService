@@ -5,6 +5,7 @@
  */
 package com.beardtrust.webapp.accountservice.models;
 
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -24,7 +25,8 @@ public class AccountCreation {
     private String userId;
     @NotBlank(message = "Default value upon creation should be true")
     private String activeStatus;
-    private String balance;
+    @NotNull(message = "Unmodified balance should be $0.00")
+    private CurrencyValue balance;
     @NotNull(message = "Check your calender and put in today.")
     private LocalDate createDate;
     private Integer interest;

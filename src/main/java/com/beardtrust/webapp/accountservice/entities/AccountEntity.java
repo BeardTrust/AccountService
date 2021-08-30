@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -27,7 +24,8 @@ public class AccountEntity implements Serializable {
     private String accountId;
     private String userId;
     private boolean activeStatus;
-    private Integer balance;
+    @Embedded
+    private CurrencyValue balance;
     private LocalDate createDate;
     private Integer interest;
     private String nickname;
@@ -68,11 +66,11 @@ public class AccountEntity implements Serializable {
         this.activeStatus = activeStatus;
     }
 
-    public Integer getBalance() {
+    public CurrencyValue getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(CurrencyValue balance) {
         this.balance = balance;
     }
 

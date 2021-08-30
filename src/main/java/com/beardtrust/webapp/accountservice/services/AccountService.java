@@ -101,8 +101,8 @@ public class AccountService {
         AccountEntity a = repo.findByAccountId(id);
         System.out.println("A: " + a);
         if (a.isActiveStatus()) {
-            a.setBalance(a.getBalance() + amount.getAmount());
-            if (a.getBalance() == 0 && a.getType() == "Recovery") {
+            a.getBalance().add(amount.getAmount());
+            if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && (a.getType() == "Recovery")) {
                 deactivateAccount(a.getAccountId());
             }
             repo.save(a);

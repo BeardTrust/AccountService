@@ -8,8 +8,8 @@ public class TransferEntityTest {
 	@Test
 	public void testConstructor() {
 		TransferEntity actualTransferEntity = new TransferEntity();
-		actualTransferEntity.setAmount(10);
-		assertEquals(10, actualTransferEntity.getAmount().intValue());
+		actualTransferEntity.setAmount(new CurrencyValue(1,0));
+		assertEquals(new CurrencyValue(1,0), actualTransferEntity.getAmount());
 	}
 }
 

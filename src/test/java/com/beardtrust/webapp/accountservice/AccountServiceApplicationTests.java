@@ -1,6 +1,7 @@
 package com.beardtrust.webapp.accountservice;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
@@ -53,7 +54,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
@@ -82,7 +83,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
@@ -96,7 +97,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
@@ -110,7 +111,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
@@ -124,7 +125,7 @@ class AccountServiceApplicationTests {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
-        accountEntity.setBalance(1000);
+        accountEntity.setBalance(new CurrencyValue(10,0));
         accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");

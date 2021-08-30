@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
+import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import org.junit.jupiter.api.Test;
 
 public class AccountCreationTest {
@@ -24,7 +25,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -36,7 +37,7 @@ public class AccountCreationTest {
 		AccountCreation actualAccountCreation = new AccountCreation();
 		actualAccountCreation.setAccountId("42");
 		actualAccountCreation.setActiveStatus("Active status");
-		actualAccountCreation.setBalance("Balance");
+		actualAccountCreation.setBalance(new CurrencyValue(1,0));
 		LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
 		actualAccountCreation.setCreateDate(ofEpochDayResult);
 		actualAccountCreation.setInterest(1);
@@ -62,7 +63,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -76,7 +77,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme(null);
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -86,7 +87,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -100,7 +101,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId(null);
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -110,7 +111,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -124,7 +125,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("Active status");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -134,7 +135,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -148,7 +149,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("42");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -158,7 +159,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -182,7 +183,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -196,7 +197,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(0L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -206,7 +207,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -220,7 +221,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(null);
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -230,7 +231,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -244,7 +245,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("42");
 		accountCreation.setActiveStatus("Active status");
@@ -254,7 +255,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -268,7 +269,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType(null);
 		accountCreation.setActiveStatus("Active status");
@@ -278,7 +279,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -292,7 +293,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("42");
@@ -302,7 +303,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -316,7 +317,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -330,7 +331,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus(null);
@@ -340,7 +341,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -354,7 +355,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -364,7 +365,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -380,7 +381,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId(null);
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -390,7 +391,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId(null);
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -406,7 +407,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme(null);
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -416,7 +417,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme(null);
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -432,7 +433,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -448,7 +449,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -458,7 +459,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -474,7 +475,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -484,7 +485,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -498,7 +499,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -508,7 +509,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -522,7 +523,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId(null);
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -532,7 +533,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -546,7 +547,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("Active status");
 		accountCreation.setNicknsme("Nicknsme");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -556,7 +557,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
@@ -570,7 +571,7 @@ public class AccountCreationTest {
 		accountCreation.setUserId("42");
 		accountCreation.setNicknsme("42");
 		accountCreation.setAccountId("42");
-		accountCreation.setBalance("Balance");
+		accountCreation.setBalance(new CurrencyValue(1,0));
 		accountCreation.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation.setType("Type");
 		accountCreation.setActiveStatus("Active status");
@@ -580,7 +581,7 @@ public class AccountCreationTest {
 		accountCreation1.setUserId("42");
 		accountCreation1.setNicknsme("Nicknsme");
 		accountCreation1.setAccountId("42");
-		accountCreation1.setBalance("Balance");
+		accountCreation1.setBalance(new CurrencyValue(1,0));
 		accountCreation1.setCreateDate(LocalDate.ofEpochDay(1L));
 		accountCreation1.setType("Type");
 		accountCreation1.setActiveStatus("Active status");
