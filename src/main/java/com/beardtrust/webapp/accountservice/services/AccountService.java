@@ -34,6 +34,7 @@ public class AccountService {
 
     public AccountEntity createService(AccountEntity a) {
         System.out.println("Create servince rcv'd: " + a);
+        a.setCreateDate(LocalDate.now());
         repo.save(a);
         return a;
     }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -26,6 +27,7 @@ public class AccountEntity implements Serializable {
     private boolean activeStatus;
     @Embedded
     private CurrencyValue balance;
+    @NotNull
     private LocalDate createDate;
     private Integer interest;
     private String nickname;
