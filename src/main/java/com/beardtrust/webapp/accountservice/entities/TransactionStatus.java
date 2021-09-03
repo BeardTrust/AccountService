@@ -1,9 +1,13 @@
 package com.beardtrust.webapp.accountservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class represents a Transaction status.
@@ -17,6 +21,9 @@ public class TransactionStatus {
 	@Column(unique = true)
 	private String statusName;
 	private String statusDescription;
+	@JsonIgnore
+	@OneToMany(mappedBy = "transactionStatus")
+	private Set<FinancialTransaction> transaction;
 
 	/**
 	 * Instantiates a new Transaction status.

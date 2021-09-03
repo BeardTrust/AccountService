@@ -1,9 +1,13 @@
 package com.beardtrust.webapp.accountservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class represents Transaction type.
@@ -19,6 +23,9 @@ public class TransactionType {
 	private String typeDescription;
 	private String sourceDescription;
 	private String targetDescription;
+	@JsonIgnore
+	@OneToMany(mappedBy = "transactionType")
+	private Set<FinancialTransaction> transactions;
 
 	/**
 	 * Instantiates a new Transaction type.

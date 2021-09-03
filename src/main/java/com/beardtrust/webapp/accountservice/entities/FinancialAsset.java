@@ -1,8 +1,11 @@
 package com.beardtrust.webapp.accountservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * This class is the abstract base class for all financial assets managed by
@@ -16,7 +19,11 @@ import java.time.LocalDateTime;
  *
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class FinancialAsset implements Comparable<FinancialAsset>, Serializable {
+	private static final long serialVersionUID = -1059628569081235804L;
+
 	@Id
 	private String id;
 	@ManyToOne
@@ -24,7 +31,14 @@ public abstract class FinancialAsset implements Comparable<FinancialAsset>, Seri
 	private boolean activeStatus;
 	@Embedded
 	private CurrencyValue balance;
-	private LocalDateTime createTime;
+	private LocalDateTime createDate;
+	@JsonIgnore
+	@OneToMany(mappedBy = "target")
+	private Set<FinancialTransaction> targetedTransactions;
+	@JsonIgnore
+	@OneToMany(mappedBy = "source")
+	private Set<FinancialTransaction> sourcedTransactions;
+
 
 	/**
 	 * Gets id.
@@ -103,17 +117,17 @@ public abstract class FinancialAsset implements Comparable<FinancialAsset>, Seri
 	 *
 	 * @return the create time
 	 */
-	public LocalDateTime getCreateTime() {
-		return createTime;
+	public LocalDateTime getCreateDate() {
+		return createDate;
 	}
 
 	/**
 	 * Sets create time.
 	 *
-	 * @param createTime the create time
+	 * @param createDate the create time
 	 */
-	public void setCreateTime(LocalDateTime createTime) {
-		this.createTime = createTime;
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override

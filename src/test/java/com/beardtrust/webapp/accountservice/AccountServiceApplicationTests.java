@@ -1,16 +1,20 @@
 package com.beardtrust.webapp.accountservice;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
+import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,7 +27,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
 class AccountServiceApplicationTests {
-
     @Autowired
     private AccountService serv;
 
@@ -32,34 +35,52 @@ class AccountServiceApplicationTests {
 
     @Test
     public void testConstructor() {
-        assertTrue((new AccountService(mock(AccountRepository.class))).getListService("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a").isEmpty());
+        assertTrue((new AccountService(mock(AccountRepository.class), mock(AccountTypeRepository.class))).getListService("cf8bd72a" +
+                "-4b4c-42f1-8dc3" +
+                "-06cc2dc2cb8a").isEmpty());
     }
 
     @Test
     public void createServicetTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
     @Test
     public void getSpecificServiceTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         Optional<AccountEntity> ofResult = Optional.<AccountEntity>of(accountEntity);
         this.repo.save(accountEntity);
         when(this.repo.findById(anyString())).thenReturn(ofResult);
@@ -80,57 +101,89 @@ class AccountServiceApplicationTests {
 
     @Test
     public void changeMoneyServiceTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
     @Test
     public void changeRecoveryServiceTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
     @Test
     public void updateServiceTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
     @Test
     public void deactivateAccountTest() {
+        AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+                "A recovery account",
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.MAX
+        );
+
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         accountEntity.setActiveStatus(true);
         accountEntity.setBalance(new CurrencyValue(10,0));
-        accountEntity.setCreateDate(LocalDate.parse("2001-01-01"));
+        accountEntity.setCreateDate(LocalDateTime.parse("2001-01-01"));
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
-        accountEntity.setType("Savings");
-        accountEntity.setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.setType(accountType);
+        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 }

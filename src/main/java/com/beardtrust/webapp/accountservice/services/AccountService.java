@@ -6,35 +6,53 @@
 package com.beardtrust.webapp.accountservice.services;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.apache.commons.lang.NumberUtils.isNumber;
+
+import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Nathanael <Nathanael.Grier at your.org>
  */
 @Service
+@Slf4j
 public class AccountService {
 
     private AccountRepository repo;
+    private final AccountTypeRepository accountTypeRepository;
 
-    public AccountService(AccountRepository repo) {
+    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository) {
         this.repo = repo;
+        this.accountTypeRepository = accountTypeRepository;
     }
 
+    @Transactional
     public AccountEntity createService(AccountEntity a) {
-        System.out.println("Create servince rcv'd: " + a);
-        a.setCreateDate(LocalDate.now());
+        System.out.println("Create servince rcv'd: " + a.getUser());
+        AccountTypeEntity type = null;
+            type = accountTypeRepository.findByNameIs(a.getType().getName());
+
+        a.setType(type);
+        a.setCreateDate(LocalDateTime.now());
+        a.setId(UUID.randomUUID().toString());
         repo.save(a);
         return a;
     }
@@ -61,7 +79,7 @@ public class AccountService {
             } else if (GenericValidator.isDate(search, "yyyy-MM", false)) { 
                 return repo.findByCreateDate(LocalDate.parse(search), page);
             } else {
-                return repo.findAllByUserIdOrAccountIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.valueOf(search), search, search, page);
+                return repo.findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.valueOf(search), search, search, page);
             }
         } else {
             return repo.findAll(page);
@@ -77,9 +95,9 @@ public class AccountService {
     }
 
     public AccountEntity getSpecificService(String id) {
-        AccountEntity a = repo.findByAccountId(id);
-        if (a.isActiveStatus()) {
-            return a;
+        Optional<AccountEntity> a = repo.findById(id);
+        if (a.isPresent() && a.get().isActiveStatus()) {
+            return a.get();
         } else {
             return null;
         }
@@ -89,7 +107,7 @@ public class AccountService {
         List<AccountEntity> preSort = repo.findAll();
         List<AccountEntity> Sort = new ArrayList();
         for (int i = 0; i < preSort.size(); i++) {
-            if (preSort.get(i).getUserId().equals(userId) && preSort.get(i).isActiveStatus()) {
+            if (preSort.get(i).getId().equals(userId) && preSort.get(i).isActiveStatus()) {
                 Sort.add(preSort.get(i));
             }
         }
@@ -99,12 +117,13 @@ public class AccountService {
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
         System.out.println("String in service: " + id);
         System.out.println("Amount rcv'd: " + amount.getAmount());
-        AccountEntity a = repo.findByAccountId(id);
+        AccountEntity a = repo.findById(id).get();
         System.out.println("A: " + a);
         if (a.isActiveStatus()) {
             a.getBalance().add(amount.getAmount());
-            if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && (a.getType() == "Recovery")) {
-                deactivateAccount(a.getAccountId());
+            if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && (a.getType().getName() ==
+                    "Recovery")) {
+                deactivateAccount(a.getId());
             }
             repo.save(a);
             return a;
@@ -115,10 +134,10 @@ public class AccountService {
 
     public AccountEntity changeRecoveryService(String id) {
         System.out.println("String in service: " + id);
-        AccountEntity a = repo.findByAccountId(id);
+        AccountEntity a = repo.findById(id).get();
         System.out.println("A: " + a);
         if (a.isActiveStatus()) {
-            a.setType("Recovery");
+            a.setType(accountTypeRepository.findByNameIs("Recovery"));
             a.setInterest(0);
             repo.save(a);
             return a;
@@ -128,7 +147,7 @@ public class AccountService {
     }
 
     public AccountEntity updateService(AccountEntity a) {
-        if (repo.existsById(a.getAccountId())) {
+        if (repo.existsById(a.getId())) {
             System.out.println("Update Success. WARNING: Account ID has been changed.");
             repo.save(a);
             return a;
@@ -140,15 +159,15 @@ public class AccountService {
     }
 
     public String deactivateAccount(String a) {
-        AccountEntity a2 = repo.findByAccountId(a);
+        AccountEntity a2 = repo.findById(a).get();
         System.out.println("incoming A: " + a);
         if (a2 != null) {
             try {
                 a2.setActiveStatus(false);
                 repo.save(a2);
-                return "Account " + a2.getAccountId() + " active status: " + a2.isActiveStatus();
+                return "Account " + a2.getId() + " active status: " + a2.isActiveStatus();
             } catch (Exception e) {
-                return "Account " + a2.getAccountId() + " deactivation failed with error: " + e.getLocalizedMessage();
+                return "Account " + a2.getId() + " deactivation failed with error: " + e.getLocalizedMessage();
             }
         }
         return "Account does not exist";
@@ -156,7 +175,7 @@ public class AccountService {
 
     public String removeAccount(String id) {
         try {
-            AccountEntity a = repo.findByAccountId(id);
+            AccountEntity a = repo.findById(id).get();
             repo.delete(a);
             return "Remove successfull";
         } catch (Exception e) {

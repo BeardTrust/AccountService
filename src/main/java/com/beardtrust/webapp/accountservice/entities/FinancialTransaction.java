@@ -11,7 +11,11 @@ import java.util.Objects;
  *
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class FinancialTransaction implements Comparable<FinancialTransaction>, Serializable {
+	private static final long serialVersionUID = 7424732886566449898L;
+
 	@Id
 	private String transactionId;
 	@ManyToOne

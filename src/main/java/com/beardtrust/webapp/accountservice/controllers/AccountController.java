@@ -9,8 +9,12 @@ import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
+
+import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +47,7 @@ public class AccountController {
     private AccountRepository repo;
 
     @Autowired
-    private AccountService as = new AccountService(repo);
+    private AccountService as;
 
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity a) {
@@ -77,8 +81,18 @@ public class AccountController {
     //@PreAuthorize("hasAuthority('admin') or principal == #id")
     @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {//<-- The User's ID
-        ResponseEntity<List<AccountEntity>> response = new ResponseEntity<>(as.getListService(id), HttpStatus.OK);
+    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
+        ResponseEntity<List<AccountEntity>> response = null;
+
+        List<AccountEntity> accounts = as.getListService(id);
+        if(!accounts.isEmpty()){
+            System.out.println("Empty list on get request");
+            response = new ResponseEntity<>(accounts, HttpStatus.OK);
+        }
+        else {
+            response = new ResponseEntity<>(accounts, HttpStatus.NO_CONTENT);
+        }
+
          return response;
     }
     

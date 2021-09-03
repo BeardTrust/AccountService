@@ -19,18 +19,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
 
-    Page<AccountEntity> findAllByUserIdOrAccountIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
-            String accountId, boolean activeStatus, String nickname, String type, Pageable page);
+    Page<AccountEntity> findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
+                                                                                             String accountId, boolean activeStatus, String nickname, String type, Pageable page);
     
     Page<AccountEntity> findAllByBalanceOrInterestIsLike(Integer balance, Integer interest, Pageable page);
     
     Page<AccountEntity> findByCreateDate(LocalDate createDate, Pageable page);
-
-    /*
-    *Find by the Account Id
-    *
-     */
-    AccountEntity findByAccountId(String s);
 
     @Override
     Page<AccountEntity> findAll(Pageable page);
