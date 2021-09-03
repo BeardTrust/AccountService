@@ -134,4 +134,17 @@ public abstract class FinancialAsset implements Comparable<FinancialAsset>, Seri
 	public int compareTo(FinancialAsset o) {
 		return this.balance.compareTo(o.balance);
 	}
+
+	@Override
+	public String toString() {
+		return "FinancialAsset{" +
+				"id='" + id + '\'' +
+				", user=" + user +
+				", activeStatus=" + activeStatus +
+				", balance=" + balance +
+				", createDate=" + createDate +
+				", targetedTransactions=" + targetedTransactions +
+				", sourcedTransactions=" + sourcedTransactions +
+				'}';
+	}
 }

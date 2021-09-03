@@ -1,5 +1,6 @@
 package com.beardtrust.webapp.accountservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class UserEntity implements Serializable {
 	private String id;
 	@Column(unique = true)
 	private String username;
+	@JsonBackReference
 	private String password;
 	@Column(unique = true)
 	private String email;

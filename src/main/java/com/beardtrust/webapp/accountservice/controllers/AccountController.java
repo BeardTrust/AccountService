@@ -7,6 +7,7 @@ package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
+import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
@@ -50,10 +51,11 @@ public class AccountController {
     private AccountService as;
 
     @PostMapping
-    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity a) {
-        System.out.println("controller inbound account: " + a);
+    public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
+        System.out.println("controller inbound account: " + a.toString());
+
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
-         return response;
+         return null;
     }
     
     @PreAuthorize("permitAll()")
@@ -85,13 +87,7 @@ public class AccountController {
         ResponseEntity<List<AccountEntity>> response = null;
 
         List<AccountEntity> accounts = as.getListService(id);
-        if(!accounts.isEmpty()){
-            System.out.println("Empty list on get request");
-            response = new ResponseEntity<>(accounts, HttpStatus.OK);
-        }
-        else {
-            response = new ResponseEntity<>(accounts, HttpStatus.NO_CONTENT);
-        }
+        response = new ResponseEntity<>(accounts, HttpStatus.OK);
 
          return response;
     }

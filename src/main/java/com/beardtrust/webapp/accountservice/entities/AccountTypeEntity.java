@@ -18,9 +18,10 @@ import java.util.UUID;
  * account type was discontinued, and a set of all accounts which are
  * associated with that account type.
  *
- * @authoer Matthew Crowell <Matthew.Crowell@Smoothstack.com>
+ * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
 @Entity
+@Table(name = "account_types")
 public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEntity> {
 	private static final long serialVersionUID = -412935674305166635L;
 
@@ -30,7 +31,7 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 	private String description;
 	private boolean isActive;
 	private LocalDateTime createdDate;
-	private LocalDateTime expiredDate;
+	private LocalDateTime expireDate;
 	@JsonIgnore
 	@OneToMany(mappedBy = "type")
 	private Set<AccountEntity> accounts;
@@ -38,13 +39,13 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 	public AccountTypeEntity() {
 	}
 
-	public AccountTypeEntity(String name, String description, boolean isActive, LocalDateTime createdDate, LocalDateTime expiredDate) {
+	public AccountTypeEntity(String name, String description, boolean isActive, LocalDateTime createdDate, LocalDateTime expireDate) {
 		this.id = UUID.randomUUID().toString();
 		this.name = name;
 		this.description = description;
 		this.isActive = isActive;
 		this.createdDate = createdDate;
-		this.expiredDate = expiredDate;
+		this.expireDate = expireDate;
 		this.accounts = new HashSet<AccountEntity>();
 	}
 
@@ -143,8 +144,8 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 	 *
 	 * @return the expired date
 	 */
-	public LocalDateTime getExpiredDate() {
-		return expiredDate;
+	public LocalDateTime getExpireDate() {
+		return expireDate;
 	}
 
 	/**
@@ -152,8 +153,8 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 	 *
 	 * @param expiredDate the expired date
 	 */
-	public void setExpiredDate(LocalDateTime expiredDate) {
-		this.expiredDate = expiredDate;
+	public void setExpireDate(LocalDateTime expiredDate) {
+		this.expireDate = expiredDate;
 	}
 
 	/**
@@ -179,12 +180,12 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AccountTypeEntity that = (AccountTypeEntity) o;
-		return isActive == that.isActive && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(expiredDate, that.expiredDate) && Objects.equals(accounts, that.accounts);
+		return isActive == that.isActive && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(expireDate, that.expireDate) && Objects.equals(accounts, that.accounts);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, description, isActive, createdDate, expiredDate, accounts);
+		return Objects.hash(id, name, description, isActive, createdDate, expireDate, accounts);
 	}
 
 	@Override

@@ -13,14 +13,17 @@ import javax.persistence.*;
  * @author Nathanael <Nathanael.Grier at your.org>
  */
 @Entity
+@Table(name = "accounts")
 public class AccountEntity extends FinancialAsset {
 	private static final long serialVersionUID = -3465065516553281959L;
 
 	private Integer interest;
 	private String nickname;
-	@JsonBackReference
 	@ManyToOne
 	private AccountTypeEntity type;
+
+	public AccountEntity() {
+	}
 
 	public AccountTypeEntity getType() {
 		return type;
@@ -44,5 +47,10 @@ public class AccountEntity extends FinancialAsset {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	@Override
+	public String toString(){
+		return super.toString();
 	}
 }

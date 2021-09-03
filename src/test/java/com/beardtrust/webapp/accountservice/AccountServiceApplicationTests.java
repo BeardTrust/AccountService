@@ -5,6 +5,7 @@ import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
+import com.beardtrust.webapp.accountservice.repos.UserRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
 import java.time.LocalDateTime;
@@ -35,7 +36,8 @@ class AccountServiceApplicationTests {
 
     @Test
     public void testConstructor() {
-        assertTrue((new AccountService(mock(AccountRepository.class), mock(AccountTypeRepository.class))).getListService("cf8bd72a" +
+        assertTrue((new AccountService(mock(AccountRepository.class), mock(AccountTypeRepository.class),
+                mock(UserRepository.class))).getListService("cf8bd72a" +
                 "-4b4c-42f1-8dc3" +
                 "-06cc2dc2cb8a").isEmpty());
     }

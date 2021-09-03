@@ -8,6 +8,8 @@ package com.beardtrust.webapp.accountservice.services;
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
+import com.beardtrust.webapp.accountservice.entities.UserEntity;
+import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import static org.apache.commons.lang.NumberUtils.isNumber;
 
 import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
+import com.beardtrust.webapp.accountservice.repos.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.data.domain.Page;
@@ -38,23 +41,33 @@ public class AccountService {
 
     private AccountRepository repo;
     private final AccountTypeRepository accountTypeRepository;
+    private final UserRepository userRepository;
 
-    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository) {
+    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository, UserRepository userRepository) {
         this.repo = repo;
         this.accountTypeRepository = accountTypeRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public AccountEntity createService(AccountEntity a) {
-        System.out.println("Create servince rcv'd: " + a.getUser());
-        AccountTypeEntity type = null;
-            type = accountTypeRepository.findByNameIs(a.getType().getName());
+    public AccountEntity createService(NewAccountRequestModel request) {
+        Optional<UserEntity> user = userRepository.findById(request.getUserId());
+        AccountEntity newAccount = new AccountEntity();
 
-        a.setType(type);
-        a.setCreateDate(LocalDateTime.now());
-        a.setId(UUID.randomUUID().toString());
-        repo.save(a);
-        return a;
+        if(user.isPresent()){
+            AccountTypeEntity type = accountTypeRepository.findByNameIs(request.getType().getName());
+            newAccount.setUser(user.get());
+            newAccount.setType(type);
+            newAccount.setBalance(request.getBalance());
+            newAccount.setInterest(request.getInterest());
+            newAccount.setActiveStatus(request.isActiveStatus());
+            newAccount.setCreateDate(LocalDateTime.now());
+            newAccount.setNickname(request.getNickname());
+            newAccount.setId(UUID.randomUUID().toString());
+            newAccount = repo.save(newAccount);
+        }
+
+        return newAccount;
     }
 
     public AccountEntity getNewAccountService() {
@@ -104,14 +117,7 @@ public class AccountService {
     }
 
     public List<AccountEntity> getListService(String userId) {
-        List<AccountEntity> preSort = repo.findAll();
-        List<AccountEntity> Sort = new ArrayList();
-        for (int i = 0; i < preSort.size(); i++) {
-            if (preSort.get(i).getId().equals(userId) && preSort.get(i).isActiveStatus()) {
-                Sort.add(preSort.get(i));
-            }
-        }
-        return Sort;
+        return repo.findAllByUserId(userId);
     }
 
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
