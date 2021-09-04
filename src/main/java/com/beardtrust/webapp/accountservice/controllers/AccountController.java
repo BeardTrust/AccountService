@@ -8,6 +8,7 @@ package com.beardtrust.webapp.accountservice.controllers;
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
+import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
@@ -113,7 +114,7 @@ public class AccountController {
     //@PreAuthorize("hasAuthority('admin')")
     @PreAuthorize("permitAll()")
     @PutMapping
-    public ResponseEntity<AccountEntity> updateAccount(@RequestBody AccountEntity a) {//<-- The entity with new/updated info
+    public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
          return response;
     }

@@ -10,6 +10,7 @@ import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
+import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -152,16 +153,40 @@ public class AccountService {
         }
     }
 
-    public AccountEntity updateService(AccountEntity a) {
-        if (repo.existsById(a.getId())) {
-            System.out.println("Update Success. WARNING: Account ID has been changed.");
-            repo.save(a);
-            return a;
+    @Transactional
+    public AccountEntity updateService(UpdateAccountRequest a) {
+        String id = a.getId() != null ? a.getId() : UUID.randomUUID().toString();
+        Optional<AccountEntity> account = repo.findById(id);
+        AccountTypeEntity type = accountTypeRepository.findByNameIs(a.getType().getName());
+        AccountEntity newAccount = null;
+
+        if(account.isPresent()){
+            account.get().setBalance(a.getBalance());
+            account.get().setNickname(a.getNickname());
+            account.get().setActiveStatus(a.isActiveStatus());
+            account.get().setInterest(a.getInterest());
+            newAccount = repo.save(account.get());
         } else {
-            System.out.println("Update Success");
-            repo.save(a);
-            return a;
+            newAccount = new AccountEntity();
+            newAccount.setId(id);
+            newAccount.setCreateDate(LocalDateTime.now());
+            newAccount.setUser(userRepository.findById(a.getUserId()).orElse(null));
+            newAccount.setBalance(a.getBalance());
+            newAccount.setInterest(a.getInterest());
+            newAccount.setActiveStatus(a.isActiveStatus());
+            newAccount.setNickname(a.getNickname());
+            newAccount.setType(type);
+            newAccount = repo.save(newAccount);
         }
+
+        return newAccount;
+//        if (repo.existsById(a.getId())) {
+//            repo.save(a);
+//            return a;
+//        } else {
+//            repo.save(a);
+//            return a;
+//        }
     }
 
     public String deactivateAccount(String a) {
