@@ -5,10 +5,7 @@
  */
 package com.beardtrust.webapp.accountservice.services;
 
-import com.beardtrust.webapp.accountservice.entities.AccountEntity;
-import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
-import com.beardtrust.webapp.accountservice.entities.TransferEntity;
-import com.beardtrust.webapp.accountservice.entities.UserEntity;
+import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
@@ -22,6 +19,7 @@ import java.util.UUID;
 import static org.apache.commons.lang.NumberUtils.isNumber;
 
 import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
+import com.beardtrust.webapp.accountservice.repos.TransactionRepository;
 import com.beardtrust.webapp.accountservice.repos.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.GenericValidator;
@@ -43,11 +41,13 @@ public class AccountService {
     private AccountRepository repo;
     private final AccountTypeRepository accountTypeRepository;
     private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
 
-    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository, UserRepository userRepository) {
+    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.repo = repo;
         this.accountTypeRepository = accountTypeRepository;
         this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Transactional
@@ -214,4 +214,7 @@ public class AccountService {
         }
     }
 
+	public List<FinancialTransaction> getAllAccountTransactions(Pageable page) {
+        return transactionRepository.findAll();
+	}
 }

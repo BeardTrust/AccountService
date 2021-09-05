@@ -1,6 +1,7 @@
 package com.beardtrust.webapp.accountservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -15,13 +16,13 @@ import java.util.Set;
 @Table(name = "transaction_types")
 public class TransactionType {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int typeId;
 	@Column(unique = true)
 	private String typeName;
 	private String typeDescription;
 	private String sourceDescription;
 	private String targetDescription;
-	@JsonIgnore
 	@OneToMany(mappedBy = "transactionType")
 	private Set<FinancialTransaction> transactions;
 

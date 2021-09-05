@@ -6,6 +6,8 @@
 package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
+import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
@@ -134,6 +136,16 @@ public class AccountController {
         System.out.println("incomming delete request");
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
         return response;
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/transactions")
+    public ResponseEntity<List<FinancialTransaction>> getAccountTransactions(){
+        System.out.println("Inside controller");
+        Pageable page = PageRequest.of(1, 10);
+        List<FinancialTransaction> newPage = as.getAllAccountTransactions(page);
+        System.out.println("Exiting controller");
+        return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
 }

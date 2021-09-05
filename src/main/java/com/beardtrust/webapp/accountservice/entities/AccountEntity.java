@@ -20,6 +20,7 @@ public class AccountEntity extends FinancialAsset {
 	private Integer interest;
 	private String nickname;
 	@ManyToOne
+	@JoinColumn(name = "type_id")
 	private AccountTypeEntity type;
 
 	public AccountEntity() {

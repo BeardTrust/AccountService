@@ -19,7 +19,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity implements Serializable {
 	@Id
-	@Column(unique = true)
+	@Column(name = "user_id", unique = true)
 	private String id;
 	@Column(unique = true)
 	private String username;
