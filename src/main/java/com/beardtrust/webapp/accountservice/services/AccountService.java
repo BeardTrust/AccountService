@@ -214,7 +214,28 @@ public class AccountService {
         }
     }
 
-	public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, Pageable page) {
-        return transactionRepository.findAllBySource_IdOrTarget_IdIs(id, id, page);
+    /**
+     * This method receives an account id as a String, a String of search criteria, and a Pageable object and returns
+     * the requested page of transactions associated with that account and matching that search criteria.
+     *
+     * @param id String the account id of the associated account
+     * @param search String the value to search for
+     * @param page Pageable an object representing the page request
+     * @return Page the requested page
+     */
+	public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, String search, Pageable page) {
+        Page<AccountTransaction> returnValue = null;
+
+        if(search == null) {
+            returnValue = transactionRepository.findAllBySource_IdOrTarget_IdIs(id, id, page);
+        } else {
+
+            log.info("Searching and filtering account transaction request");
+            LocalDateTime dateTime = LocalDateTime.parse(search);
+            Integer money = Integer.parseInt(search);
+            returnValue =
+                    transactionRepository.findAllBySource_IdOrTarget_IdIsAndStatusTimeOrTransactionAmount_DollarsOrTransactionAmount_CentsOrTransactionStatusContainsIgnoreCase(id, id, dateTime, money, money, search, page);
+        }
+        return returnValue;
 	}
 }

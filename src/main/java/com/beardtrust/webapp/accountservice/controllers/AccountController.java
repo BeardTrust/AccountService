@@ -141,8 +141,10 @@ public class AccountController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/transactions/{id}")
     public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id")String id,
+                                                                           @RequestParam(name = "search", required =
+                                                                                   false)String search,
                                                                            Pageable page){
-        Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, page);
+        Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
         return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
