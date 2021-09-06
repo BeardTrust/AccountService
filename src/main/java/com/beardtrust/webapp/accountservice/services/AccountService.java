@@ -214,7 +214,7 @@ public class AccountService {
         }
     }
 
-	public List<FinancialTransaction> getAllAccountTransactions(Pageable page) {
-        return transactionRepository.findAll();
+	public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, Pageable page) {
+        return transactionRepository.findAllBySource_IdOrTarget_IdIs(id, id, page);
 	}
 }

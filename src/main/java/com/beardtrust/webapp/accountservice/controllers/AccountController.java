@@ -139,12 +139,10 @@ public class AccountController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping(value = "/transactions")
-    public ResponseEntity<List<FinancialTransaction>> getAccountTransactions(){
-        System.out.println("Inside controller");
-        Pageable page = PageRequest.of(1, 10);
-        List<FinancialTransaction> newPage = as.getAllAccountTransactions(page);
-        System.out.println("Exiting controller");
+    @GetMapping(value = "/transactions/{id}")
+    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id")String id,
+                                                                           Pageable page){
+        Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, page);
         return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
