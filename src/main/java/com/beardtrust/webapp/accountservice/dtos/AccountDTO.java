@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
+import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import lombok.Data;
 
 /**
@@ -18,8 +19,8 @@ import lombok.Data;
 @Data
 public class AccountDTO implements Serializable {
 
-    private String userId;
-    private String accountId;
+    private UserEntity user;
+    private String id;
     private boolean activeStatus;
     private CurrencyValue balance;
     private Integer interest;

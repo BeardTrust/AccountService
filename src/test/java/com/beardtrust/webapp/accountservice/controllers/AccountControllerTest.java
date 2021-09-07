@@ -1,6 +1,7 @@
 package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDateTime;
 
 @ContextConfiguration(classes = {AccountController.class})
 @ExtendWith(SpringExtension.class)
@@ -47,13 +50,20 @@ public class AccountControllerTest {
 
 	@Test
 	public void testCreateAccount() throws Exception {
+		AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+				"A recovery account",
+				true,
+				LocalDateTime.now(),
+				LocalDateTime.MAX
+		);
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.setUserId("42");
-		accountEntity.setAccountId("42");
+		accountEntity.getUser().setId("42");
+		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
-		accountEntity.setType("Type");
+		accountEntity.setType(accountType);
 		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
@@ -100,13 +110,20 @@ public class AccountControllerTest {
 
 	@Test
 	public void testRecoverAccount() throws Exception {
+		AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+				"A recovery account",
+				true,
+				LocalDateTime.now(),
+				LocalDateTime.MAX
+		);
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.setUserId("42");
-		accountEntity.setAccountId("42");
+		accountEntity.getUser().setId("42");
+		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
-		accountEntity.setType("Type");
+		accountEntity.setType(accountType);
 		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
@@ -121,13 +138,21 @@ public class AccountControllerTest {
 
 	@Test
 	public void testUpdateAccount() throws Exception {
+		AccountTypeEntity accountType = new AccountTypeEntity(
+				"Savings",
+				"A recovery account",
+				true,
+				LocalDateTime.now(),
+				LocalDateTime.MAX
+		);
+
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.setUserId("42");
-		accountEntity.setAccountId("42");
+		accountEntity.getUser().setId("42");
+		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
-		accountEntity.setType("Type");
+		accountEntity.setType(accountType);
 		accountEntity.setActiveStatus(true);
 		accountEntity.setBalance(new CurrencyValue(1,0));
 		String content = (new ObjectMapper()).writeValueAsString(accountEntity);

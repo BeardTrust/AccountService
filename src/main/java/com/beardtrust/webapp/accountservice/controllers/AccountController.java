@@ -6,11 +6,19 @@
 package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
+import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
+import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
+import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
+
+import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,13 +51,14 @@ public class AccountController {
     private AccountRepository repo;
 
     @Autowired
-    private AccountService as = new AccountService(repo);
+    private AccountService as;
 
     @PostMapping
-    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity a) {
-        System.out.println("controller inbound account: " + a);
+    public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
+        System.out.println("controller inbound account: " + a.toString());
+
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
-         return response;
+         return null;
     }
     
     @PreAuthorize("permitAll()")
@@ -77,8 +86,12 @@ public class AccountController {
     //@PreAuthorize("hasAuthority('admin') or principal == #id")
     @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {//<-- The User's ID
-        ResponseEntity<List<AccountEntity>> response = new ResponseEntity<>(as.getListService(id), HttpStatus.OK);
+    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
+        ResponseEntity<List<AccountEntity>> response = null;
+
+        List<AccountEntity> accounts = as.getListService(id);
+        response = new ResponseEntity<>(accounts, HttpStatus.OK);
+
          return response;
     }
     
@@ -103,7 +116,7 @@ public class AccountController {
     //@PreAuthorize("hasAuthority('admin')")
     @PreAuthorize("permitAll()")
     @PutMapping
-    public ResponseEntity<AccountEntity> updateAccount(@RequestBody AccountEntity a) {//<-- The entity with new/updated info
+    public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
          return response;
     }
@@ -123,6 +136,16 @@ public class AccountController {
         System.out.println("incomming delete request");
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
         return response;
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/transactions/{id}")
+    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id")String id,
+                                                                           @RequestParam(name = "search", required =
+                                                                                   false)String search,
+                                                                           Pageable page){
+        Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
+        return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
 }
