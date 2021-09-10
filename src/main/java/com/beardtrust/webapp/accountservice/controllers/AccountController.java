@@ -53,6 +53,7 @@ public class AccountController {
     @Autowired
     private AccountService as;
 
+    @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
         System.out.println("controller inbound account: " + a.toString());
@@ -69,8 +70,8 @@ public class AccountController {
          return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin')")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("permitAll()")
     @GetMapping("/all")
     public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/ @RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
         ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
@@ -83,8 +84,8 @@ public class AccountController {
          return response;
     }
 
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    //@PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
         ResponseEntity<List<AccountEntity>> response = null;
@@ -95,8 +96,8 @@ public class AccountController {
          return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    //@PreAuthorize("permitAll()")
     @PutMapping("/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
@@ -104,35 +105,35 @@ public class AccountController {
          return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    //@PreAuthorize("permitAll()")
     @PutMapping("/recovery/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a) {//<-- The Account ID (amount should be set pos/neg by the front end)
+    public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a, @RequestParam String userId) {//<-- The Account ID (amount should be set pos/neg by the front end)
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeRecoveryService(id), HttpStatus.NO_CONTENT);
          return response;
     }
 
-    //@PreAuthorize("hasAuthority('admin')")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("permitAll()")
     @PutMapping
     public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
          return response;
     }
 
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    //@PreAuthorize("permitAll()")
     @DeleteMapping
-    public ResponseEntity<String> deactivateAccount(@RequestBody String a) {//<-- Send the Account Id that we want deactivated
+    public ResponseEntity<String> deactivateAccount(@RequestBody String a, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated, and userId for security
         ResponseEntity<String> response = new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
         return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    //@PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeAccount(@PathVariable String id) {//<-- Send the Account Id that we want deactivated
+    public ResponseEntity<String> removeAccount(@PathVariable String id, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated
         System.out.println("incomming delete request");
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
         return response;
