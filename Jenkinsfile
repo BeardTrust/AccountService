@@ -1,11 +1,21 @@
-node {
-  stage('SCM') {
-    checkout scm
+pipeline {
+  agent any
+ 
+  tools {
+  maven 'Maven3'
   }
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv('SonarQube 7.6') {
-      sh "${mvn}/bin/mvn sonar:sonar"
+  stages {
+    stage ('Build') {
+      steps {
+      sh 'mvn clean install -f MyWebApp/pom.xml'
+      }
+    }
+    stage ('Code Quality') {
+      steps {
+        withSonarQubeEnv('Code Checker') {
+        sh 'mvn -f MyWebApp/pom.xml sonar:sonar'
+        }
+      }
     }
   }
 }
