@@ -1,8 +1,8 @@
  stage("build & SonarQube analysis") {
           node {
-              withSonarQubeEnv('Code Checker') {
-                 sh 'mvn clean package sonar:sonar'
-              }
+              withSonarQubeEnv() {
+      sh "${mvn}/bin/mvn sonar:sonar"
+    }
           }
       }
 
