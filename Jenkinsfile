@@ -4,8 +4,8 @@
           stage("build & SonarQube analysis") {
             agent any
             steps {
-              withSonarQubeEnv('Code Checker') {
-                sh "${mvn}/bin/mvn sonar:sonar"
+              withSonarQubeEnv('Code_Checker') {
+                sh 'mvn clean package sonar:sonar'
               }
             }
           }
