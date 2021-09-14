@@ -3,7 +3,7 @@ stage('Sonarqube') {
         scannerHome = tool 'SonarQubeScanner'
     }
     steps {
-        withSonarQubeEnv('sonarqube') {
+        withSonarQubeEnv() {
 	    def mvn = tool 'Default Maven';
             sh "${mvn}/bin/sonar-scanner"
         }
