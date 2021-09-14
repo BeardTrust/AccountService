@@ -5,7 +5,7 @@
             agent any
             steps {
               withSonarQubeEnv('Code Checker') {
-                sh 'mvn clean package sonar:sonar'
+                sh "${mvn}/bin/mvn sonar:sonar"
               }
             }
           }
