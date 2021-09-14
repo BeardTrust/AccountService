@@ -5,17 +5,10 @@ pipeline {
   maven 'Maven'
   }
   stages {
-    stage ('Build') {
-      steps {
-      sh 'mvn clean package'
-      }
+    stage('SonarQube Analysis') {
+    withSonarQubeEnv() {
+      sh "${maven}/bin/mvn sonar:sonar"
     }
-    stage ('Code Quality') {
-      steps {
-        withSonarQubeEnv('Code Checker') {
-        sh 'mvn -f sonar:sonar'
-        }
-      }
-    }
+  }
   }
 }
