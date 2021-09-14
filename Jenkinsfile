@@ -7,13 +7,13 @@ pipeline {
   stages {
     stage ('Build') {
       steps {
-      sh 'mvn clean install -f AccountService/pom.xml'
+      sh 'mvn clean install'
       }
     }
     stage ('Code Quality') {
       steps {
         withSonarQubeEnv('Code Checker') {
-        sh 'mvn -f AccountService/pom.xml sonar:sonar'
+        sh 'mvn -f sonar:sonar'
         }
       }
     }
