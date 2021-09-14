@@ -6,9 +6,11 @@ pipeline {
   }
   stages {
     stage('SonarQube Analysis') {
+      steps{
     withSonarQubeEnv() {
       sh "${maven}/bin/mvn sonar:sonar"
     }
+      }
   }
   }
 }
