@@ -1,17 +1,11 @@
-pipeline {
-  agent any
- 
-  tools {
-  maven 'Maven'
+node {
+  stage('SCM') {
+    checkout scm
   }
-  stages {
-    stage('SonarQube Analysis') {
-      steps{
+  stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
-      }
-  }
   }
 }
