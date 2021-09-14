@@ -8,7 +8,7 @@ pipeline {
     stage('SonarQube Analysis') {
       steps{
     withSonarQubeEnv('Code Checker') {
-      sh "${maven}/bin/mvn sonar:sonar"
+      sh "src/bin/mvn sonar:sonar"
     }
       }
   }
