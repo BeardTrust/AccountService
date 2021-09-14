@@ -2,13 +2,13 @@ pipeline {
   agent any
  
   tools {
-  mvn 'Maven'
+  maven 'Maven'
   }
   stages {
     stage('SonarQube Analysis') {
       steps{
     withSonarQubeEnv('Code Checker') {
-      sh "${mvn}/bin/mvn sonar:sonar"
+      sh "${maven}/bin/mvn sonar:sonar"
     }
       }
   }
