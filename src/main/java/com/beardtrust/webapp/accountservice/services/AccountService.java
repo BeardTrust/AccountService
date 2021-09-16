@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.beardtrust.webapp.accountservice.services;
 
 import com.beardtrust.webapp.accountservice.entities.*;
@@ -28,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.apache.commons.lang.NumberUtils.isNumber;
+import static org.apache.commons.lang3.math.NumberUtils.isCreatable;
 
 /**
  * @author Nathanael <Nathanael.Grier at your.org>
@@ -72,28 +67,23 @@ public class AccountService {
 	}
 
 	public AccountEntity getNewAccountService() {
-		System.out.println("New Account Service");
-		AccountEntity a = new AccountEntity();
-		return a;
+		return new AccountEntity();
 	}
 
 	public Page<AccountEntity> getAllService( /*Pageable page*/ Integer n, Integer s, String sortName, String sortDir, String search) {
-		List<Sort.Order> orders = new ArrayList();
+		List<Sort.Order> orders = new ArrayList<>();
 		orders.add(new Sort.Order(getDirection(sortDir), sortName));
-		System.out.println("Inbound sort: " + sortName + " " + sortDir);
-		System.out.println("Combined orders: " + orders);
-//        System.out.println("Inboung sort: " + page.getSort());
+
 		Pageable page = PageRequest.of(n, s, Sort.by(orders));
-		System.out.println("Compiled page: " + page);
-		System.out.println("Search param: " + search);
+
 		if (!("").equals(search)) {
-			if (isNumber(search)) {
+			if (isCreatable(search)) {
 				Integer newSearch = Integer.parseInt(search) * 100;
 				return repo.findAllByBalanceOrInterestIsLike(newSearch, newSearch, page);
 			} else if (GenericValidator.isDate(search, "yyyy-MM", false)) {
 				return repo.findByCreateDate(LocalDate.parse(search), page);
 			} else {
-				return repo.findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.valueOf(search), search, search, page);
+				return repo.findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.parseBoolean(search), search, search, page);
 			}
 		} else {
 			return repo.findAll(page);
@@ -122,35 +112,31 @@ public class AccountService {
 	}
 
 	public AccountEntity changeMoneyService(TransferEntity amount, String id) {
-		System.out.println("String in service: " + id);
-		System.out.println("Amount rcv'd: " + amount.getAmount());
-		AccountEntity a = repo.findById(id).get();
-		System.out.println("A: " + a);
-		if (a.isActiveStatus()) {
-			a.getBalance().add(amount.getAmount());
-			if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && (a.getType().getName() ==
-					"Recovery")) {
-				deactivateAccount(a.getId());
+		Optional<AccountEntity> a = repo.findById(id);
+
+		if (a.isPresent() && a.get().isActiveStatus()) {
+			a.get().getBalance().add(amount.getAmount());
+			if ((a.get().getBalance().getDollars() == 0) && (a.get().getBalance().getCents() == 0) &&
+					(a.get().getType().getName().equals("Recovery"))) {
+				deactivateAccount(a.get().getId());
 			}
-			repo.save(a);
-			return a;
-		} else {
-			return null;
+			repo.save(a.get());
 		}
+
+		return a.orElse(null);
 	}
 
 	public AccountEntity changeRecoveryService(String id) {
-		System.out.println("String in service: " + id);
-		AccountEntity a = repo.findById(id).get();
-		System.out.println("A: " + a);
-		if (a.isActiveStatus()) {
-			a.setType(accountTypeRepository.findByNameIs("Recovery"));
-			a.setInterest(0);
-			repo.save(a);
-			return a;
-		} else {
-			return null;
+
+		Optional<AccountEntity> a = repo.findById(id);
+
+		if (a.isPresent() && a.get().isActiveStatus()) {
+			a.get().setType(accountTypeRepository.findByNameIs("Recovery"));
+			a.get().setInterest(0);
+			repo.save(a.get());
 		}
+
+		return a.orElse(null);
 	}
 
 	@Transactional
@@ -158,7 +144,7 @@ public class AccountService {
 		String id = a.getId() != null ? a.getId() : UUID.randomUUID().toString();
 		Optional<AccountEntity> account = repo.findById(id);
 		AccountTypeEntity type = accountTypeRepository.findByNameIs(a.getType().getName());
-		AccountEntity newAccount = null;
+		AccountEntity newAccount;
 
 		if (account.isPresent()) {
 			account.get().setBalance(a.getBalance());
@@ -180,38 +166,35 @@ public class AccountService {
 		}
 
 		return newAccount;
-//        if (repo.existsById(a.getId())) {
-//            repo.save(a);
-//            return a;
-//        } else {
-//            repo.save(a);
-//            return a;
-//        }
 	}
 
 	public String deactivateAccount(String a) {
-		AccountEntity a2 = repo.findById(a).get();
-		System.out.println("incoming A: " + a);
-		if (a2 != null) {
+		Optional<AccountEntity> a2 = repo.findById(a);
+
+		if (a2.isPresent()) {
 			try {
-				a2.setActiveStatus(false);
-				repo.save(a2);
-				return "Account " + a2.getId() + " active status: " + a2.isActiveStatus();
+				a2.get().setActiveStatus(false);
+				repo.save(a2.get());
+				return "Account " + a2.get().getId() + " active status: " + a2.get().isActiveStatus();
 			} catch (Exception e) {
-				return "Account " + a2.getId() + " deactivation failed with error: " + e.getLocalizedMessage();
+				return "Account " + a2.get().getId() + " deactivation failed with error: " + e.getLocalizedMessage();
 			}
 		}
 		return "Account does not exist";
 	}
 
 	public String removeAccount(String id) {
+		String returnValue;
+
 		try {
-			AccountEntity a = repo.findById(id).get();
-			repo.delete(a);
-			return "Remove successfull";
+			Optional<AccountEntity> a = repo.findById(id);
+			a.ifPresent(repo::delete);
+
+			returnValue = "Remove successful";
 		} catch (Exception e) {
-			return "Error finding Entity: " + e;
+			returnValue = "Error finding Entity: " + e;
 		}
+		return returnValue;
 	}
 
 	/**
@@ -236,29 +219,29 @@ public class AccountService {
 		} else {
 			if (GenericValidator.isDate(search, "yyyy-MM-dd", true)) {
 				log.info("Searching and filtering account transaction request as a timestamp");
-				try{
+				try {
 					LocalDateTime startDate = LocalDateTime.parse(search + "T00:00:00");
 					LocalDateTime endDate = startDate.plusDays(1);
 					returnValue = transactionRepository.findAllByStatusTimeBetween(startDate, endDate, page);
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					log.error(e.getMessage());
 				}
-			} else if (isNumber(search)) {
+			} else if (isCreatable(search)) {
 				log.info("Searching and filtering account transaction request as a number");
-				try{
+				try {
 					returnValue = transactionRepository.findAllByTransactionAmountEquals(CurrencyValue.valueOf(Double.parseDouble(search)),
 							page);
-				} catch(Exception e){
+				} catch (Exception e) {
 					log.error(e.getMessage());
 				}
 
 			} else {
 				log.info("Searching and filtering account transaction request as a string");
-				try{
+				try {
 					returnValue =
 							transactionRepository.findAllByTransactionStatus_StatusNameOrSource_IdOrTarget_IdEqualsOrNotesContainsIgnoreCase(search, search, search, search,
 									page);
-				} catch(IllegalArgumentException e){
+				} catch (IllegalArgumentException e) {
 					log.error(e.getMessage());
 				}
 
