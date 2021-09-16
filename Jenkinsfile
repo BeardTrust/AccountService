@@ -1,5 +1,4 @@
 node {
-  def app
   stage('SCM') {
     checkout scm
   }
