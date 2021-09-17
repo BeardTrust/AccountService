@@ -9,7 +9,7 @@ node {
     }
    }
   stage('Build') {
-      sh "docker build target/Dockerfile"
+    sh "docker build ${scm}/Dockerfile"
   }
 //   stage('Build docker image') {
 //       sh "${mvn}/bin/mvn docker build accountserviceImage/testnode"    
