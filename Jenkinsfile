@@ -17,7 +17,9 @@ node {
   }
   stage('Push docker image') {
     steps {
-      withDockerRegistry([url: "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:latest",credentialsId: {ECR_token}])
+      withDockerRegistry([url: "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service",credentialsId: {ECR_token}]) {
+       sh 'docker push accountservice:latest' 
+      }
       }
      }
 }
