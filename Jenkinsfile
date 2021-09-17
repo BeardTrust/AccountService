@@ -9,7 +9,7 @@ node {
     }
    }
   stage('Build') {
-    def customImage = docker.build("TestLine:Dockerfile")
+    def customImage = docker.build("accountservice:Dockerfile")
     sh "docker build ${scm}/Dockerfile"
   }
 //   stage('Build docker image') {
