@@ -4,7 +4,7 @@ node {
   }
   stage('SonarQube Analysis with build') {
     def mvn = tool 'Maven';
-     sh "docker build AccountService/" 
+     sh "docker build AccountService/Dockerfile" 
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
