@@ -14,7 +14,7 @@ node {
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
     customImage = docker.build("accountservice:Dockerfile")
-    echo customImage
+    echo 'image: ', customImage;
     sh "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:v_${customImage}"
   }
 //   stage('Push docker image') {
