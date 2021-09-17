@@ -8,7 +8,7 @@ node {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
   }
-  stage('Build docker image) {
+  stage('Build docker image") {
       sh "${mvn}/bin/mvn docker build accountserviceImage/testnode"    
    }
 }
