@@ -1,5 +1,6 @@
 
 node {
+  def customImage
   stage('SCM') {
     checkout scm
   }
@@ -12,7 +13,8 @@ node {
   stage('Build docker image') {
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
-    def customImage = docker.build("accountservice:Dockerfile")
+    customImage = docker.build("accountservice:Dockerfile")
+    echo customImage
     sh "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:v_${customImage}"
   }
 //   stage('Push docker image') {
