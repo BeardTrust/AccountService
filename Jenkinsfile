@@ -10,7 +10,7 @@ node {
    }
   stage('Build') {
     def customImage = docker.build("accountservice:Dockerfile")
-    sh "docker build ${scm}/Dockerfile"
+    sh "docker build accountservice/Dockerfile"
   }
 //   stage('Build docker image') {
 //       sh "${mvn}/bin/mvn docker build accountserviceImage/testnode"    
