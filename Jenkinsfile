@@ -7,9 +7,4 @@ node {
       sh "mvn sonar:sonar"
     }
   }
-          stage('Build') { 
-            steps {
-                sh 'mvn -B -DskipTests clean package' 
-            }
-        }
 }
