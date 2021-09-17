@@ -4,7 +4,7 @@ node {
   }
   stage('SonarQube Analysis with build') {
     def mvn = tool 'Maven';
-     sh "docker build /opt/" 
+     sh "docker build /" 
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
