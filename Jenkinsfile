@@ -9,7 +9,7 @@ node {
 //     }
 //    }
   stage('Build') {
-    def customImage = docker.build("accountservice:Dockerfile")
+//     def customImage = docker.build("accountservice:Dockerfile")
     sh "docker build accountservice/Dockerfile"
   }
 //   stage('Build docker image') {
