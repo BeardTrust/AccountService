@@ -10,7 +10,7 @@ node {
    }
   stage('Build') {
     def customImage = docker.build("TestLine:${env.BUILD_ID}",
-                               "-f ${DOCKER_FILES_DIR}/${Dockerfile} ${DOCKER_FILES_DIR}")
+                               "-f ${DOCKER_FILES_DIR}/${dockerfile} ${DOCKER_FILES_DIR}")
     sh "docker build ${scm}/Dockerfile"
   }
 //   stage('Build docker image') {
