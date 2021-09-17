@@ -7,6 +7,7 @@ node {
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
+   }
   stage('Build') {
     def mvn = tool 'Maven'
       sh "${mvn}/bin/mvn clean"
