@@ -9,8 +9,7 @@ node {
     stage('Build image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
-        sh "mvn clean"
-        sh "mvn install -Dmaven.skip.test=true"
+        sh "mvn clean install -Dmaven.skip.test=true"
 
         sh "mvn package docker:build"
     }
