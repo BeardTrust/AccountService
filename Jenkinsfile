@@ -9,13 +9,12 @@ node {
 //       sh "${mvn}/bin/mvn sonar:sonar"
 //     }
 //    }
-  stage('Build') {
+  stage('Build docker image') {
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
     def customImage = docker.build("accountservice:Dockerfile")
-//     sh "docker build accountservice"
   }
-//   stage('Build docker image') {
-//       sh "${mvn}/bin/mvn docker build accountserviceImage/testnode"    
-//    }
+  stage('Push docker image') {
+    sh "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:v_${customImage}"    
+   }
 }
