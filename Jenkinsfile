@@ -3,9 +3,8 @@ node {
     checkout scm
   }
   stage('SonarQube Analysis') {
-    def mvn = tool 'Maven';
     withSonarQubeEnv() {
-      sh "mvn package sonar:sonar -DskipTests"
+      sh "mvn sonar:sonar -DskipTests"
     }
   }
           stage('Build') { 
