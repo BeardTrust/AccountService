@@ -4,7 +4,7 @@ node {
   }
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      sh "mvn sonar:sonar"
+      sh "mvn -X sonar:sonar"
     }
   }
 }
