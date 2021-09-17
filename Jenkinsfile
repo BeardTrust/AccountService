@@ -11,7 +11,7 @@ node {
 //    }
   stage('Build') {
      def mvn = tool 'Maven';
-    sh "${mvn}/bin/mvn clean package"
+    sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
     def customImage = docker.build("accountservice:Dockerfile")
 //     sh "docker build accountservice"
   }
