@@ -4,8 +4,7 @@ node {
   }
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      sh "mvn clean package"
-      sh "mvn sonar:sonar"
+      sh "mvn clean verify sonar:sonar"
     }
   }
           stage('Build') { 
