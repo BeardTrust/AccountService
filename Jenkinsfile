@@ -1,6 +1,7 @@
 
 node {
   def customImage
+  stages {
   stage('SCM') {
     checkout scm
   }
@@ -22,4 +23,5 @@ node {
       }
       }
      }
+  }
 }
