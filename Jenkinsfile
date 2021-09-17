@@ -2,9 +2,12 @@ node {
   stage('SCM') {
     checkout scm
   }
+  stage('Resolve Dependancies') {
+   sh "mvn clean package" 
+  }
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      sh "mvn sonar:sonar -DskipTests"
+      sh "mvn sonar:sonar"
     }
   }
           stage('Build') { 
