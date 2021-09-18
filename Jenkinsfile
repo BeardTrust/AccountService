@@ -10,11 +10,11 @@ node {
 //       sh "${mvn}/bin/mvn sonar:sonar"
 //     }
 //    }
-//   stage('Build docker image') {
-//      def mvn = tool 'Maven';
-//     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
-//     customImage = docker.build("427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service")
-//   }
+  stage('Build docker image') {
+     def mvn = tool 'Maven';
+    sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
+    customImage = docker.build("427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service")
+  }
   stage('Push docker image') {
     sh "aws ecr get-login-password --region us-east-2 --profile <secret_key>"
     sh "docker build -t beardtrust/account-service ."
