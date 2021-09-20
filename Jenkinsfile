@@ -1,7 +1,7 @@
 
-node 
+node {
   def customImage
-  stage('SCM') 
+  stage 'SCM' 
     checkout scm
   
 //    stage('SonarQube Analysis') {
@@ -10,7 +10,7 @@ node
 //       sh "${mvn}/bin/mvn sonar:sonar"
 //     }
 //    }
-  stage'Build docker image'
+  stage 'Build docker image'
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
     customImage = docker.build("test")
@@ -25,3 +25,4 @@ node
 //     sh "docker push 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:latest"
   
 
+}
