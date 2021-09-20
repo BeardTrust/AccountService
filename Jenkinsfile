@@ -13,7 +13,7 @@ node {
   stage('Build docker image') {
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
-    customImage = docker.build("427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service")
+    customImage = docker.build("test")
   }
   stage('Push docker image') {
     docker.withRegistry('427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service', 'ecr:us-east-2:nathanael_access_key'){
