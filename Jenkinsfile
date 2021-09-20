@@ -16,7 +16,7 @@ node {
     customImage = docker.build("427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service")
   }
   stage('Push docker image') {
-    sh "aws ecr get-login --region us-east-2 --profile default"
+    sh "aws ecr get-login --region us-east-2 --profile root"
     //| docker login -u AWS -p \$(aws ecr get-login-password --region us-east-2) 427380728300.dkr.ecr.us-east-2.amazonaws.com"
     sh "docker build -t beardtrust/account-service ."
     sh "docker tag beardtrust/account-service:latest 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:latest"
