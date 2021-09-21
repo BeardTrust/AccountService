@@ -29,7 +29,7 @@ node {
   }
   stage('Remove Unused docker image') {
   steps{
-    sh "docker rmi test:latest"
+    sh "docker rmi 427380728300.dkr.ecr.us-east-2.amazonaws.com/beardtrust/account-service:latest"
   }
 }
   
