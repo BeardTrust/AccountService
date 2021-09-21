@@ -72,19 +72,18 @@ public class AccountService {
     }
 
     public AccountEntity getNewAccountService() {
-        System.out.println("New Account Service");
-        AccountEntity a = new AccountEntity();
-        return a;
+        log.info("New Account Service");
+        return new AccountEntity();
     }
 
     public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
-        List<Sort.Order> orders = new ArrayList();
+        List orders = new ArrayList<Sort.Order>();
         orders.add(new Sort.Order(getDirection(sortDir), sortName));
-        System.out.println("Inbound sort: " + sortName + " " + sortDir);
-        System.out.println("Combined orders: " + orders);
+        log.info("Inbound sort: " + sortName + " " + sortDir);
+        log.info("Combined orders: " + orders);
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
-        System.out.println("Compiled page: " + page);
-        System.out.println("Search param: " + search);
+        log.info("Compiled page: " + page);
+        log.info("Search param: " + search);
         if (!("").equals(search)) {
             if (isNumber(search)) {
                 Integer newSearch = Integer.parseInt(search) * 100;
@@ -121,8 +120,8 @@ public class AccountService {
     }
 
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
-        System.out.println("String in service: " + id);
-        System.out.println("Amount rcv'd: " + amount.getAmount());
+        log.info("String in service: " + id);
+        log.info("Amount rcv'd: " + amount.getAmount());
         Optional<AccountEntity> oa = repo.findById(id);
         AccountEntity a;
         if (oa.isPresent()) {
@@ -130,7 +129,7 @@ public class AccountService {
         } else {
             return new AccountEntity();
         }
-        System.out.println("A: " + a);
+        log.info("A: " + a);
         if (a.isActiveStatus()) {
             a.getBalance().add(amount.getAmount());
             if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && ("Recovery".equals(a.getType().getName()))) {
@@ -144,7 +143,7 @@ public class AccountService {
     }
 
     public AccountEntity changeRecoveryService(String id) {
-        System.out.println("String in service: " + id);
+        log.info("String in service: " + id);
         Optional<AccountEntity> oa = repo.findById(id);
         AccountEntity a;
         if (oa.isPresent()) {
@@ -152,7 +151,7 @@ public class AccountService {
         } else {
             return new AccountEntity();
         }
-        System.out.println("A: " + a);
+        log.info("A: " + a);
         if (a.isActiveStatus()) {
             a.setType(accountTypeRepository.findByNameIs("Recovery"));
             a.setInterest(0);
@@ -190,13 +189,6 @@ public class AccountService {
         }
 
         return newAccount;
-//        if (repo.existsById(a.getId())) {
-//            repo.save(a);
-//            return a;
-//        } else {
-//            repo.save(a);
-//            return a;
-//        }
     }
 
     public String deactivateAccount(String id) {
@@ -207,8 +199,8 @@ public class AccountService {
         } else {
             return "Failed to find Account!!!";
         }
-        System.out.println("incoming A: " + id);
-        System.out.println("account found: " + a2);
+        log.info("incoming A: " + id);
+        log.info("account found: " + a2);
         if (a2 != null) {
             try {
                 a2.setActiveStatus(false);
