@@ -5,6 +5,7 @@
  */
 package com.beardtrust.webapp.accountservice.controllers;
 
+import com.beardtrust.webapp.accountservice.dtos.AccountDTO;
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
 import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
@@ -18,13 +19,11 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "/accounts")
+@Slf4j
 public class AccountController {
 
     @Autowired
@@ -56,32 +56,29 @@ public class AccountController {
     @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
-        System.out.println("controller inbound account: " + a.toString());
+        log.info("controller inbound account: " + a.toString());
 
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
-         return null;
+        return new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
     }
-    
+
     @PreAuthorize("permitAll()")
     @GetMapping("/new")
     public ResponseEntity<AccountEntity> getNewAccount() {
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(), HttpStatus.OK);
-        System.out.println("Outbound entity: " + response);
-         return response;
+        log.info("Outbound entity: " + response);
+        return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin')")
     //@PreAuthorize("permitAll()")
     @GetMapping("/all")
-    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/ @RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
-        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
-         return response;
+    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
+        return new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")//<-- Account Id goes here
     public ResponseEntity<AccountEntity> getSpecificAccount(@PathVariable String id) {
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getSpecificService(id), HttpStatus.OK);
-         return response;
+        return new ResponseEntity<>(as.getSpecificService(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #id")
@@ -93,58 +90,53 @@ public class AccountController {
         List<AccountEntity> accounts = as.getListService(id);
         response = new ResponseEntity<>(accounts, HttpStatus.OK);
 
-         return response;
+        return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #id")
     //@PreAuthorize("permitAll()")
     @PutMapping("/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeMoneyService(amount, id), HttpStatus.NO_CONTENT);
-         return response;
+        return new ResponseEntity<>(as.changeMoneyService(amount, id), HttpStatus.NO_CONTENT);
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
     //@PreAuthorize("permitAll()")
     @PutMapping("/recovery/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a, @RequestParam String userId) {//<-- The Account ID (amount should be set pos/neg by the front end)
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeRecoveryService(id), HttpStatus.NO_CONTENT);
-         return response;
+    public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountDTO a, @RequestParam String userId) {//<-- The Account ID (amount should be set pos/neg by the front end)
+        return new ResponseEntity<>(as.changeRecoveryService(id), HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAuthority('admin')")
     //@PreAuthorize("permitAll()")
     @PutMapping
     public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
-         return response;
+        return new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
     //@PreAuthorize("permitAll()")
     @DeleteMapping
     public ResponseEntity<String> deactivateAccount(@RequestBody String a, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated, and userId for security
-        ResponseEntity<String> response = new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
-        return response;
+        return new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
     //@PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAccount(@PathVariable String id, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated
-        System.out.println("incomming delete request");
-        ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
-        return response;
+        log.info("incomming delete request");
+        return new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id")String id,
-                                                                           @RequestParam(name = "search", required =
-                                                                                   false)String search,
-                                                                           Pageable page){
+    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id") String id,
+            @RequestParam(name = "search", required
+                    = false) String search,
+            Pageable page) {
         Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
         return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
