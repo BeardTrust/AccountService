@@ -10,6 +10,7 @@ node {
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn sonar:sonar"
     }
+   }
   stage('Build docker image') {
      def mvn = tool 'Maven';
     sh "${mvn}/bin/mvn clean package -Dmaven.test.skip=true"
