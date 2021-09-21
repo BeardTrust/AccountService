@@ -192,6 +192,7 @@ public class AccountService {
 	public String deactivateAccount(String a) {
 		AccountEntity a2 = repo.findById(a).get();
 		System.out.println("incoming A: " + a);
+                System.out.println("account found: " + a2);
 		if (a2 != null) {
 			try {
 				a2.setActiveStatus(false);

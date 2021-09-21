@@ -1,6 +1,6 @@
 package com.beardtrust.webapp.accountservice.repos;
 
-import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
@@ -11,12 +11,12 @@ import java.util.Optional;
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
 @org.springframework.stereotype.Repository
-public interface AuthorizationRepository extends Repository<AccountEntity, String> {
+public interface AuthorizationRepository extends Repository<UserEntity, String> {
 	/**
 	 * Find by user id optional.
 	 *
 	 * @param id the id
 	 * @return the optional
 	 */
-	Optional<AccountEntity> findByUserId(String id);
+	Optional<UserEntity> findById(String id);
 }
