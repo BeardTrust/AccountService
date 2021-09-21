@@ -157,7 +157,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+//		accountEntity.getUser().setId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
