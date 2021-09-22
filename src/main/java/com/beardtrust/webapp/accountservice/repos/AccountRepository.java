@@ -46,7 +46,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
 
     public Page<AccountEntity> findAllByIsActiveIsAndCurrencyValue_DollarsOrCurrencyValue_CentsTrueAndUserId(Integer newSearch, Integer newSearch0, String userId, Pageable page);
 
-    public Page<AccountEntity> findAllIgnoreCaseByIsActiveIsTrueAccountType_NameOrAccountType_DescriptionAndUserId(String search, String search0, String userId, Pageable page);
+    public Page<AccountEntity> findAllIgnoreCaseByAccountType_NameOrAccountType_DescriptionAndUserIdAndIsActiveIsTrue(String search, String search0, String userId, Pageable page);
 
     public Page<AccountEntity> findAllByUserId(String userId, Pageable page);
 }

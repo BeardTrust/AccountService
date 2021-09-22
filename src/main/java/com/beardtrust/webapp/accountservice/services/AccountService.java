@@ -142,7 +142,7 @@ public class AccountService {
                 System.out.println("search was a date");
                 return repo.findByIsActiveIsTrueCreateDateAndUserId(LocalDate.parse(search), userId, page);
             } else {
-                return repo.findAllIgnoreCaseByIsActiveIsTrueAccountType_NameOrAccountType_DescriptionAndUserId(search, search, userId, page);
+                return repo.findAllIgnoreCaseByeAccountType_NameOrAccountType_DescriptionAndUserIdAndIsActiveIsTrue(search, search, userId, page);
             }
         }
         System.out.println("generic search");
