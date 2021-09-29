@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -40,13 +41,11 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
      */
     AccountEntity findByNickname(String s);
 
-    public Page<AccountEntity> findAllByIsActiveIsTrueAndCurrencyValue_DollarsOrCurrencyValue_CentsAndUserId(Double newSearch, Double newSearch0, String userId, Pageable page);
+    public Page<AccountEntity> findByCreateDateAndUser_Id(LocalDate parse, String userId, Pageable page);
 
-    public Page<AccountEntity> findByIsActiveIsTrueCreateDateAndUserId(LocalDate parse, String userId, Pageable page);
-
-    public Page<AccountEntity> findAllByIsActiveIsAndCurrencyValue_DollarsOrCurrencyValue_CentsTrueAndUserId(Integer newSearch, Integer newSearch0, String userId, Pageable page);
-
-    public Page<AccountEntity> findAllIgnoreCaseByAccountType_NameOrAccountType_DescriptionAndUserIdAndIsActiveIsTrue(String search, String search0, String userId, Pageable page);
+    public Page<AccountEntity> findAllByBalance_DollarsOrBalance_CentsAndUser_Id(Integer newSearch, Integer newSearch0, String userId, Pageable page);
 
     public Page<AccountEntity> findAllByUserId(String userId, Pageable page);
+    
+    public Page<AccountEntity> findAllByUserIdAndNicknameOrType_DescriptionOrType_Name(String userId, String search0, String search1, String search2, Pageable page);
 }

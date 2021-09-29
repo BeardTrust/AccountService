@@ -7,24 +7,17 @@ package com.beardtrust.webapp.accountservice.controllers;
 
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
 import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
-import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
-import java.net.http.HttpResponse;
-import java.util.List;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +45,12 @@ public class AccountController {
 
     @Autowired
     private AccountService as;
+    
+    @GetMapping(path = "/health")
+    @Consumes({MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<String> healthCheck() {
+        return new ResponseEntity<>("Healthy", HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
@@ -109,8 +108,8 @@ public class AccountController {
          return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    //@PreAuthorize("permitAll()")
     @PutMapping("/recovery/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a) {//<-- The Account ID (amount should be set pos/neg by the front end)
@@ -118,24 +117,24 @@ public class AccountController {
          return response;
     }
 
-    //@PreAuthorize("hasAuthority('admin')")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("permitAll()")
     @PutMapping
     public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
          return response;
     }
 
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    //@PreAuthorize("permitAll()")
     @DeleteMapping
     public ResponseEntity<String> deactivateAccount(@RequestBody String a) {//<-- Send the Account Id that we want deactivated
         ResponseEntity<String> response = new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
         return response;
     }
     
-    //@PreAuthorize("hasAuthority('admin') or principal == #id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    //@PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAccount(@PathVariable String id) {//<-- Send the Account Id that we want deactivated
         System.out.println("incomming delete request");

@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.beardtrust.webapp.accountservice.dtos.UserDTO;
 import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import com.beardtrust.webapp.accountservice.repos.AuthorizationRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthorizationServiceImpl implements AuthorizationService {
 	
 	AuthorizationRepository authorizationRepository;

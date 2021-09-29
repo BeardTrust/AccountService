@@ -121,7 +121,7 @@ public class AccountService {
         String sortName = sortBy[0];
         String sortDir = sortBy[1];
         List<Sort.Order> orders = parseOrders(sortBy);
-        System.out.println("Attempting to find my loans");
+        System.out.println("Attempting to find my Accounts");
         orders.add(new Sort.Order(getDirection(sortDir), sortName));
         System.out.println("Inbound sort: " + sortName + " " + sortDir);
         System.out.println("Combined orders: " + orders);
@@ -129,20 +129,17 @@ public class AccountService {
         System.out.println("Compiled page: " + page);
         System.out.println("Search param: " + search);
         if (!("").equals(search)) {
-            if (isDouble(search)) {
-                System.out.println("search was a double");
-                Double newSearch = Double.parseDouble(search);
-                return repo.findAllByIsActiveIsTrueAndCurrencyValue_DollarsOrCurrencyValue_CentsAndUserId(newSearch, newSearch, userId, page);
-            } else if (isNumber(search)) {
+            if (isNumber(search)) {
                 System.out.println("search was an Integer");
                 Integer newSearch = Integer.parseInt(search);
-                return repo.findAllByIsActiveIsAndCurrencyValue_DollarsOrCurrencyValue_CentsTrueAndUserId(newSearch, newSearch, userId, page);
+                return repo.findAllByBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, userId, page);
             }
             if (GenericValidator.isDate(search, "yyyy-MM", false)) {
                 System.out.println("search was a date");
-                return repo.findByIsActiveIsTrueCreateDateAndUserId(LocalDate.parse(search), userId, page);
+                return repo.findByCreateDateAndUser_Id(LocalDate.parse(search), userId, page);
             } else {
-                return repo.findAllIgnoreCaseByeAccountType_NameOrAccountType_DescriptionAndUserIdAndIsActiveIsTrue(search, search, userId, page);
+                log.info("ignorecase search");
+                return repo.findAllByUserIdAndNicknameOrType_DescriptionOrType_Name(userId, search, search, search, page);
             }
         }
         System.out.println("generic search");

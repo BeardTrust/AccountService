@@ -85,7 +85,6 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 					.parseClaimsJws(token)
 					.getBody()
 					.getSubject();
-
 			if (userId != null) {
 				UserDTO userDTO = authorizationService.getUserByUserId(userId);
 
