@@ -52,6 +52,12 @@ public class AccountController {
 
     @Autowired
     private AccountService as;
+    
+    @GetMapping(path = "/health")
+    @Consumes({MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<String> healthCheck() {
+        return new ResponseEntity<>("Healthy", HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
