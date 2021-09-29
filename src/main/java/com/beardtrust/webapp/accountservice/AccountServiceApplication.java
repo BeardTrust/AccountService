@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-@EnableEurekaClient
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {
