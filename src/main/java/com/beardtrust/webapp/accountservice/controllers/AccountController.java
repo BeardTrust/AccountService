@@ -18,6 +18,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "/accounts")
+@Slf4j
 public class AccountController {
 
     @Autowired
@@ -56,6 +58,7 @@ public class AccountController {
     @GetMapping(path = "/health")
     @Consumes({MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<String> healthCheck() {
+        log.info("Health check incoming");
         return new ResponseEntity<>("Healthy", HttpStatus.OK);
     }
 
