@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors()
 				.and().authorizeRequests()
 				.antMatchers("/accounts/**", HttpMethod.POST).permitAll()
+                                .antMatchers("/accounts/health", HttpMethod.GET).permitAll()
 				.and().authorizeRequests().anyRequest().authenticated()
 				.and()
 				.addFilter(new AuthorizationFilter(authenticationManager(), environment, authorizationService));

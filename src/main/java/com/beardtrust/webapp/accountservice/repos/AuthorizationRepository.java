@@ -11,12 +11,12 @@ import java.util.Optional;
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
 @org.springframework.stereotype.Repository
-public interface AuthorizationRepository extends Repository<AccountEntity, String> {
+public interface AuthorizationRepository extends Repository<UserEntity, String> {
 	/**
 	 * Find by user id optional.
 	 *
 	 * @param id the id
 	 * @return the optional
 	 */
-	Optional<AccountEntity> findById(String id);
+	Optional<UserEntity> findById(String id);
 }
