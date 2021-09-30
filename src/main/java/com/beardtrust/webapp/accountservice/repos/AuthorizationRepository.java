@@ -1,6 +1,6 @@
 package com.beardtrust.webapp.accountservice.repos;
 
-import com.beardtrust.webapp.accountservice.entities.AccountEntity;
+import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
