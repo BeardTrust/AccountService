@@ -18,5 +18,5 @@ public interface AuthorizationRepository extends Repository<AccountEntity, Strin
 	 * @param id the id
 	 * @return the optional
 	 */
-	Optional<AccountEntity> findByUserId(String id);
+	Optional<AccountEntity> findById(String id);
 }
