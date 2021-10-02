@@ -3,6 +3,7 @@ package com.beardtrust.webapp.accountservice.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {AuthenticationServiceImpl.class})
 @ExtendWith(SpringExtension.class)
 public class AuthenticationServiceImplTest {
+
 	@Autowired
 	private AuthenticationServiceImpl authenticationServiceImpl;
 
@@ -36,18 +38,18 @@ public class AuthenticationServiceImplTest {
 	private UserRepository userRepository;
 
 	@Test
-	public void testGetUserDetailsByEmail() {
+	void testGetUserDetailsByEmail() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setLastName("Doe");
 		userEntity.setPassword("iloveyou");
 		userEntity.setEmail("jane.doe@example.org");
 		userEntity.setRole("Role");
 		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
-		userEntity.setId("42");
 		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
 		userEntity.setPhone("4105551212");
 		userEntity.setFirstName("Jane");
-		when(this.userRepository.findByEmail(anyString())).thenReturn(userEntity);
+		when(this.userRepository.findByEmail((String) any())).thenReturn(userEntity);
 		UserDTO actualUserDetailsByEmail = this.authenticationServiceImpl.getUserDetailsByEmail("jane.doe@example.org");
 		assertEquals("1970-01-02", actualUserDetailsByEmail.getDateOfBirth().toString());
 		assertEquals("janedoe", actualUserDetailsByEmail.getUsername());
@@ -57,22 +59,22 @@ public class AuthenticationServiceImplTest {
 		assertEquals("Doe", actualUserDetailsByEmail.getLastName());
 		assertEquals("Jane", actualUserDetailsByEmail.getFirstName());
 		assertEquals("jane.doe@example.org", actualUserDetailsByEmail.getEmail());
-		verify(this.userRepository).findByEmail(anyString());
+		verify(this.userRepository).findByEmail((String) any());
 	}
 
 	@Test
-	public void testGetUserDetailsByEmail2() {
+	void testGetUserDetailsByEmail2() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setLastName(null);
 		userEntity.setPassword("iloveyou");
 		userEntity.setEmail("jane.doe@example.org");
 		userEntity.setRole("Role");
 		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
-		userEntity.setId("42");
 		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
 		userEntity.setPhone("4105551212");
 		userEntity.setFirstName("Jane");
-		when(this.userRepository.findByEmail(anyString())).thenReturn(userEntity);
+		when(this.userRepository.findByEmail((String) any())).thenReturn(userEntity);
 		UserDTO actualUserDetailsByEmail = this.authenticationServiceImpl.getUserDetailsByEmail("jane.doe@example.org");
 		assertEquals("1970-01-02", actualUserDetailsByEmail.getDateOfBirth().toString());
 		assertEquals("janedoe", actualUserDetailsByEmail.getUsername());
@@ -82,72 +84,22 @@ public class AuthenticationServiceImplTest {
 		assertNull(actualUserDetailsByEmail.getLastName());
 		assertEquals("Jane", actualUserDetailsByEmail.getFirstName());
 		assertEquals("jane.doe@example.org", actualUserDetailsByEmail.getEmail());
-		verify(this.userRepository).findByEmail(anyString());
+		verify(this.userRepository).findByEmail((String) any());
 	}
 
 	@Test
-	public void testGetUserDetailsByEmail3() {
-		UserEntity userEntity = new UserEntity();
-		userEntity.setLastName("Last Name");
-		userEntity.setPassword("iloveyou");
-		userEntity.setEmail("jane.doe@example.org");
-		userEntity.setRole("Role");
-		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
-		userEntity.setId("42");
-		userEntity.setUsername("janedoe");
-		userEntity.setPhone("4105551212");
-		userEntity.setFirstName("Jane");
-		when(this.userRepository.findByEmail(anyString())).thenReturn(userEntity);
-		UserDTO actualUserDetailsByEmail = this.authenticationServiceImpl.getUserDetailsByEmail("jane.doe@example.org");
-		assertEquals("1970-01-02", actualUserDetailsByEmail.getDateOfBirth().toString());
-		assertEquals("janedoe", actualUserDetailsByEmail.getUsername());
-		assertEquals("42", actualUserDetailsByEmail.getUserId());
-		assertEquals("Role", actualUserDetailsByEmail.getRole());
-		assertEquals("4105551212", actualUserDetailsByEmail.getPhone());
-		assertEquals("Last Name", actualUserDetailsByEmail.getLastName());
-		assertEquals("Jane", actualUserDetailsByEmail.getFirstName());
-		assertEquals("jane.doe@example.org", actualUserDetailsByEmail.getEmail());
-		verify(this.userRepository).findByEmail(anyString());
-	}
-
-	@Test
-	public void testGetUserDetailsByEmail4() {
-		UserEntity userEntity = new UserEntity();
-		userEntity.setLastName("42");
-		userEntity.setPassword("iloveyou");
-		userEntity.setEmail("jane.doe@example.org");
-		userEntity.setRole("Role");
-		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
-		userEntity.setId("42");
-		userEntity.setUsername("janedoe");
-		userEntity.setPhone("4105551212");
-		userEntity.setFirstName("Jane");
-		when(this.userRepository.findByEmail(anyString())).thenReturn(userEntity);
-		UserDTO actualUserDetailsByEmail = this.authenticationServiceImpl.getUserDetailsByEmail("jane.doe@example.org");
-		assertEquals("1970-01-02", actualUserDetailsByEmail.getDateOfBirth().toString());
-		assertEquals("janedoe", actualUserDetailsByEmail.getUsername());
-		assertEquals("42", actualUserDetailsByEmail.getUserId());
-		assertEquals("Role", actualUserDetailsByEmail.getRole());
-		assertEquals("4105551212", actualUserDetailsByEmail.getPhone());
-		assertEquals("42", actualUserDetailsByEmail.getLastName());
-		assertEquals("Jane", actualUserDetailsByEmail.getFirstName());
-		assertEquals("jane.doe@example.org", actualUserDetailsByEmail.getEmail());
-		verify(this.userRepository).findByEmail(anyString());
-	}
-
-	@Test
-	public void testLoadUserByUsername() throws UsernameNotFoundException {
+	void testLoadUserByUsername() throws UsernameNotFoundException {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setLastName("Doe");
 		userEntity.setPassword("iloveyou");
 		userEntity.setEmail("jane.doe@example.org");
 		userEntity.setRole("Role");
 		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
-		userEntity.setId("42");
 		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
 		userEntity.setPhone("4105551212");
 		userEntity.setFirstName("Jane");
-		when(this.userRepository.findByEmail(anyString())).thenReturn(userEntity);
+		when(this.userRepository.findByEmail((String) any())).thenReturn(userEntity);
 		UserDetails actualLoadUserByUsernameResult = this.authenticationServiceImpl.loadUserByUsername("foo");
 		assertEquals(1, actualLoadUserByUsernameResult.getAuthorities().size());
 		assertEquals(
@@ -161,7 +113,8 @@ public class AuthenticationServiceImplTest {
 		assertTrue(actualLoadUserByUsernameResult.isAccountNonExpired());
 		assertEquals("jane.doe@example.org", actualLoadUserByUsernameResult.getUsername());
 		assertEquals("iloveyou", actualLoadUserByUsernameResult.getPassword());
-		verify(this.userRepository).findByEmail(anyString());
+		verify(this.userRepository).findByEmail((String) any());
 	}
+
 }
 

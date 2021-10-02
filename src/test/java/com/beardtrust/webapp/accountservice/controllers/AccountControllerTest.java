@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 @ContextConfiguration(classes = {AccountController.class})
 @ExtendWith(SpringExtension.class)
 public class AccountControllerTest {
+
 	@Autowired
 	private AccountController accountController;
 
@@ -35,9 +36,14 @@ public class AccountControllerTest {
 	private AccountService accountService;
 
 	@Test
-	public void testChangeMoney() throws Exception {
+	void testChangeMoney() throws Exception {
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+
 		TransferEntity transferEntity = new TransferEntity();
-		transferEntity.setAmount(new CurrencyValue(10,0));
+		transferEntity.setAmount(currencyValue);
 		String content = (new ObjectMapper()).writeValueAsString(transferEntity);
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/{id}", "42")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -49,35 +55,7 @@ public class AccountControllerTest {
 	}
 
 	@Test
-	public void testCreateAccount() throws Exception {
-		AccountTypeEntity accountType = new AccountTypeEntity(
-				"Savings",
-				"A recovery account",
-				true,
-				LocalDateTime.now(),
-				LocalDateTime.MAX
-		);
-		AccountEntity accountEntity = new AccountEntity();
-		accountEntity.setInterest(1);
-		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
-		accountEntity.setId("42");
-		accountEntity.setCreateDate(null);
-		accountEntity.setType(accountType);
-		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(new CurrencyValue(1,0));
-		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content);
-		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
-				.build()
-				.perform(requestBuilder);
-		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
-	}
-
-	@Test
-	public void testDeactivateAccount() throws Exception {
+	void testDeactivateAccount() throws Exception {
 		MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.get("/")
 				.contentType(MediaType.APPLICATION_JSON);
 
@@ -91,7 +69,30 @@ public class AccountControllerTest {
 	}
 
 	@Test
-	public void testGetListAccount() throws Exception {
+	void testGetAccountTransactions() throws Exception {
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/transactions/{id}", "42");
+		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
+				.build()
+				.perform(requestBuilder);
+		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void testGetAllAccount() throws Exception {
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/all")
+				.param("pageNum", "foo")
+				.param("pageSize", "foo")
+				.param("search", "foo")
+				.param("sortDir", "foo")
+				.param("sortName", "foo");
+		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
+				.build()
+				.perform(requestBuilder);
+		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void testGetListAccount() throws Exception {
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/").param("id", "foo");
 		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
 				.build()
@@ -100,7 +101,16 @@ public class AccountControllerTest {
 	}
 
 	@Test
-	public void testGetSpecificAccount() throws Exception {
+	void testGetNewAccount() throws Exception {
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/new");
+		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
+				.build()
+				.perform(requestBuilder);
+		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void testGetSpecificAccount() throws Exception {
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{id}", "42");
 		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
 				.build()
@@ -109,60 +119,13 @@ public class AccountControllerTest {
 	}
 
 	@Test
-	public void testRecoverAccount() throws Exception {
-		AccountTypeEntity accountType = new AccountTypeEntity(
-				"Savings",
-				"A recovery account",
-				true,
-				LocalDateTime.now(),
-				LocalDateTime.MAX
-		);
-		AccountEntity accountEntity = new AccountEntity();
-		accountEntity.setInterest(1);
-		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
-		accountEntity.setId("42");
-		accountEntity.setCreateDate(null);
-		accountEntity.setType(accountType);
-		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(new CurrencyValue(1,0));
-		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/recovery/{id}", "42")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content);
+	void testRemoveAccount() throws Exception {
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/{id}", "42");
 		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
 				.build()
 				.perform(requestBuilder);
 		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
-	@Test
-	public void testUpdateAccount() throws Exception {
-		AccountTypeEntity accountType = new AccountTypeEntity(
-				"Savings",
-				"A recovery account",
-				true,
-				LocalDateTime.now(),
-				LocalDateTime.MAX
-		);
-
-		AccountEntity accountEntity = new AccountEntity();
-		accountEntity.setInterest(1);
-		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
-		accountEntity.setId("42");
-		accountEntity.setCreateDate(null);
-		accountEntity.setType(accountType);
-		accountEntity.setActiveStatus(true);
-		accountEntity.setBalance(new CurrencyValue(1,0));
-		String content = (new ObjectMapper()).writeValueAsString(accountEntity);
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content);
-		ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.accountController)
-				.build()
-				.perform(requestBuilder);
-		actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
-	}
 }
 
