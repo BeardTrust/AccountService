@@ -7,13 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class AccountCreationResponseTest {
+
 	@Test
-	public void testCanEqual() {
+	void testCanEqual() {
 		assertFalse((new AccountCreationResponse()).canEqual("Other"));
 	}
 
 	@Test
-	public void testCanEqual2() {
+	void testCanEqual2() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 
 		AccountCreationResponse accountCreationResponse1 = new AccountCreationResponse();
@@ -22,7 +23,7 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testConstructor() {
+	void testConstructor() {
 		AccountCreationResponse actualAccountCreationResponse = new AccountCreationResponse();
 		actualAccountCreationResponse.setUserID("User ID");
 		assertEquals("User ID", actualAccountCreationResponse.getUserID());
@@ -30,21 +31,21 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID("User ID");
 		assertFalse(accountCreationResponse.equals(null));
 	}
 
 	@Test
-	public void testEquals2() {
+	void testEquals2() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID("User ID");
 		assertFalse(accountCreationResponse.equals("Different type to AccountCreationResponse"));
 	}
 
 	@Test
-	public void testEquals3() {
+	void testEquals3() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID("User ID");
 		assertTrue(accountCreationResponse.equals(accountCreationResponse));
@@ -53,7 +54,7 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testEquals4() {
+	void testEquals4() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID("User ID");
 
@@ -65,7 +66,7 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testEquals5() {
+	void testEquals5() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID(null);
 
@@ -75,7 +76,7 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testEquals6() {
+	void testEquals6() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID("com.beardtrust.webapp.accountservice.models.AccountCreationResponse");
 
@@ -85,7 +86,7 @@ public class AccountCreationResponseTest {
 	}
 
 	@Test
-	public void testEquals7() {
+	void testEquals7() {
 		AccountCreationResponse accountCreationResponse = new AccountCreationResponse();
 		accountCreationResponse.setUserID(null);
 
@@ -95,5 +96,6 @@ public class AccountCreationResponseTest {
 		int expectedHashCodeResult = accountCreationResponse.hashCode();
 		assertEquals(expectedHashCodeResult, accountCreationResponse1.hashCode());
 	}
+
 }
 

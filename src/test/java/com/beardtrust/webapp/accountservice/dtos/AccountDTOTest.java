@@ -12,557 +12,233 @@ import com.beardtrust.webapp.accountservice.entities.UserEntity;
 import org.junit.jupiter.api.Test;
 
 public class AccountDTOTest {
+
 	@Test
-	public void testCanEqual() {
+	void testCanEqual() {
 		assertFalse((new AccountDTO()).canEqual("Other"));
 	}
 
 	@Test
-	public void testCanEqual2() {
+	void testCanEqual2() {
 		AccountDTO accountDTO = new AccountDTO();
 
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(0);
+		currencyValue.setCents(0);
+		currencyValue.setNegative(true);
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+
 		AccountDTO accountDTO1 = new AccountDTO();
+		accountDTO1.setBalance(currencyValue);
 		accountDTO1.setInterest(0);
 		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
+		accountDTO1.setUser(userEntity);
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO1.setId("42");
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(0,0));
 		assertTrue(accountDTO.canEqual(accountDTO1));
 	}
 
 	@Test
-	public void testConstructor() {
+	void testConstructor() {
 		AccountDTO actualAccountDTO = new AccountDTO();
-		actualAccountDTO.setId("42");
 		actualAccountDTO.setActiveStatus(true);
-		actualAccountDTO.setBalance(new CurrencyValue(1,0));
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+		actualAccountDTO.setBalance(currencyValue);
 		LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
 		actualAccountDTO.setCreateDate(ofEpochDayResult);
+		actualAccountDTO.setId("42");
 		actualAccountDTO.setInterest(1);
 		actualAccountDTO.setNickname("Nickname");
 		actualAccountDTO.setType("Type");
-		actualAccountDTO.setUser(new UserEntity());
-		assertEquals("42", actualAccountDTO.getId());
-		assertEquals(1, actualAccountDTO.getBalance());
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+		actualAccountDTO.setUser(userEntity);
+		assertSame(currencyValue, actualAccountDTO.getBalance());
 		assertSame(ofEpochDayResult, actualAccountDTO.getCreateDate());
+		assertEquals("42", actualAccountDTO.getId());
 		assertEquals(1, actualAccountDTO.getInterest().intValue());
 		assertEquals("Nickname", actualAccountDTO.getNickname());
 		assertEquals("Type", actualAccountDTO.getType());
-		assertEquals("42", actualAccountDTO.getUser());
+		assertSame(userEntity, actualAccountDTO.getUser());
 		assertTrue(actualAccountDTO.isActiveStatus());
-		assertEquals("AccountDTO(userId=42, accountId=42, activeStatus=true, balance=1, interest=1, nickname=Nickname,"
-				+ " createDate=1970-01-02, type=Type)", actualAccountDTO.toString());
+		assertEquals("AccountDTO(user=UserEntity{userId='42', username='janedoe', password='iloveyou', email='jane.doe"
+				+ "@example.org', phone='4105551212', firstName='Jane', lastName='Doe', dateOfBirth=1970-01-02, role='Role'},"
+				+ " id=42, activeStatus=true, balance=-$1.01, interest=1, nickname=Nickname, createDate=1970-01-02,"
+				+ " type=Type)", actualAccountDTO.toString());
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+
 		AccountDTO accountDTO = new AccountDTO();
+		accountDTO.setBalance(currencyValue);
 		accountDTO.setInterest(1);
 		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
+		accountDTO.setUser(userEntity);
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO.setId("42");
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals(null));
 	}
 
 	@Test
-	public void testEquals10() {
+	void testEquals2() {
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+
 		AccountDTO accountDTO = new AccountDTO();
+		accountDTO.setBalance(currencyValue);
 		accountDTO.setInterest(1);
 		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
+		accountDTO.setUser(userEntity);
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO.setId("42");
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals11() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId(null);
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals12() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("Nickname");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals13() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(0L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals14() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(null);
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals15() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("42");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals16() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType(null);
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals17() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(false);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals18() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(0,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals19() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(null);
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals2() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertFalse(accountDTO.equals("Different type to AccountDTO"));
 	}
 
 	@Test
-	public void testEquals20() {
+	void testEquals3() {
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+
 		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(null);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(null);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertTrue(accountDTO.equals(accountDTO1));
-		int expectedHashCodeResult = accountDTO.hashCode();
-		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
-	}
-
-	@Test
-	public void testEquals21() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname(null);
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname(null);
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertTrue(accountDTO.equals(accountDTO1));
-		int expectedHashCodeResult = accountDTO.hashCode();
-		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
-	}
-
-	@Test
-	public void testEquals22() {
-		AccountDTO accountDTO = new AccountDTO();
+		accountDTO.setBalance(currencyValue);
 		accountDTO.setInterest(1);
 		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(null);
-		accountDTO.setId("42");
+		accountDTO.setUser(userEntity);
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO.setId("42");
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(null);
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertTrue(accountDTO.equals(accountDTO1));
-		int expectedHashCodeResult = accountDTO.hashCode();
-		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
-	}
-
-	@Test
-	public void testEquals3() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO.hashCode());
 	}
 
 	@Test
-	public void testEquals4() {
+	void testEquals4() {
+		CurrencyValue currencyValue = new CurrencyValue();
+		currencyValue.setDollars(1);
+		currencyValue.setCents(1);
+		currencyValue.setNegative(true);
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setLastName("Doe");
+		userEntity.setPassword("iloveyou");
+		userEntity.setEmail("jane.doe@example.org");
+		userEntity.setRole("Role");
+		userEntity.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity.setUsername("janedoe");
+		userEntity.setId("42");
+		userEntity.setPhone("4105551212");
+		userEntity.setFirstName("Jane");
+
 		AccountDTO accountDTO = new AccountDTO();
+		accountDTO.setBalance(currencyValue);
 		accountDTO.setInterest(1);
 		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
+		accountDTO.setUser(userEntity);
 		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO.setId("42");
 		accountDTO.setType("Type");
 		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
+
+		CurrencyValue currencyValue1 = new CurrencyValue();
+		currencyValue1.setDollars(1);
+		currencyValue1.setCents(1);
+		currencyValue1.setNegative(true);
+
+		UserEntity userEntity1 = new UserEntity();
+		userEntity1.setLastName("Doe");
+		userEntity1.setPassword("iloveyou");
+		userEntity1.setEmail("jane.doe@example.org");
+		userEntity1.setRole("Role");
+		userEntity1.setDateOfBirth(LocalDate.ofEpochDay(1L));
+		userEntity1.setUsername("janedoe");
+		userEntity1.setId("42");
+		userEntity1.setPhone("4105551212");
+		userEntity1.setFirstName("Jane");
 
 		AccountDTO accountDTO1 = new AccountDTO();
+		accountDTO1.setBalance(currencyValue1);
 		accountDTO1.setInterest(1);
 		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
+		accountDTO1.setUser(userEntity1);
 		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
+		accountDTO1.setId("42");
 		accountDTO1.setType("Type");
 		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
 		assertTrue(accountDTO.equals(accountDTO1));
 		int expectedHashCodeResult = accountDTO.hashCode();
 		assertEquals(expectedHashCodeResult, accountDTO1.hashCode());
 	}
 
-	@Test
-	public void testEquals5() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(0);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals6() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(null);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals7() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("42");
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals8() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname(null);
-		accountDTO.setUser(new UserEntity());
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
-
-	@Test
-	public void testEquals9() {
-		AccountDTO accountDTO = new AccountDTO();
-		accountDTO.setInterest(1);
-		accountDTO.setNickname("Nickname");
-		accountDTO.setUser(null);
-		accountDTO.setId("42");
-		accountDTO.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO.setType("Type");
-		accountDTO.setActiveStatus(true);
-		accountDTO.setBalance(new CurrencyValue(1,0));
-
-		AccountDTO accountDTO1 = new AccountDTO();
-		accountDTO1.setInterest(1);
-		accountDTO1.setNickname("Nickname");
-		accountDTO1.setUser(new UserEntity());
-		accountDTO1.setId("42");
-		accountDTO1.setCreateDate(LocalDate.ofEpochDay(1L));
-		accountDTO1.setType("Type");
-		accountDTO1.setActiveStatus(true);
-		accountDTO1.setBalance(new CurrencyValue(1,0));
-		assertFalse(accountDTO.equals(accountDTO1));
-	}
 }
 
