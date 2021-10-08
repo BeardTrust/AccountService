@@ -122,7 +122,7 @@ public class AccountService {
 
     public AccountEntity getSpecificService(String id) {
         log.trace("get specific service...");
-        log.debug("Service received: " + id)
+        log.debug("Service received: " + id);
         Optional<AccountEntity> a = repo.findById(id);
         if (a.isPresent() && a.get().isActiveStatus()) {
             log.trace("Account was found, returning...");
@@ -228,7 +228,7 @@ public class AccountService {
                 return "Account " + a2.getId() + " deactivation failed with error: " + e.getLocalizedMessage();
             }
         }
-        log.error("Account could not be found!!!")
+        log.error("Account could not be found!!!");
         return "Account does not exist";
     }
 

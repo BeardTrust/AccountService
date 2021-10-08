@@ -169,18 +169,15 @@ public class AccountController {
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id") String id,
-            @RequestParam(name = "search", required
-                    = false) String search,
-            Pageable page) {
+    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id") String id, @RequestParam(name = "search", required = false) String search, Pageable page) {
         log.trace("Get account transactions endpoint reached...");
         log.debug("Endpoint received Id: " + id);
         log.debug("Endpoint received search: " + search);
         log.debug("Endpoint received page: " + page);
         Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
-        ResponseEntity response = new ResponseEntity<>(newPage, HttpStatus.OK);
+        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(newPage, HttpStatus.OK);
         log.debug("Controller returning: " + response);
-        return response
+        return response;
     }
 
 }
