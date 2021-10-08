@@ -54,6 +54,14 @@ public class AccountController {
 
     @Autowired
     private AccountService as;
+    
+    @PreAuthorize("permitAll()")
+    @GetMapping(path = "/health")
+    @Consumes({MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<String> healthCheck() {
+        log.info("Health check incoming");
+        return new ResponseEntity<>("Healthy", HttpStatus.OK);
+    }
 
     @PreAuthorize("permitAll()")
     @PostMapping
