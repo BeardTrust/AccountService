@@ -18,6 +18,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "/accounts")
+@Slf4j
 public class AccountController {
 
     @Autowired
@@ -77,10 +79,10 @@ public class AccountController {
     @GetMapping("/all")
     public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
         log.trace("Get all accounts admin endpoint reached...");
-        log.debug("Page number received: " + n);
-        log.debug("Page size received: " + s);
+        log.debug("Page number received: " + pageNum);
+        log.debug("Page size received: " + pageSize);
         log.debug("Sort name received: " + sortName);
-        log.debug("Sort direction received: " + sirtDir);
+        log.debug("Sort direction received: " + sortDir);
         log.debug("Search received: " + search);
         ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
         log.debug("controller returning: " + response);
@@ -159,7 +161,7 @@ public class AccountController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAccount(@PathVariable String id, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated
         log.trace("Remove account endpoint reached...");
-        log.debug("Endpoint received account Id: " + a);
+        log.debug("Endpoint received account Id: " + id);
         log.debug("Endpoint received user Id: " + userId);
         System.out.println("incomming delete request");
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
@@ -175,9 +177,7 @@ public class AccountController {
         log.debug("Endpoint received search: " + search);
         log.debug("Endpoint received page: " + page);
         Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
-        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(newPage, HttpStatus.OK);
-        log.debug("Controller returning: " + response);
-        return response;
+        return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
 }

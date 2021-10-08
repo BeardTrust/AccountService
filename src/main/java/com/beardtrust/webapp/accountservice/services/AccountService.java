@@ -86,7 +86,7 @@ public class AccountService {
         log.debug("Page number received: " + n);
         log.debug("Page size received: " + s);
         log.debug("Sort name received: " + sortName);
-        log.debug("Sort direction received: " + sirtDir);
+        log.debug("Sort direction received: " + sortDir);
         log.debug("Search received: " + search);
         List<Sort.Order> orders = new ArrayList();
         orders.add(new Sort.Order(getDirection(sortDir), sortName));
@@ -174,7 +174,7 @@ public class AccountService {
             repo.save(a);
             return a;
         } else {
-            log.waarn("Account inactive!!!");
+            log.warn("Account inactive!!!");
             return null;
         }
     }
