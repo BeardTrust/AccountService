@@ -56,97 +56,131 @@ public class AccountController {
     @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
-        System.out.println("controller inbound account: " + a.toString());
+        log.trace("Create account endpoint reached...");
+        log.debug("Endpoint received: " + a);
 
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
-         return null;
+        return null;
     }
-    
+
     @PreAuthorize("permitAll()")
     @GetMapping("/new")
     public ResponseEntity<AccountEntity> getNewAccount() {
+        log.trace("Get new endpoint reached...");
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(), HttpStatus.OK);
-        System.out.println("Outbound entity: " + response);
-         return response;
+        log.info("Outbound entity: " + response);
+        return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin')")
     //@PreAuthorize("permitAll()")
     @GetMapping("/all")
-    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/ @RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
+    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
+        log.trace("Get all accounts admin endpoint reached...");
+        log.debug("Page number received: " + n);
+        log.debug("Page size received: " + s);
+        log.debug("Sort name received: " + sortName);
+        log.debug("Sort direction received: " + sirtDir);
+        log.debug("Search received: " + search);
         ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
-         return response;
+        log.debug("controller returning: " + response);
+        return response;
     }
 
     @GetMapping("/{id}")//<-- Account Id goes here
     public ResponseEntity<AccountEntity> getSpecificAccount(@PathVariable String id) {
+        log.trace("Get specific account endpoint reached...");
+        log.debug("Endpoint received: " + id);
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getSpecificService(id), HttpStatus.OK);
-         return response;
+        log.trace("Controller returning: " + response);
+        return response;
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #id")
-    //@PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
+        log.trace("Get account list endpoint reached...");
+        log.debug("Endpoint received: " + id);
         ResponseEntity<List<AccountEntity>> response = null;
 
         List<AccountEntity> accounts = as.getListService(id);
         response = new ResponseEntity<>(accounts, HttpStatus.OK);
-
-         return response;
+        log.trace("Controller returning: " + response);
+        return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #id")
-    //@PreAuthorize("permitAll()")
     @PutMapping("/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
+        log.trace("Change money endpoint reached...");
+        log.debug("Endpoint received Id: " + id);
+        log.debug("Endpoint received amount: " + amount);
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeMoneyService(amount, id), HttpStatus.NO_CONTENT);
-         return response;
+        log.trace("Controller returning: " + response);
+        return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
-    //@PreAuthorize("permitAll()")
     @PutMapping("/recovery/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountEntity> recoverAccount(@PathVariable String id, @RequestBody AccountEntity a, @RequestParam String userId) {//<-- The Account ID (amount should be set pos/neg by the front end)
+        log.trace("Recover account endpoint reached...");
+        log.debug("Endpoint received account Id: " + id);
+        log.debug("Endpoint received entity: " + a);
+        log.debug("Endpoint received user Id: " + userId);
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.changeRecoveryService(id), HttpStatus.NO_CONTENT);
-         return response;
+        log.trace("Controller returning: " + response);
+        return response;
     }
 
     @PreAuthorize("hasAuthority('admin')")
-    //@PreAuthorize("permitAll()")
     @PutMapping
     public ResponseEntity<AccountEntity> updateAccount(@RequestBody UpdateAccountRequest a) {//<-- The entity with new/updated info
+        log.trace("Update account endpoint reached...");
+        log.debug("Endpoint received: " + a);
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.updateService(a), HttpStatus.OK);
-         return response;
+        log.trace("Controller returning: " + response);
+        return response;
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
-    //@PreAuthorize("permitAll()")
     @DeleteMapping
     public ResponseEntity<String> deactivateAccount(@RequestBody String a, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated, and userId for security
+        log.trace("Deactivate account endpoint reached...");
+        log.debug("Endpoint received account Id: " + a);
+        log.debug("Endpoint received user Id: " + userId);
         ResponseEntity<String> response = new ResponseEntity<>(as.deactivateAccount(a), HttpStatus.NO_CONTENT);
+        log.debug("Controller returning: " + response);
         return response;
     }
-    
+
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
-    //@PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAccount(@PathVariable String id, @RequestParam String userId) {//<-- Send the Account Id that we want deactivated
+        log.trace("Remove account endpoint reached...");
+        log.debug("Endpoint received account Id: " + a);
+        log.debug("Endpoint received user Id: " + userId);
         System.out.println("incomming delete request");
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
+        log.debug("Controller returning: " + response);
         return response;
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id")String id,
-                                                                           @RequestParam(name = "search", required =
-                                                                                   false)String search,
-                                                                           Pageable page){
+    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id") String id,
+            @RequestParam(name = "search", required
+                    = false) String search,
+            Pageable page) {
+        log.trace("Get account transactions endpoint reached...");
+        log.debug("Endpoint received Id: " + id);
+        log.debug("Endpoint received search: " + search);
+        log.debug("Endpoint received page: " + page);
         Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
-        return new ResponseEntity<>(newPage, HttpStatus.OK);
+        ResponseEntity response = new ResponseEntity<>(newPage, HttpStatus.OK);
+        log.debug("Controller returning: " + response);
+        return response
     }
 
 }
