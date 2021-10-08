@@ -21,26 +21,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final Environment environment;
-	private final AuthorizationService authorizationService;
-	private final PasswordEncoder passwordEncoder;
+    private final Environment environment;
+    private final AuthorizationService authorizationService;
+    private final PasswordEncoder passwordEncoder;
 
-	public SecurityConfig(Environment environment, AuthorizationService authorizationService, PasswordEncoder passwordEncoder) {
-		this.environment = environment;
-		this.passwordEncoder = passwordEncoder;
-		this.authorizationService = authorizationService;
-	}
+    public SecurityConfig(Environment environment, AuthorizationService authorizationService, PasswordEncoder passwordEncoder) {
+        log.trace("Building security configuration...");
+        this.environment = environment;
+        this.passwordEncoder = passwordEncoder;
+        this.authorizationService = authorizationService;
+    }
 
-	@Description("Configure HTTP Security")
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.cors()
-				.and().authorizeRequests()
-				.antMatchers("/accounts/**", HttpMethod.POST).permitAll()
-				.and().authorizeRequests().anyRequest().authenticated()
-				.and()
-				.addFilter(new AuthorizationFilter(authenticationManager(), environment, authorizationService));
-		http.headers().frameOptions().disable();
-	}
+    @Description("Configure HTTP Security")
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        log.trace("Configuring HTTP Security...");
+        http.csrf().disable();
+        http.cors()
+                .and().authorizeRequests()
+                .antMatchers("/accounts/**", HttpMethod.POST).permitAll()
+                .and().authorizeRequests().anyRequest().authenticated()
+                .and()
+                .addFilter(new AuthorizationFilter(authenticationManager(), environment, authorizationService));
+        http.headers().frameOptions().disable();
+    }
 }
