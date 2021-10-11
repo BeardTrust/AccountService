@@ -1,23 +1,20 @@
 package com.beardtrust.webapp.accountservice.services;
 
-import com.beardtrust.webapp.accountservice.dtos.UserDTO;
-import com.beardtrust.webapp.accountservice.entities.UserEntity;
-import com.beardtrust.webapp.accountservice.repos.AuthorizationRepository;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+
+import com.beardtrust.webapp.accountservice.dtos.UserDTO;
+import com.beardtrust.webapp.accountservice.entities.UserEntity;
+import com.beardtrust.webapp.accountservice.repos.AuthorizationRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-/**
- * The type Authorization service.
- *
- * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
- */
 @Service
+@Slf4j
 public class AuthorizationServiceImpl implements AuthorizationService {
-
 	private final AuthorizationRepository authorizationRepository;
 
 	/**
@@ -27,12 +24,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	 */
 	@Autowired
 	public AuthorizationServiceImpl(AuthorizationRepository authorizationRepository) {
+            log.trace("Creating Authorization Service...");
 		this.authorizationRepository = authorizationRepository;
 	}
 
 
 	@Override
 	public UserDTO getUserByUserId(String id) {
+            log.trace("Authorization searching for user by Id...");
+            log.debug("Authorization searching by Id: " + id);
 		Optional<UserEntity> user = authorizationRepository.findById(id);
 
 		UserDTO userDTO = null;
@@ -41,9 +41,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		if (user.isPresent()) {
+                    log.trace("User found, creating model...");
 			userDTO = modelMapper.map(user.get(), UserDTO.class);
+                        log.debug("Model created: " + userDTO);
 		}
 
+                log.trace("Authorization finished. Returning DTO...");
 		return userDTO;
 	}
 }
