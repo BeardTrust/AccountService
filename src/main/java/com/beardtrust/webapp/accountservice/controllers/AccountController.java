@@ -74,8 +74,8 @@ public class AccountController {
         return response;
     }
 
-    @PreAuthorize("hasAuthority('admin')")
-    //@PreAuthorize("permitAll()")
+//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/all")
     public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
         log.trace("Get all accounts admin endpoint reached...");
@@ -98,17 +98,19 @@ public class AccountController {
         return response;
     }
 
-    @PreAuthorize("hasAuthority('admin') or principal == #id")
+//    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
-        log.trace("Get account list endpoint reached...");
-        log.debug("Endpoint received: " + id);
-        ResponseEntity<List<AccountEntity>> response = null;
-
-        List<AccountEntity> accounts = as.getListService(id);
-        response = new ResponseEntity<>(accounts, HttpStatus.OK);
-        log.trace("Controller returning: " + response);
+    public ResponseEntity<Page<AccountEntity>> getAllMyAccountsPage(// <-- User calls personal list
+            @RequestParam(name = "pageNum", defaultValue = "0") int pageNum, 
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,  
+            @RequestParam(name = "sortBy", defaultValue = "Id,asc") String[] sortBy, 
+            @RequestParam(name = "search", defaultValue = "") String search,
+            @RequestParam(name = "userId", defaultValue = "") String userId) {
+        Pageable page = PageRequest.of(pageNum, pageSize);
+        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllMyAccountsPage(pageNum, pageSize, sortBy, search, userId), HttpStatus.OK);
         return response;
+
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #id")

@@ -40,7 +40,7 @@ public class AccountEntityTest {
 		assertEquals("Type", actualAccountEntity.getType());
 		assertEquals("42", actualAccountEntity.getUser().getId());
 		assertTrue(actualAccountEntity.isActiveStatus());
-		assertEquals("AccountEntity{userId='42', accountId='42', activeStatus='true', balance='1', interest='1',"
+		assertEquals("AccountEntity{userId='42', id='42', activeStatus='true', balance='1', interest='1',"
 				+ " nickname='Nickname', createDate=1970-01-02}", actualAccountEntity.toString());
 	}
 

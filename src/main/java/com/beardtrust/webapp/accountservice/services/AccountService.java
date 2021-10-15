@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.apache.commons.lang.NumberUtils.isNumber;
+import static org.apache.commons.validator.GenericValidator.isDouble;
 
 /**
  * @author Nathanael <Nathanael.Grier at your.org>
@@ -81,7 +82,62 @@ public class AccountService {
         return a;
     }
 
-    public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
+    public Page<AccountEntity> getAllMyAccountsPage(int n, int s, String[] sortBy, String search, String id) {
+        String sortName = sortBy[0];
+        String sortDir = sortBy[1];
+        System.out.println("Attempting to find my accounts");
+        List<Sort.Order> orders = new ArrayList();
+        orders.add(new Sort.Order(getDirection(sortDir), sortName));
+        System.out.println("Inbound sort: " + sortName + " " + sortDir);
+        System.out.println("Combined orders: " + orders);
+        Pageable page = PageRequest.of(n, s, Sort.by(orders));
+        System.out.println("Compiled page: " + page);
+        System.out.println("Search param: " + search);
+        if (!("").equals(search)) {
+            if (isDouble(search)) {
+                System.out.println("search was a double");
+                Double newSearch = Double.parseDouble(search);
+                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
+            } else if (isNumber(search)){
+                System.out.println("search was an Integer");
+                Integer newSearch = Integer.parseInt(search);
+                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
+            } if (GenericValidator.isDate(search, "yyyy-MM", false)) {
+                System.out.println("search was a date");
+                return repo.findByCreateDateAndUser_Id(LocalDate.parse(search), id, page);
+            } else {
+                return repo.findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveOrIdAndUser_Id(search, search, search, Boolean.valueOf(search), search, id, page);
+            }
+        }
+        System.out.println("generic search, found:" + repo.findAllByUser_Id(id, page));
+        System.out.println("UserId searched by: " + id);
+        return repo.findAllByUser_Id(id, page);
+    }
+
+    public Sort.Direction getDirection(String dir) {
+        log.trace("Parsing sort direction...");
+        log.debug("direction received: " + dir);
+        if ("asc".equals(dir)) {
+            return Sort.Direction.ASC;
+        } else {
+            return Sort.Direction.DESC;
+        }
+    }
+
+    public AccountEntity getSpecificService(String id) {
+        log.trace("get specific service...");
+        log.debug("Service received: " + id);
+        Optional<AccountEntity> a = repo.findById(id);
+        if (a.isPresent() && a.get().isActiveStatus()) {
+            log.trace("Account was found, returning...");
+            return a.get();
+        } else {
+            log.warn("Account not found!!!");
+            return null;
+        }
+    }
+
+     public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
         log.trace("Get all service...");
         log.debug("Page number received: " + n);
         log.debug("Page size received: " + s);
@@ -108,35 +164,6 @@ public class AccountService {
             log.trace("No search parameter, finding all as a page...");
             return repo.findAll(page);
         }
-    }
-
-    public Sort.Direction getDirection(String dir) {
-        log.trace("Parsing sort direction...");
-        log.debug("direction received: " + dir);
-        if ("asc".equals(dir)) {
-            return Sort.Direction.ASC;
-        } else {
-            return Sort.Direction.DESC;
-        }
-    }
-
-    public AccountEntity getSpecificService(String id) {
-        log.trace("get specific service...");
-        log.debug("Service received: " + id);
-        Optional<AccountEntity> a = repo.findById(id);
-        if (a.isPresent() && a.get().isActiveStatus()) {
-            log.trace("Account was found, returning...");
-            return a.get();
-        } else {
-            log.warn("Account not found!!!");
-            return null;
-        }
-    }
-
-    public List<AccountEntity> getListService(String userId) {
-        log.trace("Getting account list service...");
-        log.debug("Service received: " + userId);
-        return repo.findAllByUserId(userId);
     }
 
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
