@@ -38,7 +38,7 @@ public class AccountEntityTest {
 		assertEquals(1, actualAccountEntity.getInterest().intValue());
 		assertEquals("Nickname", actualAccountEntity.getNickname());
 		assertEquals("Type", actualAccountEntity.getType());
-		assertEquals("42", actualAccountEntity.getUser().getId());
+		assertEquals("42", actualAccountEntity.getUser().getUserId());
 		assertTrue(actualAccountEntity.isActiveStatus());
 		assertEquals("AccountEntity{userId='42', id='42', activeStatus='true', balance='1', interest='1',"
 				+ " nickname='Nickname', createDate=1970-01-02}", actualAccountEntity.toString());
@@ -49,7 +49,7 @@ public class AccountEntityTest {
 		
 		AccountEntity actualAccountEntity = new AccountEntity();
 		assertFalse(actualAccountEntity.isActiveStatus());
-		assertNull(actualAccountEntity.getUser().getId());
+		assertNull(actualAccountEntity.getUser().getUserId());
 		assertNull(actualAccountEntity.getType());
 		assertNull(actualAccountEntity.getNickname());
 		assertNull(actualAccountEntity.getInterest());

@@ -5,10 +5,7 @@
  */
 package com.beardtrust.webapp.accountservice.controllers;
 
-import com.beardtrust.webapp.accountservice.entities.AccountEntity;
-import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
-import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
-import com.beardtrust.webapp.accountservice.entities.TransferEntity;
+import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
@@ -65,6 +62,15 @@ public class AccountController {
         return null;
     }
 
+    @PreAuthorize("hasRole('admin') or principal == #userId")
+    @PostMapping("/{userId}/{id}")//<-- Account to be paid on
+    public ResponseEntity<CurrencyValue> changeMoneyAccount(@PathVariable String id, @PathVariable String userId, @RequestBody CurrencyValue c) {
+        System.out.println("Attempting to pay on a loan, rcvd: " + c);
+        ResponseEntity<CurrencyValue> response = new ResponseEntity<>(as.makePayment(c, id), HttpStatus.ACCEPTED);
+        return response;
+
+    }
+
     @PreAuthorize("permitAll()")
     @GetMapping("/new")
     public ResponseEntity<AccountEntity> getNewAccount() {
@@ -74,8 +80,8 @@ public class AccountController {
         return response;
     }
 
-//    @PreAuthorize("hasAuthority('admin')")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("permitAll()")
     @GetMapping("/all")
     public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
         log.trace("Get all accounts admin endpoint reached...");
@@ -98,8 +104,8 @@ public class AccountController {
         return response;
     }
 
-//    @PreAuthorize("hasAuthority('admin') or principal == #userId")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+//    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<Page<AccountEntity>> getAllMyAccountsPage(// <-- User calls personal list
             @RequestParam(name = "pageNum", defaultValue = "0") int pageNum, 

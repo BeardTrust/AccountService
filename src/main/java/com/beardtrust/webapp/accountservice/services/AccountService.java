@@ -95,23 +95,23 @@ public class AccountService {
         System.out.println("Search param: " + search);
         if (!("").equals(search)) {
             if (isDouble(search)) {
-                System.out.println("search was a double");
-                Double newSearch = Double.parseDouble(search);
-                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
+//                System.out.println("search was a double");
+//                Double newSearch = Double.parseDouble(search);
+//                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
             } else if (isNumber(search)){
                 System.out.println("search was an Integer");
                 Integer newSearch = Integer.parseInt(search);
-                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
+                return repo.findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(id, newSearch, newSearch, newSearch, page);
             } if (GenericValidator.isDate(search, "yyyy-MM", false)) {
                 System.out.println("search was a date");
-                return repo.findByCreateDateAndUser_Id(LocalDate.parse(search), id, page);
+                return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
             } else {
-                return repo.findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveOrIdAndUser_Id(search, search, search, Boolean.valueOf(search), search, id, page);
+                return repo.findByUser_IdAndNicknameOrUser_IdAndType_IdOrUser_IdAndType_NameOrUser_IdAndType_IsActiveOrUser_IdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
             }
         }
-        System.out.println("generic search, found:" + repo.findAllByUser_Id(id, page));
+        System.out.println("generic search, found:" + repo.findAllByUser_UserId(id, page));
         System.out.println("UserId searched by: " + id);
-        return repo.findAllByUser_Id(id, page);
+        return repo.findAllByUser_UserId(id, page);
     }
 
     public Sort.Direction getDirection(String dir) {
@@ -151,14 +151,14 @@ public class AccountService {
             log.trace("Search is present, sending to proper method...");
             if (isNumber(search)) {
                 log.trace("Search was a number...");
-                Integer newSearch = Integer.parseInt(search) * 100;
-                return repo.findAllByBalanceOrInterestIsLike(newSearch, newSearch, page);
+                Integer newSearch = Integer.parseInt(search);
+                return repo.findAllByBalance_DollarsOrBalance_CentsOrInterestIsLike(newSearch, newSearch, newSearch, page);
             } else if (GenericValidator.isDate(search, "yyyy-MM", false)) {
                 log.trace("Search determined to be in date format...");
                 return repo.findByCreateDate(LocalDate.parse(search), page);
             } else {
                 log.trace("Generic search...");
-                return repo.findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.valueOf(search), search, search, page);
+                return repo.findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(search, search, search, Boolean.valueOf(search), search, page);
             }
         } else {
             log.trace("No search parameter, finding all as a page...");
@@ -330,5 +330,18 @@ public class AccountService {
         }
         log.trace("Account page retrieved, returning...");
         return returnValue;
+    }
+
+    public CurrencyValue makePayment(CurrencyValue c, String id) {
+        try {
+            AccountEntity a = repo.findById(id).get();
+            c.setNegative(true);
+            a.getBalance().add(c);
+            repo.save(a);
+            return a.getBalance();
+        } catch (Exception e) {
+            System.out.println("Error trying to find account: " + e);
+            return null;
+        }
     }
 }

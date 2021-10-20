@@ -31,7 +31,7 @@ public class UserEntityTest {
 		assertEquals("iloveyou", actualUserEntity.getPassword());
 		assertEquals("4105551212", actualUserEntity.getPhone());
 		assertEquals("Role", actualUserEntity.getRole());
-		assertEquals("42", actualUserEntity.getId());
+		assertEquals("42", actualUserEntity.getUserId());
 		assertEquals("janedoe", actualUserEntity.getUsername());
 		assertEquals(
 				"UserEntity{userId='42', username='janedoe', password='iloveyou', email='jane.doe@example.org',"
