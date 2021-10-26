@@ -5,27 +5,22 @@
  */
 package com.beardtrust.webapp.accountservice.controllers;
 
+import com.beardtrust.webapp.accountservice.dtos.FinancialTransactionDTO;
 import com.beardtrust.webapp.accountservice.entities.AccountEntity;
-import com.beardtrust.webapp.accountservice.entities.AccountTransaction;
-import com.beardtrust.webapp.accountservice.entities.FinancialTransaction;
 import com.beardtrust.webapp.accountservice.entities.TransferEntity;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.core.Response;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -171,13 +166,20 @@ public class AccountController {
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<AccountTransaction>> getAccountTransactions(@PathVariable(name = "id") String id, @RequestParam(name = "search", required = false) String search, Pageable page) {
+    public ResponseEntity<Page<FinancialTransactionDTO>> getAccountTransactions(@PathVariable(name = "id") String id,
+                                                                                @RequestParam(name = "search", required = false) String search, Pageable page) {
         log.trace("Get account transactions endpoint reached...");
         log.debug("Endpoint received Id: " + id);
         log.debug("Endpoint received search: " + search);
         log.debug("Endpoint received page: " + page);
-        Page<AccountTransaction> newPage = as.getAllAccountTransactionsByUserId(id, search, page);
+        Page<FinancialTransactionDTO> newPage = as.getAllAccountTransactions(id, search, page);
         return new ResponseEntity<>(newPage, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    @GetMapping(path = "/{id}/security")
+    public String testSecurity(@PathVariable(name = "id")String id){
+        return "Working for user with userId of " + id;
     }
 
 }

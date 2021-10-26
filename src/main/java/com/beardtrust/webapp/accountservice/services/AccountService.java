@@ -5,15 +5,16 @@
  */
 package com.beardtrust.webapp.accountservice.services;
 
+import com.beardtrust.webapp.accountservice.dtos.FinancialTransactionDTO;
 import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
-import com.beardtrust.webapp.accountservice.repos.AccountRepository;
-import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
-import com.beardtrust.webapp.accountservice.repos.TransactionRepository;
-import com.beardtrust.webapp.accountservice.repos.UserRepository;
+import com.beardtrust.webapp.accountservice.repos.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.GenericValidator;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,7 @@ import static org.apache.commons.lang.NumberUtils.isNumber;
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class AccountService {
 
@@ -42,13 +44,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final AccountRepository repo;
-
-    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
-        this.repo = repo;
-        this.accountTypeRepository = accountTypeRepository;
-        this.userRepository = userRepository;
-        this.transactionRepository = transactionRepository;
-    }
+    private final FinancialTransactionRepository financialTransactionRepository;
 
     @Transactional
     public AccountEntity createService(NewAccountRequestModel request) {
@@ -250,7 +246,7 @@ public class AccountService {
      * criteria, and a Pageable object and returns the requested page of
      * transactions associated with that account and matching that search
      * criteria. If the search term can be parsed as a CurrencyValue object, the
-     * return value will be a list of all associated account transactions which
+     * return value will be a Page of all associated account transactions which
      * match that CurrencyValue. If the search term can be parsed as a
      * LocalDateTime object, the return value will be a list of all associated
      * account transactions with status dates on that date. If the search field
@@ -263,20 +259,28 @@ public class AccountService {
      * @param page Pageable an object representing the page request
      * @return Page the requested page
      */
-    public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, String search, Pageable page) {
+    public Page<FinancialTransactionDTO> getAllAccountTransactions(String id, String search, Pageable page) {
         log.trace("Get all transactions pagination service...");
-        Page<AccountTransaction> returnValue = null;
+        Page<FinancialTransactionDTO> returnValue = null;
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
 
         if (search == null) {
             log.trace("Search term not found, discarding from page...");
-            returnValue = transactionRepository.findAllBySource_IdOrTarget_IdIs(id, id, page);
+            returnValue = financialTransactionRepository.findAllBySource_IdOrTarget_IdIs(id, id,
+                            page).map(transaction ->
+                                    modelMapper.map(transaction, FinancialTransactionDTO.class));
+
         } else {
             if (GenericValidator.isDate(search, "yyyy-MM-dd", true)) {
                 log.info("Searching and filtering account transaction request as a timestamp");
                 try {
                     LocalDateTime startDate = LocalDateTime.parse(search + "T00:00:00");
                     LocalDateTime endDate = startDate.plusDays(1);
-                    returnValue = transactionRepository.findAllByStatusTimeBetween(startDate, endDate, page);
+                    returnValue = financialTransactionRepository.findAllByStatusTimeBetween(startDate, endDate, page)
+                            .map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
                 } catch (IllegalArgumentException e) {
                     log.error(e.getMessage());
                 }
@@ -284,7 +288,7 @@ public class AccountService {
                 log.info("Searching and filtering account transaction request as a number");
                 try {
                     returnValue = transactionRepository.findAllByTransactionAmountEquals(CurrencyValue.valueOf(Double.parseDouble(search)),
-                            page);
+                            page).map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
                 } catch (Exception e) {
                     log.error(e.getMessage());
                 }
@@ -294,7 +298,7 @@ public class AccountService {
                 try {
                     returnValue
                             = transactionRepository.findAllByTransactionStatus_StatusNameOrSource_IdOrTarget_IdEqualsOrNotesContainsIgnoreCase(search, search, search, search,
-                                    page);
+                                    page).map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
                 } catch (IllegalArgumentException e) {
                     log.error(e.getMessage());
                 }
