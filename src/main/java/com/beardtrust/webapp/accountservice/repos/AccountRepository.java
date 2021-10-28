@@ -21,15 +21,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
 
-    Page<AccountEntity> findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
+    Page<AccountEntity> findAllByUser_UserIdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
                                                                                              String id,
                                                                                              boolean activeStatus, String nickname, String type, Pageable page);
     
-    Page<AccountEntity> findAllByBalanceOrInterestIsLike(Integer balance, Integer interest, Pageable page);
-    
     Page<AccountEntity> findByCreateDate(LocalDate createDate, Pageable page);
+    
+    Page<AccountEntity> findByCreateDateAndUserId(LocalDate createDate, Pageable page, String userId);
 
-    List<AccountEntity> findAllByUserId(String userId);
 
     @Override
     Page<AccountEntity> findAll(Pageable page);
@@ -39,4 +38,18 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
     *
      */
     AccountEntity findByNickname(String s);
+
+    public Page<AccountEntity> findAllByUser_UserId(String userId, Pageable page);
+
+    public Page<AccountEntity> findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(String id, Integer newSearch, Integer newSearch0, Integer newSearch1, Pageable page);
+
+    public Page<AccountEntity> findAllByUser_UserIdAndCreateDate(String id, LocalDate parse, Pageable page);
+
+    public Page<AccountEntity> findAllByBalance_DollarsOrBalance_CentsOrInterestIsLike(Integer newSearch, Integer newSearch0, Integer newSearch1, Pageable page);
+
+    public Page<AccountEntity> findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(String search, String search0, String search1, Boolean valueOf, String id, Pageable page);
+
+    public List<AccountEntity> findAllByUser_UserId(String userId);
+
+    Page<AccountEntity> findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(String id, String search, String id1, String search1, String id2, String search2, String id3, Boolean valueOf, String id4, String search3, Pageable page);
 }

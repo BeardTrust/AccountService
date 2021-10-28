@@ -53,7 +53,7 @@ public class AccountDTOTest {
 		assertEquals("Type", actualAccountDTO.getType());
 		assertEquals("42", actualAccountDTO.getUser());
 		assertTrue(actualAccountDTO.isActiveStatus());
-		assertEquals("AccountDTO(userId=42, accountId=42, activeStatus=true, balance=1, interest=1, nickname=Nickname,"
+		assertEquals("AccountDTO(userId=42, id=42, activeStatus=true, balance=1, interest=1, nickname=Nickname,"
 				+ " createDate=1970-01-02, type=Type)", actualAccountDTO.toString());
 	}
 

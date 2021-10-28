@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.apache.commons.lang.NumberUtils.isNumber;
+import static org.apache.commons.validator.GenericValidator.isDouble;
 
 /**
  * @author Nathanael <Nathanael.Grier at your.org>
@@ -81,43 +82,67 @@ public class AccountService {
         return a;
     }
 
-    public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
-        log.trace("Get all service...");
-        log.debug("Page number received: " + n);
-        log.debug("Page size received: " + s);
-        log.debug("Sort name received: " + sortName);
-        log.debug("Sort direction received: " + sortDir);
-        log.debug("Search received: " + search);
-        List<Sort.Order> orders = new ArrayList();
-        orders.add(new Sort.Order(getDirection(sortDir), sortName));
-        Pageable page = PageRequest.of(n, s, Sort.by(orders));
-        if (!("").equals(search)) {
-            log.trace("Search is present, sending to proper method...");
-            if (isNumber(search)) {
-                log.trace("Search was a number...");
-                Integer newSearch = Integer.parseInt(search) * 100;
-                return repo.findAllByBalanceOrInterestIsLike(newSearch, newSearch, page);
-            } else if (GenericValidator.isDate(search, "yyyy-MM", false)) {
-                log.trace("Search determined to be in date format...");
-                return repo.findByCreateDate(LocalDate.parse(search), page);
-            } else {
-                log.trace("Generic search...");
-                return repo.findAllByUser_IdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(search, search, Boolean.valueOf(search), search, search, page);
-            }
-        } else {
-            log.trace("No search parameter, finding all as a page...");
-            return repo.findAll(page);
-        }
+    public List<AccountEntity> getMyAccountsList(String userId) {
+        log.trace("Get my account list service reached...");
+        log.trace("Returning from get my account list service...");
+        return repo.findAllByUser_UserId(userId);
     }
 
-    public Sort.Direction getDirection(String dir) {
-        log.trace("Parsing sort direction...");
-        log.debug("direction received: " + dir);
-        if ("asc".equals(dir)) {
-            return Sort.Direction.ASC;
-        } else {
-            return Sort.Direction.DESC;
+    public Page<AccountEntity> getAllMyAccountsPage(int n, int s, String[] sortBy, String search, String id) {
+        String sortName = sortBy[0];
+        String sortDir = sortBy[1];
+        System.out.println("Attempting to find my accounts");
+        List<Sort.Order> orders = new ArrayList();
+        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
+        System.out.println("Inbound sort: " + sortName + " " + sortDir);
+        System.out.println("Combined orders: " + orders);
+        Pageable page = PageRequest.of(n, s, Sort.by(orders));
+        System.out.println("Compiled page: " + page);
+        System.out.println("Search param: " + search);
+        if (!("").equals(search)) {
+            if (isDouble(search)) {
+//                System.out.println("search was a double");
+//                Double newSearch = Double.parseDouble(search);
+//                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
+            } else if (isNumber(search)){
+                System.out.println("search was an Integer");
+                Integer newSearch = Integer.parseInt(search);
+                return repo.findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(id, newSearch, newSearch, newSearch, page);
+            } if (GenericValidator.isDate(search, "yyyy-MM", false)) {
+                System.out.println("search was a date");
+                return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
+            } else {
+                return repo.findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
+            }
         }
+        System.out.println("generic search, found:" + repo.findAllByUser_UserId(id, page));
+        System.out.println("UserId searched by: " + id);
+        return repo.findAllByUser_UserId(id, page);
+    }
+
+    private Sort.Direction getSortDirection(String direction) {
+        Sort.Direction returnValue = Sort.Direction.ASC;
+
+        if (direction.equals("desc")) {
+            returnValue = Sort.Direction.DESC;
+        }
+
+        return returnValue;
+    }
+
+    private List<Sort.Order> parseOrders(String[] sortBy) {
+        List<Sort.Order> orders = new ArrayList<>();
+
+        if (sortBy[0].contains(",")) {
+            for (String sortOrder : sortBy) {
+                String[] _sortBy = sortOrder.split(",");
+                orders.add(new Sort.Order(getSortDirection(_sortBy[1]), _sortBy[0]));
+            }
+        } else {
+            orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
+        }
+
+        return orders;
     }
 
     public AccountEntity getSpecificService(String id) {
@@ -133,10 +158,33 @@ public class AccountService {
         }
     }
 
-    public List<AccountEntity> getListService(String userId) {
-        log.trace("Getting account list service...");
-        log.debug("Service received: " + userId);
-        return repo.findAllByUserId(userId);
+     public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
+        log.trace("Get all service...");
+        log.debug("Page number received: " + n);
+        log.debug("Page size received: " + s);
+        log.debug("Sort name received: " + sortName);
+        log.debug("Sort direction received: " + sortDir);
+        log.debug("Search received: " + search);
+        List<Sort.Order> orders = new ArrayList();
+        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
+        Pageable page = PageRequest.of(n, s, Sort.by(orders));
+        if (!("").equals(search)) {
+            log.trace("Search is present, sending to proper method...");
+            if (isNumber(search)) {
+                log.trace("Search was a number...");
+                Integer newSearch = Integer.parseInt(search);
+                return repo.findAllByBalance_DollarsOrBalance_CentsOrInterestIsLike(newSearch, newSearch, newSearch, page);
+            } else if (GenericValidator.isDate(search, "yyyy-MM", false)) {
+                log.trace("Search determined to be in date format...");
+                return repo.findByCreateDate(LocalDate.parse(search), page);
+            } else {
+                log.trace("Generic search...");
+                return repo.findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(search, search, search, Boolean.valueOf(search), search, page);
+            }
+        } else {
+            log.trace("No search parameter, finding all as a page...");
+            return repo.findAll(page);
+        }
     }
 
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
@@ -303,5 +351,18 @@ public class AccountService {
         }
         log.trace("Account page retrieved, returning...");
         return returnValue;
+    }
+
+    public CurrencyValue makePayment(CurrencyValue c, String id) {
+        try {
+            AccountEntity a = repo.findById(id).get();
+            c.setNegative(true);
+            a.getBalance().add(c);
+            repo.save(a);
+            return a.getBalance();
+        } catch (Exception e) {
+            System.out.println("Error trying to find account: " + e);
+            return null;
+        }
     }
 }

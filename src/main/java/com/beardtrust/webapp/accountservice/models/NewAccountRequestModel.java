@@ -13,6 +13,6 @@ public class NewAccountRequestModel {
 	private LocalDate createDate;
 	private AccountTypeEntity type;
 	private String nickname;
-	private int interest;
+	private Integer interest;
 	private boolean activeStatus;
 }
