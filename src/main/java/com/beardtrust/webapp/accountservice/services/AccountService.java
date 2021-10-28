@@ -82,12 +82,18 @@ public class AccountService {
         return a;
     }
 
+    public List<AccountEntity> getMyAccountsList(String userId) {
+        log.trace("Get my account list service reached...");
+        log.trace("Returning from get my account list service...");
+        return repo.findAllByUser_UserId(userId);
+    }
+
     public Page<AccountEntity> getAllMyAccountsPage(int n, int s, String[] sortBy, String search, String id) {
         String sortName = sortBy[0];
         String sortDir = sortBy[1];
         System.out.println("Attempting to find my accounts");
         List<Sort.Order> orders = new ArrayList();
-        orders.add(new Sort.Order(getDirection(sortDir), sortName));
+        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
         System.out.println("Inbound sort: " + sortName + " " + sortDir);
         System.out.println("Combined orders: " + orders);
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
@@ -106,7 +112,7 @@ public class AccountService {
                 System.out.println("search was a date");
                 return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
             } else {
-                return repo.findByUser_IdAndNicknameOrUser_IdAndType_IdOrUser_IdAndType_NameOrUser_IdAndType_IsActiveOrUser_IdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
+                return repo.findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
             }
         }
         System.out.println("generic search, found:" + repo.findAllByUser_UserId(id, page));
@@ -114,14 +120,29 @@ public class AccountService {
         return repo.findAllByUser_UserId(id, page);
     }
 
-    public Sort.Direction getDirection(String dir) {
-        log.trace("Parsing sort direction...");
-        log.debug("direction received: " + dir);
-        if ("asc".equals(dir)) {
-            return Sort.Direction.ASC;
-        } else {
-            return Sort.Direction.DESC;
+    private Sort.Direction getSortDirection(String direction) {
+        Sort.Direction returnValue = Sort.Direction.ASC;
+
+        if (direction.equals("desc")) {
+            returnValue = Sort.Direction.DESC;
         }
+
+        return returnValue;
+    }
+
+    private List<Sort.Order> parseOrders(String[] sortBy) {
+        List<Sort.Order> orders = new ArrayList<>();
+
+        if (sortBy[0].contains(",")) {
+            for (String sortOrder : sortBy) {
+                String[] _sortBy = sortOrder.split(",");
+                orders.add(new Sort.Order(getSortDirection(_sortBy[1]), _sortBy[0]));
+            }
+        } else {
+            orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
+        }
+
+        return orders;
     }
 
     public AccountEntity getSpecificService(String id) {
@@ -145,7 +166,7 @@ public class AccountService {
         log.debug("Sort direction received: " + sortDir);
         log.debug("Search received: " + search);
         List<Sort.Order> orders = new ArrayList();
-        orders.add(new Sort.Order(getDirection(sortDir), sortName));
+        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
         if (!("").equals(search)) {
             log.trace("Search is present, sending to proper method...");

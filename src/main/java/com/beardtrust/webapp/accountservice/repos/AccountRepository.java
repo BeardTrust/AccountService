@@ -45,11 +45,11 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
 
     public Page<AccountEntity> findAllByUser_UserIdAndCreateDate(String id, LocalDate parse, Pageable page);
 
-    public Page<AccountEntity> findAllIgnoreCaseByUser_UserIdAndNicknameOrType_IdOrType_NameOrType_IsActiveOrId(String id, String search, String search0, String search1, Boolean valueOf, String search2, Pageable page);
-
     public Page<AccountEntity> findAllByBalance_DollarsOrBalance_CentsOrInterestIsLike(Integer newSearch, Integer newSearch0, Integer newSearch1, Pageable page);
 
     public Page<AccountEntity> findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(String search, String search0, String search1, Boolean valueOf, String id, Pageable page);
 
-    public Page<AccountEntity> findByUser_IdAndNicknameOrUser_IdAndType_IdOrUser_IdAndType_NameOrUser_IdAndType_IsActiveOrUser_IdAndIdAllIgnoreCase(String userId1, String nickname, String userId2, String typeId, String userId3, String typeName, String userId4, Boolean isActive, String userId5, String id, Pageable page);
+    public List<AccountEntity> findAllByUser_UserId(String userId);
+
+    Page<AccountEntity> findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(String id, String search, String id1, String search1, String id2, String search2, String id3, Boolean valueOf, String id4, String search3, Pageable page);
 }

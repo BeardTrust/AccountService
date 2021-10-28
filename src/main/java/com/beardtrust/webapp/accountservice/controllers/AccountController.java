@@ -66,6 +66,7 @@ public class AccountController {
     @PostMapping("/{userId}/{id}")//<-- Account to be paid on
     public ResponseEntity<CurrencyValue> changeMoneyAccount(@PathVariable String id, @PathVariable String userId, @RequestBody CurrencyValue c) {
         System.out.println("Attempting to pay on a loan, rcvd: " + c);
+        //TODO Change this to logs
         ResponseEntity<CurrencyValue> response = new ResponseEntity<>(as.makePayment(c, id), HttpStatus.ACCEPTED);
         return response;
 
@@ -107,16 +108,25 @@ public class AccountController {
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
 //    @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<Page<AccountEntity>> getAllMyAccountsPage(// <-- User calls personal list
-            @RequestParam(name = "pageNum", defaultValue = "0") int pageNum, 
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,  
-            @RequestParam(name = "sortBy", defaultValue = "Id,asc") String[] sortBy, 
-            @RequestParam(name = "search", defaultValue = "") String search,
-            @RequestParam(name = "userId", defaultValue = "") String userId) {
+    public ResponseEntity<Page<AccountEntity>> getAllMyAccountsPage(// <-- User calls personal list@RequestParam(name = "page", defaultValue = "0") int pageNum,
+         @RequestParam(name = "page", defaultValue = "0") int pageNum,
+         @RequestParam(name = "size", defaultValue = "10") int pageSize,
+         @RequestParam(name = "sortBy", defaultValue = "id,asc") String[] sortBy,
+         @RequestParam(name = "search", defaultValue = "") String search,
+         @RequestParam(name = "userId", defaultValue = "") String userId) {
         Pageable page = PageRequest.of(pageNum, pageSize);
         ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllMyAccountsPage(pageNum, pageSize, sortBy, search, userId), HttpStatus.OK);
         return response;
 
+    }
+
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    @GetMapping("/me")
+    public ResponseEntity<List<AccountEntity>> getMyAccountsList(@RequestParam String userId) {
+        log.trace("Get my account list endpoint reached...");
+        log.debug("UserId received: " + userId);
+        ResponseEntity<List<AccountEntity>> response = new ResponseEntity<>(as.getMyAccountsList(userId), HttpStatus.OK);
+        return response;
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #id")
