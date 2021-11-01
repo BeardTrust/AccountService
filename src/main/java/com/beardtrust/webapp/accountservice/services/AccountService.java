@@ -155,7 +155,7 @@ public class AccountService {
                 System.out.println("search was a date");
                 return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
             } else {
-                return repo.findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
+                return repo.findByUser_UserIdAndNicknameContainingOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameContainingOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
             }
         }
         System.out.println("generic search, found:" + repo.findAllByUser_UserId(id, page));
@@ -222,7 +222,7 @@ public class AccountService {
                 return repo.findByCreateDate(LocalDate.parse(search), page);
             } else {
                 log.trace("Generic search...");
-                return repo.findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(search, search, search, Boolean.valueOf(search), search, page);
+                return repo.findAllIgnoreCaseByNicknameContainingOrType_IdOrType_NameContainingOrType_IsActiveAndUser_UserIdIs(search, search, search, Boolean.valueOf(search), search, page);
             }
         } else {
             log.trace("No search parameter, finding all as a page...");
