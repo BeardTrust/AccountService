@@ -277,6 +277,7 @@ public class AccountService {
         String id = a.getId() != null ? a.getId() : UUID.randomUUID().toString();
         Optional<AccountEntity> account = repo.findById(id);
         AccountTypeEntity type = accountTypeRepository.findByNameIs(a.getType().getName());
+        type.setDescription(a.getType().getDescription());
         AccountEntity newAccount = null;
 
         if (account.isPresent()) {
