@@ -62,6 +62,16 @@ public class AccountController {
         return null;
     }
 
+    @PreAuthorize("permitAll()")
+    @PostMapping("/create")
+    public ResponseEntity<AccountEntity> createNewAccount(@RequestBody AccountEntity a) {
+        log.trace("Create account endpoint reached...");
+        log.debug("Endpoint received: " + a);
+
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createNewAccount(a), HttpStatus.ACCEPTED);
+        return null;
+    }
+
     @PreAuthorize("hasRole('admin') or principal == #userId")
     @PostMapping("/{userId}/{id}")//<-- Account to be paid on
     public ResponseEntity<CurrencyValue> changeMoneyAccount(@PathVariable String id, @PathVariable String userId, @RequestBody CurrencyValue c) {
@@ -76,7 +86,16 @@ public class AccountController {
     @GetMapping("/new")
     public ResponseEntity<AccountEntity> getNewAccount() {
         log.trace("Get new endpoint reached...");
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(), HttpStatus.OK);
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createNewAccountService(), HttpStatus.OK);
+        log.info("Outbound entity: " + response);
+        return response;
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/new")
+    public ResponseEntity<AccountEntity> getNewAccount(@RequestBody String userId) {
+        log.trace("Get new endpoint reached...");
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(userId), HttpStatus.OK);
         log.info("Outbound entity: " + response);
         return response;
     }

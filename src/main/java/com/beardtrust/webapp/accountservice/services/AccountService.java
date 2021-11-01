@@ -7,6 +7,7 @@ package com.beardtrust.webapp.accountservice.services;
 
 import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
+import com.beardtrust.webapp.accountservice.models.NewAccountTypeRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
@@ -51,6 +52,32 @@ public class AccountService {
         this.transactionRepository = transactionRepository;
     }
 
+    public AccountEntity createNewAccount(AccountEntity a) {
+        a.setCreateDate(LocalDateTime.now());
+        AccountTypeEntity at = new AccountTypeEntity(
+                a.getType().getName(),
+                a.getType().getDescription(),
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(30000));
+        at.setId(a.getType().getId());
+        a.setType(at);
+        try {
+            repo.save(a);
+            return a;
+        } catch(Exception e) {
+            log.warn("Exception trying to save new account: " + e.getMessage());
+            try {
+                accountTypeRepository.save(a.getType());
+                repo.save(a);
+                return a;
+            } catch(Exception e2) {
+                log.warn("Unable to conclude second save attempt with error: " + e2.getMessage());
+            }
+            return null;
+        }
+    }
+
     @Transactional
     public AccountEntity createService(NewAccountRequestModel request) {
         log.trace("Create Service reached...");
@@ -76,9 +103,24 @@ public class AccountService {
         return newAccount;
     }
 
-    public AccountEntity getNewAccountService() {
+    public AccountEntity getNewAccountService(String userId) {
         log.trace("New Account Service...");
         AccountEntity a = new AccountEntity();
+        a.setUser(userRepository.findById(userId).get());
+        AccountTypeEntity at = new AccountTypeEntity();
+        at.setActive(true);
+        at.setCreatedDate(LocalDateTime.now());
+        a.setType(at);
+        return a;
+    }
+
+    public AccountEntity createNewAccountService() {
+        log.trace("New Account Service...");
+        AccountEntity a = new AccountEntity();
+        AccountTypeEntity at = new AccountTypeEntity();
+        at.setActive(true);
+        at.setCreatedDate(LocalDateTime.now());
+        a.setType(at);
         return a;
     }
 
@@ -104,11 +146,12 @@ public class AccountService {
 //                System.out.println("search was a double");
 //                Double newSearch = Double.parseDouble(search);
 //                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
-            } else if (isNumber(search)){
+            } else if (isNumber(search)) {
                 System.out.println("search was an Integer");
                 Integer newSearch = Integer.parseInt(search);
                 return repo.findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(id, newSearch, newSearch, newSearch, page);
-            } if (GenericValidator.isDate(search, "yyyy-MM", false)) {
+            }
+            if (GenericValidator.isDate(search, "yyyy-MM", false)) {
                 System.out.println("search was a date");
                 return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
             } else {
@@ -158,7 +201,7 @@ public class AccountService {
         }
     }
 
-     public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
+    public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
         log.trace("Get all service...");
         log.debug("Page number received: " + n);
         log.debug("Page size received: " + s);
@@ -306,9 +349,9 @@ public class AccountService {
      * transactions which match the search criteria in one or more of the
      * following fields: notes, status name, source id, and target id.
      *
-     * @param id String the account id of the associated account
+     * @param id     String the account id of the associated account
      * @param search String the value to search for
-     * @param page Pageable an object representing the page request
+     * @param page   Pageable an object representing the page request
      * @return Page the requested page
      */
     public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, String search, Pageable page) {
@@ -342,7 +385,7 @@ public class AccountService {
                 try {
                     returnValue
                             = transactionRepository.findAllByTransactionStatus_StatusNameOrSource_IdOrTarget_IdEqualsOrNotesContainsIgnoreCase(search, search, search, search,
-                                    page);
+                            page);
                 } catch (IllegalArgumentException e) {
                     log.error(e.getMessage());
                 }

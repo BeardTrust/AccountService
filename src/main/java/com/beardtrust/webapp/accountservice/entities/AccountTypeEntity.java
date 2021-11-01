@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class AccountTypeEntity implements Serializable, Comparable<AccountTypeEn
 	}
 
 	public AccountTypeEntity(String name, String description, boolean isActive, LocalDateTime createdDate, LocalDateTime expireDate) {
-		this.id = UUID.randomUUID().toString();
+		this.id = "0";
 		this.name = name;
 		this.description = description;
 		this.isActive = isActive;
