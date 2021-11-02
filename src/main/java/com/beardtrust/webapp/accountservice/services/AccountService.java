@@ -5,16 +5,17 @@
  */
 package com.beardtrust.webapp.accountservice.services;
 
+import com.beardtrust.webapp.accountservice.dtos.FinancialTransactionDTO;
 import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.NewAccountTypeRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
-import com.beardtrust.webapp.accountservice.repos.AccountRepository;
-import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
-import com.beardtrust.webapp.accountservice.repos.TransactionRepository;
-import com.beardtrust.webapp.accountservice.repos.UserRepository;
+import com.beardtrust.webapp.accountservice.repos.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.GenericValidator;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,20 +38,13 @@ import static org.apache.commons.validator.GenericValidator.isDouble;
  * @author Matthew Crowell <Matthew.Crowell@Smoothstack.com>
  */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class AccountService {
 
     private final AccountTypeRepository accountTypeRepository;
     private final UserRepository userRepository;
-    private final TransactionRepository transactionRepository;
     private final AccountRepository repo;
-
-    public AccountService(AccountRepository repo, AccountTypeRepository accountTypeRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
-        this.repo = repo;
-        this.accountTypeRepository = accountTypeRepository;
-        this.userRepository = userRepository;
-        this.transactionRepository = transactionRepository;
-    }
 
     public AccountEntity createNewAccount(AccountEntity a) {
         a.setCreateDate(LocalDateTime.now());
@@ -335,66 +329,6 @@ public class AccountService {
             log.error("Account could not be found!!!");
             return "Error finding Entity: " + e;
         }
-    }
-
-    /**
-     * This method receives an account id as a String, a String of search
-     * criteria, and a Pageable object and returns the requested page of
-     * transactions associated with that account and matching that search
-     * criteria. If the search term can be parsed as a CurrencyValue object, the
-     * return value will be a list of all associated account transactions which
-     * match that CurrencyValue. If the search term can be parsed as a
-     * LocalDateTime object, the return value will be a list of all associated
-     * account transactions with status dates on that date. If the search field
-     * is anything else, it will return a list of associated account
-     * transactions which match the search criteria in one or more of the
-     * following fields: notes, status name, source id, and target id.
-     *
-     * @param id     String the account id of the associated account
-     * @param search String the value to search for
-     * @param page   Pageable an object representing the page request
-     * @return Page the requested page
-     */
-    public Page<AccountTransaction> getAllAccountTransactionsByUserId(String id, String search, Pageable page) {
-        log.trace("Get all transactions pagination service...");
-        Page<AccountTransaction> returnValue = null;
-
-        if (search == null) {
-            log.trace("Search term not found, discarding from page...");
-            returnValue = transactionRepository.findAllBySource_IdOrTarget_IdIs(id, id, page);
-        } else {
-            if (GenericValidator.isDate(search, "yyyy-MM-dd", true)) {
-                log.info("Searching and filtering account transaction request as a timestamp");
-                try {
-                    LocalDateTime startDate = LocalDateTime.parse(search + "T00:00:00");
-                    LocalDateTime endDate = startDate.plusDays(1);
-                    returnValue = transactionRepository.findAllByStatusTimeBetween(startDate, endDate, page);
-                } catch (IllegalArgumentException e) {
-                    log.error(e.getMessage());
-                }
-            } else if (isNumber(search)) {
-                log.info("Searching and filtering account transaction request as a number");
-                try {
-                    returnValue = transactionRepository.findAllByTransactionAmountEquals(CurrencyValue.valueOf(Double.parseDouble(search)),
-                            page);
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                }
-
-            } else {
-                log.info("Searching and filtering account transaction request as a string");
-                try {
-                    returnValue
-                            = transactionRepository.findAllByTransactionStatus_StatusNameOrSource_IdOrTarget_IdEqualsOrNotesContainsIgnoreCase(search, search, search, search,
-                            page);
-                } catch (IllegalArgumentException e) {
-                    log.error(e.getMessage());
-                }
-
-            }
-        }
-        log.trace("Account page retrieved, returning...");
-        return returnValue;
     }
 
     public CurrencyValue makePayment(CurrencyValue c, String id) {

@@ -5,7 +5,6 @@ import com.beardtrust.webapp.accountservice.entities.AccountTypeEntity;
 import com.beardtrust.webapp.accountservice.entities.CurrencyValue;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
 import com.beardtrust.webapp.accountservice.repos.AccountTypeRepository;
-import com.beardtrust.webapp.accountservice.repos.TransactionRepository;
 import com.beardtrust.webapp.accountservice.repos.UserRepository;
 import com.beardtrust.webapp.accountservice.services.AccountService;
 
@@ -37,10 +36,10 @@ class AccountServiceApplicationTests {
 
     @Test
     public void testConstructor() {
-//        assertTrue((new AccountService(mock(AccountRepository.class), mock(AccountTypeRepository.class),
-//                mock(UserRepository.class), mock(TransactionRepository.class))).getAllByUserId("cf8bd72a" +
-//                "-4b4c-42f1-8dc3" +
-//                "-06cc2dc2cb8a").isEmpty());
+        assertTrue((new AccountService(mock(AccountTypeRepository.class),
+                mock(UserRepository.class), mock(AccountRepository.class))).getListService("cf8bd72a" +
+                "-4b4c-42f1-8dc3" +
+                "-06cc2dc2cb8a").isEmpty());
     }
 
     @Test
@@ -83,7 +82,7 @@ class AccountServiceApplicationTests {
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType(accountType);
-        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.getUser().setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         Optional<AccountEntity> ofResult = Optional.<AccountEntity>of(accountEntity);
         this.repo.save(accountEntity);
         when(this.repo.findById(anyString())).thenReturn(ofResult);
@@ -120,7 +119,7 @@ class AccountServiceApplicationTests {
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType(accountType);
-        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.getUser().setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
@@ -142,7 +141,7 @@ class AccountServiceApplicationTests {
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType(accountType);
-        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.getUser().setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
@@ -164,7 +163,7 @@ class AccountServiceApplicationTests {
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType(accountType);
-        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.getUser().setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 
@@ -186,7 +185,7 @@ class AccountServiceApplicationTests {
         accountEntity.setInterest(1);
         accountEntity.setNickname("test");
         accountEntity.setType(accountType);
-        accountEntity.getUser().setId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
+        accountEntity.getUser().setUserId("cf8bd72a-4b4c-42f1-8dc3-06cc2dc2cb8a");
         when(this.repo.save((AccountEntity) any())).thenReturn(accountEntity);
     }
 }
