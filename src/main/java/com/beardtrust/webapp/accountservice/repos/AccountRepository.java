@@ -20,24 +20,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
-
-    Page<AccountEntity> findAllByUser_UserIdOrIdOrActiveStatusOrNicknameOrTypeContainsIgnoreCase(String userId,
-                                                                                             String id,
-                                                                                             boolean activeStatus, String nickname, String type, Pageable page);
     
     Page<AccountEntity> findByCreateDate(LocalDate createDate, Pageable page);
-    
-    Page<AccountEntity> findByCreateDateAndUserId(LocalDate createDate, Pageable page, String userId);
-
 
     @Override
     Page<AccountEntity> findAll(Pageable page);
-
-    /*
-    *Find by Nickname
-    *
-     */
-    AccountEntity findByNickname(String s);
 
     public Page<AccountEntity> findAllByUser_UserId(String userId, Pageable page);
 
@@ -47,9 +34,9 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
 
     public Page<AccountEntity> findAllByBalance_DollarsOrBalance_CentsOrInterestIsLike(Integer newSearch, Integer newSearch0, Integer newSearch1, Pageable page);
 
-    public Page<AccountEntity> findAllIgnoreCaseByNicknameOrType_IdOrType_NameOrType_IsActiveAndUser_UserIdIs(String search, String search0, String search1, Boolean valueOf, String id, Pageable page);
-
     public List<AccountEntity> findAllByUser_UserId(String userId);
 
-    Page<AccountEntity> findByUser_UserIdAndNicknameOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(String id, String search, String id1, String search1, String id2, String search2, String id3, Boolean valueOf, String id4, String search3, Pageable page);
+    Page<AccountEntity> findAllIgnoreCaseByNicknameContainingOrType_IdOrType_NameContainingOrType_IsActiveAndUser_UserIdIs(String search, String search1, String search2, Boolean valueOf, String search3, Pageable page);
+
+    Page<AccountEntity> findByUser_UserIdAndNicknameContainingOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameContainingOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(String id, String search, String id1, String search1, String id2, String search2, String id3, Boolean valueOf, String id4, String search3, Pageable page);
 }
