@@ -164,18 +164,6 @@ public class AccountController {
         return response;
     }
 
-    @PreAuthorize("permitAll()")
-    @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<FinancialTransactionDTO>> getAccountTransactions(@PathVariable(name = "id") String id,
-                                                                                @RequestParam(name = "search", required = false) String search, Pageable page) {
-        log.trace("Get account transactions endpoint reached...");
-        log.debug("Endpoint received Id: " + id);
-        log.debug("Endpoint received search: " + search);
-        log.debug("Endpoint received page: " + page);
-        Page<FinancialTransactionDTO> newPage = as.getAllAccountTransactions(id, search, page);
-        return new ResponseEntity<>(newPage, HttpStatus.OK);
-    }
-
     @PreAuthorize("hasAuthority('admin') or principal == #userId")
     @GetMapping(path = "/{id}/security")
     public String testSecurity(@PathVariable(name = "id")String id){
