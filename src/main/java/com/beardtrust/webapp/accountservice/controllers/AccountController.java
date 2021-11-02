@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -200,18 +201,6 @@ public class AccountController {
         ResponseEntity<String> response = new ResponseEntity<>(as.removeAccount(id), HttpStatus.NO_CONTENT);
         log.debug("Controller returning: " + response);
         return response;
-    }
-
-    @PreAuthorize("permitAll()")
-    @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Page<FinancialTransactionDTO>> getAccountTransactions(@PathVariable(name = "id") String id,
-                                                                                @RequestParam(name = "search", required = false) String search, Pageable page) {
-        log.trace("Get account transactions endpoint reached...");
-        log.debug("Endpoint received Id: " + id);
-        log.debug("Endpoint received search: " + search);
-        log.debug("Endpoint received page: " + page);
-        Page<FinancialTransactionDTO> newPage = as.getAllAccountTransactions(id, search, page);
-        return new ResponseEntity<>(newPage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('admin') or principal == #userId")

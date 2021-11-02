@@ -31,7 +31,7 @@ public class AccountEntityTest {
 		actualAccountEntity.setInterest(1);
 		actualAccountEntity.setNickname("Nickname");
 		actualAccountEntity.setType(accountType);;
-		actualAccountEntity.getUser().setId("42");
+		actualAccountEntity.getUser().setUserId("42");
 		assertEquals("42", actualAccountEntity.getId());
 		assertEquals(1, actualAccountEntity.getBalance());
 		assertSame(ofEpochDayResult, actualAccountEntity.getCreateDate());
@@ -71,7 +71,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -93,7 +93,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -103,7 +103,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -125,7 +125,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -135,7 +135,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -157,7 +157,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -179,7 +179,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -203,7 +203,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -213,7 +213,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -237,7 +237,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(0);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -247,7 +247,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -269,7 +269,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname(null);
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -279,7 +279,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -301,7 +301,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId(null);
+		accountEntity.getUser().setUserId(null);
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -311,7 +311,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -333,7 +333,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId(null);
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -343,7 +343,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
@@ -365,7 +365,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(LocalDateTime.ofEpochSecond(0L, 0, ZoneOffset.UTC));
 		accountEntity.setType(accountType);;
@@ -375,7 +375,7 @@ public class AccountEntityTest {
 		AccountEntity accountEntity1 = new AccountEntity();
 		accountEntity1.setInterest(1);
 		accountEntity1.setNickname("Nickname");
-		accountEntity1.getUser().setId("42");
+		accountEntity1.getUser().setUserId("42");
 		accountEntity1.setId("42");
 		accountEntity1.setCreateDate(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
 		accountEntity1.setType(accountType);;
