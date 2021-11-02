@@ -8,6 +8,7 @@ package com.beardtrust.webapp.accountservice.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * @author Nathanael <Nathanael.Grier at your.org>
@@ -24,6 +25,7 @@ public class AccountEntity extends FinancialAsset {
 	private AccountTypeEntity type;
 
 	public AccountEntity() {
+		this.setId(UUID.randomUUID().toString());
 	}
 
 	public AccountTypeEntity getType() {

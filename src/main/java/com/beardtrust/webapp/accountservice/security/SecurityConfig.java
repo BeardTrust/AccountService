@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     public SecurityConfig(Environment environment, AuthorizationService authorizationService, PasswordEncoder passwordEncoder) {
-        log.trace("Building security configuration...");
+        log.info("Building security configuration...");
         this.environment = environment;
         this.passwordEncoder = passwordEncoder;
         this.authorizationService = authorizationService;
@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Description("Configure HTTP Security")
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        log.trace("Configuring HTTP Security...");
+        log.info("Configuring HTTP Security...");
         http.csrf().disable();
         http.cors()
                 .and().authorizeRequests()

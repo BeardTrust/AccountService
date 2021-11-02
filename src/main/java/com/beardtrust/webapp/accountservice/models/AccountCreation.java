@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class AccountCreation {
 
     @NotBlank(message = "How did no account ID get passed?")
-    private String accountId;
+    private String id;
     @NotBlank(message = "The user ID is extremely important")
     private String userId;
     @NotBlank(message = "Default value upon creation should be true")
