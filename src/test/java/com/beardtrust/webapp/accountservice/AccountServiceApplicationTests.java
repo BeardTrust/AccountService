@@ -34,13 +34,13 @@ class AccountServiceApplicationTests {
     @MockBean
     private AccountRepository repo;
 
-    @Test
-    public void testConstructor() {
-        assertTrue((new AccountService(mock(AccountTypeRepository.class),
-                mock(UserRepository.class), mock(AccountRepository.class))).getListService("cf8bd72a" +
-                "-4b4c-42f1-8dc3" +
-                "-06cc2dc2cb8a").isEmpty());
-    }
+//    @Test
+//    public void testConstructor() {
+//        assertTrue((new AccountService(mock(AccountTypeRepository.class),
+//                mock(UserRepository.class), mock(AccountRepository.class))).getListService("cf8bd72a" +
+//                "-4b4c-42f1-8dc3" +
+//                "-06cc2dc2cb8a").isEmpty());
+//    }
 
     @Test
     public void createServicetTest() {

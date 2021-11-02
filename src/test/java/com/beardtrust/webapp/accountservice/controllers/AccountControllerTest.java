@@ -60,7 +60,7 @@ public class AccountControllerTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
 		accountEntity.setType(accountType);
@@ -120,7 +120,7 @@ public class AccountControllerTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
 		accountEntity.setType(accountType);
@@ -149,7 +149,7 @@ public class AccountControllerTest {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setInterest(1);
 		accountEntity.setNickname("Nickname");
-		accountEntity.getUser().setId("42");
+		accountEntity.getUser().setUserId("42");
 		accountEntity.setId("42");
 		accountEntity.setCreateDate(null);
 		accountEntity.setType(accountType);
