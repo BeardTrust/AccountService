@@ -42,9 +42,7 @@ public class AccountService {
 
     private final AccountTypeRepository accountTypeRepository;
     private final UserRepository userRepository;
-    private final TransactionRepository transactionRepository;
     private final AccountRepository repo;
-    private final FinancialTransactionRepository financialTransactionRepository;
 
     @Transactional
     public AccountEntity createService(NewAccountRequestModel request) {
@@ -239,73 +237,5 @@ public class AccountService {
             log.error("Account could not be found!!!");
             return "Error finding Entity: " + e;
         }
-    }
-
-    /**
-     * This method receives an account id as a String, a String of search
-     * criteria, and a Pageable object and returns the requested page of
-     * transactions associated with that account and matching that search
-     * criteria. If the search term can be parsed as a CurrencyValue object, the
-     * return value will be a Page of all associated account transactions which
-     * match that CurrencyValue. If the search term can be parsed as a
-     * LocalDateTime object, the return value will be a list of all associated
-     * account transactions with status dates on that date. If the search field
-     * is anything else, it will return a list of associated account
-     * transactions which match the search criteria in one or more of the
-     * following fields: notes, status name, source id, and target id.
-     *
-     * @param id String the account id of the associated account
-     * @param search String the value to search for
-     * @param page Pageable an object representing the page request
-     * @return Page the requested page
-     */
-    public Page<FinancialTransactionDTO> getAllAccountTransactions(String id, String search, Pageable page) {
-        log.trace("Get all transactions pagination service...");
-        Page<FinancialTransactionDTO> returnValue = null;
-
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-
-        if (search == null) {
-            log.trace("Search term not found, discarding from page...");
-            returnValue = financialTransactionRepository.findAllBySource_IdOrTarget_IdIs(id, id,
-                            page).map(transaction ->
-                                    modelMapper.map(transaction, FinancialTransactionDTO.class));
-
-        } else {
-            if (GenericValidator.isDate(search, "yyyy-MM-dd", true)) {
-                log.info("Searching and filtering account transaction request as a timestamp");
-                try {
-                    LocalDateTime startDate = LocalDateTime.parse(search + "T00:00:00");
-                    LocalDateTime endDate = startDate.plusDays(1);
-                    returnValue = financialTransactionRepository.findAllByStatusTimeBetween(startDate, endDate, page)
-                            .map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
-                } catch (IllegalArgumentException e) {
-                    log.error(e.getMessage());
-                }
-            } else if (isNumber(search)) {
-                log.info("Searching and filtering account transaction request as a number");
-                try {
-                    returnValue = transactionRepository.findAllByTransactionAmountEquals(CurrencyValue.valueOf(Double.parseDouble(search)),
-                            page).map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                }
-
-            } else {
-                log.info("Searching and filtering account transaction request as a string");
-                try {
-                    returnValue
-                            = transactionRepository.findAllByTransactionStatus_StatusNameOrSource_IdOrTarget_IdEqualsOrNotesContainsIgnoreCase(search, search, search, search,
-                                    page).map(transaction -> modelMapper.map(transaction, FinancialTransactionDTO.class));
-                } catch (IllegalArgumentException e) {
-                    log.error(e.getMessage());
-                }
-
-            }
-        }
-        log.trace("Account page retrieved, returning...");
-        return returnValue;
     }
 }
