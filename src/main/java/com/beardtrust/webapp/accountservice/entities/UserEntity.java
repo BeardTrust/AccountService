@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Table(name = "users")
 @Slf4j
 public class UserEntity implements Serializable {
-
     @Id
     @Column(unique = true)
     private String userId;

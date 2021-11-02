@@ -5,9 +5,7 @@
  */
 package com.beardtrust.webapp.accountservice.controllers;
 
-import com.beardtrust.webapp.accountservice.dtos.FinancialTransactionDTO;
-import com.beardtrust.webapp.accountservice.entities.AccountEntity;
-import com.beardtrust.webapp.accountservice.entities.TransferEntity;
+import com.beardtrust.webapp.accountservice.entities.*;
 import com.beardtrust.webapp.accountservice.models.NewAccountRequestModel;
 import com.beardtrust.webapp.accountservice.models.UpdateAccountRequest;
 import com.beardtrust.webapp.accountservice.repos.AccountRepository;
@@ -61,16 +59,45 @@ public class AccountController {
     }
 
     @PreAuthorize("permitAll()")
+    @PostMapping("/create")
+    public ResponseEntity<AccountEntity> createNewAccount(@RequestBody AccountEntity a) {
+        log.trace("Create account endpoint reached...");
+        log.debug("Endpoint received: " + a);
+
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createNewAccount(a), HttpStatus.ACCEPTED);
+        return null;
+    }
+
+    @PreAuthorize("hasRole('admin') or principal == #userId")
+    @PostMapping("/{userId}/{id}")//<-- Account to be paid on
+    public ResponseEntity<CurrencyValue> changeMoneyAccount(@PathVariable String id, @PathVariable String userId, @RequestBody CurrencyValue c) {
+        System.out.println("Attempting to pay on a loan, rcvd: " + c);
+        //TODO Change this to logs
+        ResponseEntity<CurrencyValue> response = new ResponseEntity<>(as.makePayment(c, id), HttpStatus.ACCEPTED);
+        return response;
+
+    }
+
+    @PreAuthorize("permitAll()")
     @GetMapping("/new")
     public ResponseEntity<AccountEntity> getNewAccount() {
         log.trace("Get new endpoint reached...");
-        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(), HttpStatus.OK);
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createNewAccountService(), HttpStatus.OK);
+        log.info("Outbound entity: " + response);
+        return response;
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/new")
+    public ResponseEntity<AccountEntity> getNewAccount(@RequestBody String userId) {
+        log.trace("Get new endpoint reached...");
+        ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.getNewAccountService(userId), HttpStatus.OK);
         log.info("Outbound entity: " + response);
         return response;
     }
 
     @PreAuthorize("hasAuthority('admin')")
-    //@PreAuthorize("permitAll()")
+//    @PreAuthorize("permitAll()")
     @GetMapping("/all")
     public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
         log.trace("Get all accounts admin endpoint reached...");
@@ -93,16 +120,27 @@ public class AccountController {
         return response;
     }
 
-    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+//    @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<List<AccountEntity>> getListAccount(@RequestParam("id") String id) {
-        log.trace("Get account list endpoint reached...");
-        log.debug("Endpoint received: " + id);
-        ResponseEntity<List<AccountEntity>> response = null;
+    public ResponseEntity<Page<AccountEntity>> getAllMyAccountsPage(// <-- User calls personal list@RequestParam(name = "page", defaultValue = "0") int pageNum,
+         @RequestParam(name = "page", defaultValue = "0") int pageNum,
+         @RequestParam(name = "size", defaultValue = "10") int pageSize,
+         @RequestParam(name = "sortBy", defaultValue = "id,asc") String[] sortBy,
+         @RequestParam(name = "search", defaultValue = "") String search,
+         @RequestParam(name = "userId", defaultValue = "") String userId) {
+        Pageable page = PageRequest.of(pageNum, pageSize);
+        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllMyAccountsPage(pageNum, pageSize, sortBy, search, userId), HttpStatus.OK);
+        return response;
 
-        List<AccountEntity> accounts = as.getListService(id);
-        response = new ResponseEntity<>(accounts, HttpStatus.OK);
-        log.trace("Controller returning: " + response);
+    }
+
+    @PreAuthorize("hasAuthority('admin') or principal == #userId")
+    @GetMapping("/me")
+    public ResponseEntity<List<AccountEntity>> getMyAccountsList(@RequestParam String userId) {
+        log.trace("Get my account list endpoint reached...");
+        log.debug("UserId received: " + userId);
+        ResponseEntity<List<AccountEntity>> response = new ResponseEntity<>(as.getMyAccountsList(userId), HttpStatus.OK);
         return response;
     }
 
