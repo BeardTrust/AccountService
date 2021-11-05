@@ -57,7 +57,7 @@ public class AccountController {
     public ResponseEntity<AccountEntity> createAccount(@RequestBody NewAccountRequestModel a) {
         log.trace("Create account endpoint reached...");
         log.debug("Endpoint received: " + a);
-
+        System.out.println("account model: " + a.getType().getId());
         ResponseEntity<AccountEntity> response = new ResponseEntity<>(as.createService(a), HttpStatus.ACCEPTED);
         return null;
     }
