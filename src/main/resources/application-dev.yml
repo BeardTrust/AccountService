@@ -1,4 +1,6 @@
 server:
+  ssl:
+    enabled: true
   port: ${PORT:7778}
 management:
   endpoints:

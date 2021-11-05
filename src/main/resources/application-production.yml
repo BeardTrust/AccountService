@@ -1,4 +1,10 @@
 server:
+  ssl:
+    key-store: classpath:springboot.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: springboot
+    key-password: password
   port: ${PORT:7778}
 management:
   endpoints:
