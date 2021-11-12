@@ -100,14 +100,12 @@ public class AccountController {
     @PreAuthorize("hasAuthority('admin')")
 //    @PreAuthorize("permitAll()")
     @GetMapping("/all")
-    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam String sortName, @RequestParam String sortDir, @RequestParam String search) {//<-- Admin calls full list
+    public ResponseEntity<Page<AccountEntity>> getAllAccount(/*Pageable page*/@RequestParam String pageNum, @RequestParam String pageSize, @RequestParam(required = false, defaultValue = "id,asc") String[] sortBy, @RequestParam(required = false, defaultValue = "") String search) {//<-- Admin calls full list
         log.trace("Get all accounts admin endpoint reached...");
         log.debug("Page number received: " + pageNum);
         log.debug("Page size received: " + pageSize);
-        log.debug("Sort name received: " + sortName);
-        log.debug("Sort direction received: " + sortDir);
         log.debug("Search received: " + search);
-        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortName, sortDir, search), HttpStatus.OK);
+        ResponseEntity<Page<AccountEntity>> response = new ResponseEntity<>(as.getAllService(Integer.parseInt(pageNum), Integer.parseInt(pageSize), sortBy, search), HttpStatus.OK);
         log.debug("controller returning: " + response);
         return response;
     }

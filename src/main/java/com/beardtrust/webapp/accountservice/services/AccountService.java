@@ -127,12 +127,14 @@ public class AccountService {
     public Page<AccountEntity> getAllMyAccountsPage(int n, int s, String[] sortBy, String search, String id) {
         String sortName = sortBy[0];
         String sortDir = sortBy[1];
+        List<Sort.Order> orders = parseOrders(sortBy);
+        Pageable page = PageRequest.of(n, s, Sort.by(orders));
         System.out.println("Attempting to find my accounts");
-        List<Sort.Order> orders = new ArrayList();
-        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
+//        List<Sort.Order> orders = new ArrayList();
+//        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
         System.out.println("Inbound sort: " + sortName + " " + sortDir);
         System.out.println("Combined orders: " + orders);
-        Pageable page = PageRequest.of(n, s, Sort.by(orders));
+//        Pageable page = PageRequest.of(n, s, Sort.by(orders));
         System.out.println("Compiled page: " + page);
         System.out.println("Search param: " + search);
         if (!("").equals(search)) {
@@ -170,12 +172,15 @@ public class AccountService {
     private List<Sort.Order> parseOrders(String[] sortBy) {
         List<Sort.Order> orders = new ArrayList<>();
 
-        if (sortBy[0].contains(",")) {
-            for (String sortOrder : sortBy) {
-                String[] _sortBy = sortOrder.split(",");
-                orders.add(new Sort.Order(getSortDirection(_sortBy[1]), _sortBy[0]));
+        if (sortBy.length > 2) {
+            for (int i = 0; i < sortBy.length; i++) {
+                String sort = sortBy[i];
+                String dir = sortBy[i + 1];
+                orders.add(new Sort.Order(getSortDirection(dir), sort));
+                i++;
             }
-        } else {
+            System.out.println("parsed orders: " + orders);
+        }  else {
             orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
         }
 
@@ -195,15 +200,12 @@ public class AccountService {
         }
     }
 
-    public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String sortName, String sortDir, String search) {
+    public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String[] sortBy, String search) {
         log.trace("Get all service...");
         log.debug("Page number received: " + n);
         log.debug("Page size received: " + s);
-        log.debug("Sort name received: " + sortName);
-        log.debug("Sort direction received: " + sortDir);
         log.debug("Search received: " + search);
-        List<Sort.Order> orders = new ArrayList();
-        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
+        List<Sort.Order> orders = parseOrders(sortBy);
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
         if (!("").equals(search)) {
             log.trace("Search is present, sending to proper method...");
