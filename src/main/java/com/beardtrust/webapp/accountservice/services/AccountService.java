@@ -124,41 +124,41 @@ public class AccountService {
         return repo.findAllByUser_UserId(userId);
     }
 
+    /**
+     Gets all accounts as a Pageable object that sorts and filters based on params passed in.
+
+     @param n the page number for the Pageable object
+     @param s the page size for the Pageable object
+     @param sortBy the array containing sort orders for the Pageable object
+     @param search the String used for filtering the Pageable object
+     @param id  the userId to filter by
+
+     @return Page</AccountEntity> the accounts being returned.
+     */
     public Page<AccountEntity> getAllMyAccountsPage(int n, int s, String[] sortBy, String search, String id) {
-        String sortName = sortBy[0];
-        String sortDir = sortBy[1];
         List<Sort.Order> orders = parseOrders(sortBy);
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
-        System.out.println("Attempting to find my accounts");
-//        List<Sort.Order> orders = new ArrayList();
-//        orders.add(new Sort.Order(getSortDirection(sortDir), sortName));
-        System.out.println("Inbound sort: " + sortName + " " + sortDir);
-        System.out.println("Combined orders: " + orders);
-//        Pageable page = PageRequest.of(n, s, Sort.by(orders));
-        System.out.println("Compiled page: " + page);
-        System.out.println("Search param: " + search);
         if (!("").equals(search)) {
-            if (isDouble(search)) {
-//                System.out.println("search was a double");
-//                Double newSearch = Double.parseDouble(search);
-//                return repo.findAllByInterestOrBalance_DollarsOrBalance_CentsAndUser_Id(newSearch, newSearch, newSearch, id, page);
-            } else if (isNumber(search)) {
-                System.out.println("search was an Integer");
+            if (isNumber(search)) {
                 Integer newSearch = Integer.parseInt(search);
                 return repo.findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(id, newSearch, newSearch, newSearch, page);
             }
             if (GenericValidator.isDate(search, "yyyy-MM", false)) {
-                System.out.println("search was a date");
                 return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
             } else {
                 return repo.findByUser_UserIdAndNicknameContainingOrUser_UserIdAndType_IdOrUser_UserIdAndType_NameContainingOrUser_UserIdAndType_IsActiveOrUser_UserIdAndIdAllIgnoreCase(id, search, id, search, id, search, id, Boolean.valueOf(search), id, search, page);
             }
         }
-        System.out.println("generic search, found:" + repo.findAllByUser_UserId(id, page));
-        System.out.println("UserId searched by: " + id);
         return repo.findAllByUser_UserId(id, page);
     }
 
+    /**
+     This accepts the sort direction in the form of a string and converts it to a proper Sort.Direction for use with parseOrders()
+
+     @param direction the sort direction, in the form of a String
+
+     @return Sort.Direction the properly parsed direction
+      * */
     private Sort.Direction getSortDirection(String direction) {
         Sort.Direction returnValue = Sort.Direction.ASC;
 
@@ -169,6 +169,14 @@ public class AccountService {
         return returnValue;
     }
 
+    /**
+     Sorting orders are sent in an array to be broken down and pieced back together into a Pageable Sort.Order list
+     This allows for multiple fields to be sorted by at once It works in tandem with getSortDirection() to ensure proper oders
+
+     @param sortBy the array containing the order(s)
+
+     @return List</Sort.Order> The orders to put into a Pageable
+      * */
     private List<Sort.Order> parseOrders(String[] sortBy) {
         List<Sort.Order> orders = new ArrayList<>();
 
@@ -187,6 +195,13 @@ public class AccountService {
         return orders;
     }
 
+    /**
+     Accepts an id to use for retrieval of an individual account
+
+     @param id the account id to retrieve
+
+     @return AccountEntity the account found by the database
+     */
     public AccountEntity getSpecificService(String id) {
         log.trace("get specific service...");
         log.debug("Service received: " + id);
@@ -200,6 +215,16 @@ public class AccountService {
         }
     }
 
+    /**
+     Gets all accounts as a Pageable object that sorts and filters based on params passed in.
+
+     @param n the page number for the Pageable object
+     @param s the page size for the Pageable object
+     @param sortBy the array containing sort orders for the Pageable object
+     @param search the String used for filtering the Pageable object
+
+     @return Page</LoanTypeEntity> the  loan types being returned.
+     */
     public Page<AccountEntity> getAllService( /*Pageable page*/Integer n, Integer s, String[] sortBy, String search) {
         log.trace("Get all service...");
         log.debug("Page number received: " + n);
@@ -226,6 +251,16 @@ public class AccountService {
         }
     }
 
+    /**
+     The method for despositing and withdrawing funds to/from an account.
+     It accepts a CurrencyValue of amount and a String of id targeting
+     the account to be worked on.
+
+     @param id the account being targeted
+     @param amount the amount to change
+
+     @return AccountEntity The updated account
+     */
     public AccountEntity changeMoneyService(TransferEntity amount, String id) {
         log.trace("Change money service...");
         log.debug("Service id received: " + id);
@@ -249,6 +284,14 @@ public class AccountService {
         }
     }
 
+    /**
+     Changes the account to recovery status when something improper happens
+     (such as closing an account with a balance)
+
+     @param id the account to be recovered
+
+     @return AccountEntity the account being recovered
+     */
     public AccountEntity changeRecoveryService(String id) {
         log.trace("Change recovery service...");
         log.debug("Account Id received: " + id);
@@ -266,6 +309,14 @@ public class AccountService {
         }
     }
 
+    /**
+     /the method used for updating an account. It receives a model to save over the account with
+     and returns the updated account
+
+     @param a The UpdateAccountRequest model to update with
+
+     @return AccountEntity The updated account
+     */
     @Transactional
     public AccountEntity updateService(UpdateAccountRequest a) {
         log.trace("Update service reached...");
@@ -300,6 +351,13 @@ public class AccountService {
         return newAccount;
     }
 
+    /**
+     Disables the activeStatus of an account
+
+     @param a the id of the account to disable
+
+     @return String a success or failure message
+     */
     public String deactivateAccount(String a) {
         log.trace("Account deactivation service...");
         log.debug("Deactivate service received: " + a);
@@ -320,6 +378,14 @@ public class AccountService {
         return "Account does not exist";
     }
 
+    /**
+     Completely removes the entity from the database
+     Should be used ONLY when a NOSQL backup is in place
+
+     @param id the id of the account to delete
+
+     @return String a success or failure message
+     */
     public String removeAccount(String id) {
         log.trace("Remove account service...");
         try {
@@ -333,6 +399,14 @@ public class AccountService {
         }
     }
 
+    /**
+     Removes the received amount from the account in question
+
+     @param id the account to work on
+     @param c the amount if the payment
+
+     @return CurrencyValue The resulting payment
+     */
     public CurrencyValue makePayment(CurrencyValue c, String id) {
         try {
             AccountEntity a = repo.findById(id).get();
