@@ -228,10 +228,10 @@ public class AccountController {
      *
      * @return a ResponseEntity</AccountEntity> The user's accounts
      */
-    @PreAuthorize("hasAuthority('admin') or principal == #id")
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('user')")
     @PutMapping("/{id}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody TransferEntity amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
+    public ResponseEntity<AccountEntity> changeMoney(@PathVariable String id, @RequestBody CurrencyValue amount) {//<-- The Account ID (amount should be set pos/neg by the front end)
         log.trace("Change Money endpoint reached...");
         log.debug("Change Money endpoint received Id: " + id);
         log.debug("Change Money endpoint received amount: " + amount);

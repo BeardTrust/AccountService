@@ -139,9 +139,25 @@ public class AccountService {
         List<Sort.Order> orders = parseOrders(sortBy);
         Pageable page = PageRequest.of(n, s, Sort.by(orders));
         if (!("").equals(search)) {
-            if (isNumber(search)) {
+            String[] values = new String[2];
+            if (search.contains(".")) {
+                values = search.split("\\.");
+            }
+            CurrencyValue amount = new CurrencyValue();
+
+            if (values.length == 2 && search.contains(".")) {
+                log.info("Search criteria has two integer values");
+                Integer.parseInt(values[0]);
+                amount.setDollars(Integer.parseInt(values[0]));
+                amount.setCents(Integer.parseInt(values[1]));
+                return repo.findAllByUser_UserIdAndBalance(id, amount, page);
+            } else {
+                log.info("Search criteria has one integer value");
+                amount.setCents(Integer.parseInt(search));
+            }
+            if (isNumber(search) && !search.contains(".")) {
                 Integer newSearch = Integer.parseInt(search);
-                return repo.findAllByUser_UserIdAndInterestOrBalance_DollarsOrBalance_Cents(id, newSearch, newSearch, newSearch, page);
+                return repo.findAllByUser_UserIdAndInterestOrUser_UserIdAndBalance_DollarsOrUser_UserIdAndBalance_Cents(id, newSearch, id, newSearch, id, newSearch, page);
             }
             if (GenericValidator.isDate(search, "yyyy-MM", false)) {
                 return repo.findAllByUser_UserIdAndCreateDate(id, LocalDate.parse(search), page);
@@ -261,7 +277,7 @@ public class AccountService {
 
      @return AccountEntity The updated account
      */
-    public AccountEntity changeMoneyService(TransferEntity amount, String id) {
+    public AccountEntity changeMoneyService(CurrencyValue amount, String id) {
         log.trace("Change money service...");
         log.debug("Service id received: " + id);
         log.debug("service amount received: " + amount);
@@ -269,7 +285,7 @@ public class AccountService {
         log.trace("Account found...");
         if (a.isActiveStatus()) {
             log.trace("Account active, proceeding...");
-            a.getBalance().add(amount.getAmount());
+            a.getBalance().add(amount);
             if ((a.getBalance().getDollars() == 0) && (a.getBalance().getCents() == 0) && (a.getType().getName()
                     == "Recovery")) {
                 log.trace("Account was empty and in recovery mode, deactivating...");
